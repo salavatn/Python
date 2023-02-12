@@ -45,7 +45,19 @@ def get_lan():
     return fr'IPAddress "\\{address[11:-1]}\{last_name[rand].lower()}"'
 
 
-def get_email():
+def get_src_email():
+    last_name = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
+                     "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+                     "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
+                     "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green",
+                     "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts"]
+
+    rand = random.randint(0, 49)
+    return last_name[rand].lower() + "@hq.org"
+
+
+def get_dst_email():
+    domain = ["@gmail.com", "@yahoo.fr", "@hotmail.de", "@live.pl", "@msn.com", "sky.com", ]
     last_name = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
                      "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
                      "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
@@ -115,18 +127,21 @@ def get_file():
 '''
 
 count = 0
-while count <= 100:
+while count <= 50:
     count += 1
     timer = random.randint(1, 1000)
     channel = get_channel()
 
     if channel == 16:
-        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_usb()} -file {get_file()} -i {channel} & timeout {timer} > NUL  & ', end="")
+        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_usb()} -file {get_file()} -i {channel}')
+        print(f'timeout {timer} > NUL')
     elif channel == 17:
-        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_lan()} -file {get_file()} -i {channel} & timeout {timer} > NUL  & ', end="")
+        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_lan()} -file {get_file()} -i {channel}')
+        print(f'timeout {timer} > NUL')
     elif channel == 19:
-        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_printer()} -file {get_file()} -i {channel} & timeout {timer} > NUL  & ', end="")
+        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_printer()} -file {get_file()} -i {channel}')
+        print(f'timeout {timer} > NUL')
     elif channel == (18 or 21):
-        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_https()} -file {get_file()} -i {channel} & timeout {timer} > NUL  & ', end="")
+        print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_https()} -file {get_file()} -i {channel}')
+        print(f'timeout {timer} > NUL')
 
-print("\n Finish")
