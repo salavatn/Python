@@ -1,0 +1,5 @@
+usb
+usb 2.0
+usb 3.0
+sd
+sd card
