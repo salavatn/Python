@@ -11,7 +11,7 @@ text_default = "\033[0m"
 count = 0
 service_id = [16, 17, 18, 19, 20]
 system_arguments_keys = ["-src", "-dst", "-cnt", "-sid", "-help"]
-system_arguments_dict = {"src": "any", "dst": "any", "cnt": 5, "sid": "any"}
+system_arguments_dict = {"src": "random", "dst": "random", "cnt": 1, "sid": "random"}
 
 # User arguments:
 user_all_arguments = sys.argv
@@ -38,12 +38,12 @@ def checking_args(user_all_args, system_args, system_args_dict):
                         system_args_dict[arg_key] = arg_value
 
                     elif arg_value[0] == "-":
-                        print(f"\n[ ERROR ] Missing argument after {text_red}{arg} *** {text_default}")
+                        print(f"\n[ ERROR ] Missing argument: {text_red}{arg} *** {text_default}")
                         print(f"\t  For more information:  -help")
                         break
 
                 except IndexError:
-                    print(f"\n[ ERROR ] Missing argument after {text_red}{arg} *** {text_default}")
+                    print(f"\n[ ERROR ] Missing argument: {text_red}{arg} *** {text_default}")
                     print(f"\t  For more information:  -help")
                     break
             else:
@@ -53,9 +53,22 @@ def checking_args(user_all_args, system_args, system_args_dict):
         print(f"\n[ ERROR ] Incorrect argument:\t", text_red, *incorrect_args, text_default)
         print(f"\t  For more information:   -help")
 
-    # print(f"\n{text_green}FOR DEBUG ONLY:\t{system_args_dict}{text_default}")
+    print(f"\n{text_green}REM CLI:\tpython", *user_all_arguments)
+    print(f"{text_green}REM Options:\t{system_args_dict}{text_default}")
+
     return system_args_dict
 
+
+def generate_incident():
+    system_args_dict = checking_args(user_all_arguments, system_arguments_keys, system_arguments_dict)
+    cnt = system_args_dict['cnt']
+    user_args_list = list(system_args_dict.values())
+    print(user_args_list)
+
+    # if
+    # while count <= cnt:
+
+generate_incident()
 
 def get_service_id():
     return service_id[random.randint(0, 4)]
@@ -105,7 +118,6 @@ def get_cnt():
 #     print(f'PolicyEngineClient.exe -o Test -src {get_src()} -dst {get_dst()} -file get_file() -i {get_sid()}')
 
 
-system_arguments_dict = checking_args(user_all_arguments, system_arguments_keys, system_arguments_dict)
 
 
 # python gen_incidents.py -src any -dst any -chn any -cnt 10
