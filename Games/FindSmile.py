@@ -1,18 +1,31 @@
 import random
+import socket
+hostname = socket.gethostname()
+
 
 color_red = "\033[31m"
 color_green = "\033[32m"
 color_yellow = "\033[33m"
 color_default = "\033[0m"
 
-print(f"\nУкажите диапазон целых чисел, а {color_yellow}☻{color_default} скроется за одним из них.")
-start = int(input("Начальное число: "))
-finish = int(input('Финальное число: '))
 
-number = random.randint(start,finish)
+def game_condition(g_mode):
+    if g_mode == "single":
+        g_start = int(input("First number [1]: ") or 1)
+        g_finish = int(input('Final number [100]: ') or 100)
+        print(f"\nYour {hostname} selected the number and give it for the {color_yellow}Smile ☻{color_default}, find the number of {color_yellow}Smile{color_default}.")
+        g_num = random.randint(g_start, g_finish)
+        g_range = g_finish - g_start
+        return [g_num, g_range]
+
+    elif game_mode == "double":
+        print(f"\nУкажите диапазон целых чисел, а {color_yellow}Smile ☻{color_default} скроется за одним из них.")
+
 
 # Расчитываем количество необходимых попыток
-game_range = finish - start
+game_mode = input("Hello, select mode [single/double]: ") or "single"
+conditions = game_condition(game_mode)
+game_range = conditions[1]
 count = 0
 while True:
     count = count + 1
