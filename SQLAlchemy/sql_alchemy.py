@@ -20,7 +20,7 @@ ns_base = declarative_base()
 
 
 class Students(ns_base):
-    __tablename__ = 'USERS'
+    __tablename__ = 'STUDENTS'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     age = Column(Integer)

@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e625ed4-6d66-47ee-9bca-bc2e86d7954a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/sql_alchemy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnvVariable/.env" beforeDir="false" afterPath="$PROJECT_DIR$/EnvVariable/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EnvVariable/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/EnvVariable/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQLAlchemy/.env" beforeDir="false" afterPath="$PROJECT_DIR$/SQLAlchemy/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQLAlchemy/sql_alchemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/SQLAlchemy/sql_alchemy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
