@@ -1,8 +1,8 @@
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
 # Custom Environment Variables:
 load_dotenv()
@@ -19,6 +19,7 @@ ns_session = ns_session_maker()
 ns_base = declarative_base()
 
 
+# Table parameters:
 class Students(ns_base):
     __tablename__ = 'STUDENTS'
     id = Column(Integer, primary_key=True)
@@ -27,4 +28,21 @@ class Students(ns_base):
     grade = Column(String(50))
 
 
+# Create table:
 ns_base.metadata.create_all(ns_engine)
+
+# Sample Data
+ns_data = Students(name="Airas", age=38, grade="A")
+
+# Insert data to table
+ns_session.add(ns_data)
+
+# More Sample Data:
+ns_data_1 = Students(name="Yuliya", age=32, grade="B")
+ns_data_2 = Students(name="Alsu", age=40, grade="C")
+
+# Insert more sample data to table:
+ns_session.add_all([ns_data_1, ns_data_2])
+
+ns_session.commit()
+
