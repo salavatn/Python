@@ -5,6 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e625ed4-6d66-47ee-9bca-bc2e86d7954a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Class/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQLAlchemy/sql_connection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQLAlchemy/sql_create_table.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQLAlchemy/sql_insert_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQLAlchemy/sql_read_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQLAlchemy/sql_table_list.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SQLAlchemy/sql_alchemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/SQLAlchemy/sql_alchemy.py" afterDir="false" />
     </list>
@@ -53,5 +59,16 @@
       <updated>1677398765303</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

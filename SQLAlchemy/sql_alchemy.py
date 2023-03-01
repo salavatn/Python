@@ -20,29 +20,40 @@ ns_base = declarative_base()
 
 
 # Table parameters:
-class Students(ns_base):
-    __tablename__ = 'STUDENTS'
+class TableCustomers(ns_base):
+    __tablename__ = 'Customers'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     age = Column(Integer)
     grade = Column(String(50))
 
 
-# Create table:
+# CREATE TABLE:
 ns_base.metadata.create_all(ns_engine)
 
-# Sample Data
-ns_data = Students(name="Airas", age=38, grade="A")
 
-# Insert data to table
-ns_session.add(ns_data)
+#
+#
+# # Sample Data
+# ns_data = CLASS_Students(name="Airas", age=38, grade="A")
+#
+# # INSERT DATA
+# ns_session.add(ns_data)
 
-# More Sample Data:
-ns_data_1 = Students(name="Yuliya", age=32, grade="B")
-ns_data_2 = Students(name="Alsu", age=40, grade="C")
+'''# More Sample Data:
+ns_data_1 = CLASS_Students(name="Yuliya", age=32, grade="B")
+ns_data_2 = CLASS_Students(name="Alsu", age=40, grade="C")'''
 
-# Insert more sample data to table:
-ns_session.add_all([ns_data_1, ns_data_2])
+# # INSERT MORE DATA
+# ns_session.add_all([ns_data_1, ns_data_2])
 
-ns_session.commit()
+# ns_session.commit()
 
+
+'''# GET DATA
+data = ns_session.query(CLASS_Students)
+print(f"SQL Query:\n{data}")
+
+for i in data:
+    print(f"Name:\t{i.name}")
+'''
