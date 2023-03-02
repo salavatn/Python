@@ -1,54 +1,84 @@
-import boto3
-import time
+from sqlalchemy import create_engine
+from sqlalchemy import Column, Integer, String, Date, DateTime
+from sqlalchemy import and_
+from sqlalchemy.orm import declarative_base, sessionmaker
+from dotenv import load_dotenv
+from datetime import date
 import sys
-
-# user_arguments = sys.argv
-# print(user_arguments[1])
-
-# Table Info
-table_name = "Time Sheet"
-primary_column_name = "ID"
-primary_key = 1
-columns = ["task_name", "timer_sec"]
-
-# AWS DynamoDB
-client = boto3.client('dynamodb')
-db = boto3.resource('dynamodb')
-table = db.Table(table_name)
+import os
+import time
 
 
-def create_dax_table(dyn_resource=None):
-    """
-    Creates a DynamoDB table.
+def connect_to_database():
+    load_dotenv()
+    host = os.environ['SQL_TM_HOST']
+    database = os.environ['SQL_TM_DB']
+    port = os.environ['SQL_TM_PORT']
+    username = os.environ['SQL_TM_USER']
+    password = os.environ['SQL_TM_PASSWD']
 
-    :param dyn_resource: Either a Boto3 or DAX resource.
-    :return: The newly created table.
-    """
-    if dyn_resource is None:
-        dyn_resource = boto3.resource('dynamodb')
-
-    table_name = 'TryDaxTable'
-    params = {
-        'TableName': table_name,
-        'KeySchema': [
-            {'AttributeName': 'partition_key', 'KeyType': 'HASH'},
-            {'AttributeName': 'sort_key', 'KeyType': 'RANGE'}
-        ],
-        'AttributeDefinitions': [
-            {'AttributeName': 'partition_key', 'AttributeType': 'N'},
-            {'AttributeName': 'sort_key', 'AttributeType': 'N'}
-        ],
-        'ProvisionedThroughput': {
-            'ReadCapacityUnits': 10,
-            'WriteCapacityUnits': 10
-        }
-    }
-    table = dyn_resource.create_table(**params)
-    print(f"Creating {table_name}...")
-    table.wait_until_exists()
-    return table
+    tm_engine = create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}', echo=False)
+    tm_base = declarative_base()
+    tm_session_maker = sessionmaker(bind=tm_engine)
+    tm_session = tm_session_maker()
+    return [tm_base, tm_session, tm_engine]
 
 
-if __name__ == '__main__':
-    dax_table = create_dax_table()
-    print(f"Created table.")
+base = connect_to_database()[0]
+session = connect_to_database()[1]
+engine = connect_to_database()[2]
+
+
+class TableTimeSheet(base):
+    __tablename__ = 'TimeSheet'
+    ID = Column(Integer, primary_key=True)
+    Date = Column(Date)
+    Task_Name = Column(String)
+    Task_Started = Column(Integer)
+    Task_Finished = Column(Integer)
+    Task_Duration = Column(Integer)
+
+
+# Create Table
+base.metadata.create_all(engine)
+
+
+# Parameters for query:
+table = TableTimeSheet
+today = date.today()
+task_name = sys.argv[1]
+time_now = int(time.time())
+
+
+# Upload data to PostgreSQL
+def upload_data():
+    row = table(Date=today,
+                Task_Name=task_name,
+                Task_Started=time_now,
+                Task_Finished=time_now,
+                Task_Duration=0)
+    session.add(row)
+    session.commit()
+
+
+exist_record = session.query(table).filter_by(Date=today).first() is not None     # True or False
+
+if exist_record is True:
+    upload_data()
+    print("Uploaded the next record")
+    current_row = session.query(table).filter_by(Task_Started=time_now)
+
+    for get_current in current_row:
+        prev_row_id = get_current.ID - 1
+        prev_row = session.query(table).filter(table.ID == prev_row_id)
+
+        for get_prev in prev_row:
+            get_prev.Task_Finished = time_now
+            time_prev = get_prev.Task_Started
+            get_prev.Task_Duration = time_now - time_prev
+            session.commit()
+            print("Previous record is updated")
+else:
+    upload_data()
+    print("Uploaded new record")
+

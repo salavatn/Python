@@ -1,4 +1,4 @@
-print("\nFILE START: SQL_TABLE_LIST")
+print("FILE START: SQL_TABLE_LIST")
 from sql_connection import base
 from sqlalchemy import Column, Integer, String
 
@@ -11,4 +11,4 @@ class TableCustomers(base):
     grade = Column(String(50))
 
 
-print("\tFILE FINISH: SQL_TABLE_LIST\n")
+# print("\tFILE FINISH: SQL_TABLE_LIST\n")
