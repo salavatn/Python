@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e625ed4-6d66-47ee-9bca-bc2e86d7954a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/OpenCV/haarcascade_frontalface_default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OpenCV/opencv-v1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeSheet/timer.py" beforeDir="false" afterPath="$PROJECT_DIR$/TimeSheet/timer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
