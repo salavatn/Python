@@ -5,28 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e625ed4-6d66-47ee-9bca-bc2e86d7954a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ComputerVision/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ComputerVision/.idea/ComputerVision.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ComputerVision/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ComputerVision/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ComputerVision/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ComputerVision/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FastAPI/01_Project.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/.idea/Lib_Faker.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lib_Faker/demo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Request/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/.idea/SQLAlchemy.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/2023_March/create_table.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/2023_March/demo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/2023_March/insert_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQLAlchemy/2023_March/read_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Games/FindSmile.py" beforeDir="false" afterPath="$PROJECT_DIR$/Games/FindSmile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TelegramBot/Bot_01.py" beforeDir="false" afterPath="$PROJECT_DIR$/TelegramBot/Bot_01.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,14 +31,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/Users/salavat/GitHub/Python"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/salavat/GitHub/Python&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/SQLAlchemy/2023_March" />
