@@ -1,4 +1,7 @@
 .idea
 .DS_Store
 FOLDER
-.gitingore
+.gitingoreWebScrapping/venv
+WebScrapping/.env_db_BACKUP
+.DS_Store
+WebScrapping/venv
