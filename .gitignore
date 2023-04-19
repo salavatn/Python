@@ -1,5 +1,6 @@
 .idea
 .DS_Store
 FOLDER
-WebScrapping/Ufanet/.env_db_BACKUP
-WebScrapping/venv
+Scraping/Ufanet/.env_db_BACKUP
+Scraping/venv
+
