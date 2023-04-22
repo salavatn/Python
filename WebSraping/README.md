@@ -49,3 +49,96 @@ print(website)
 * **find_parent**(name, attrs, **kwargs) - метод для поиска родительского элемента с заданным именем тега и атрибутами. Возвращает результат в виде объекта Tag или None, если ничего не найдено.
 * **find_parents**(name, attrs, **kwargs) - метод для поиска всех родительских элементов с заданным именем тега и атрибутами. Возвращает результат в виде списка Tag или пустого списка, если ничего не найдено.
 * **find_previous**(name, attrs, text, **kwargs
+
+
+Список для разработчика Python:
+- Фреймворк
+- Библиотеки анализа данных
+- Библиотеки для ML AI
+- ORM
+- Библиотеки для сетевых протоколов
+- Инструменты для тестирования
+- Инструмент для управления зависимостями
+- Системы контроля версий
+- IDE
+- Очереди сообщений
+- Автоматизации задач (например, Fabric и Ansible)
+
+
+
+
+MySQL
+PostgreSQL
+ClickHouse
+Redis
+PostgreSQL
+MongoDB
+FastAPI
+Django
+Flask
+Pyramid
+Tornado
+CherryPy
+Bottle
+Falcon
+web2py
+Hug
+Sanic
+aiohttp
+TurboGears
+Django Rest
+Vue.js
+React
+Angular
+Svelte
+Ember.js
+Backbone.js
+Polymer
+Docker
+Kubernetes
+Docker Compose
+Podman
+Mesos
+Nomad
+OpenShift
+NumPy
+Pandas
+Matplotlib
+SciPy
+Scikit-learn
+aiohttp
+asyncpg
+NLTK
+SpaCy
+Gensim
+TensorFlow
+PyTorch
+Keras
+OpenCV
+SQLAlchemy
+Django ORM
+PyMongo
+Requests
+urllib
+Twisted
+asyncio
+Pytest
+unittest
+nose
+doctest
+Ansible
+Terraform
+Fabric
+pip
+virtualenv
+conda
+poetry
+Git
+Mercurial
+SVN
+PyCharm
+Visual Studio Code
+Sublime Text
+RabbitMQ
+Kafka
+Redis

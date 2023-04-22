@@ -14,7 +14,7 @@ db   = os.getenv('DB_NAME')
 
 
 # Create engine to PostgreSQL database
-engine  = create_engine(f'postgresql://{user}:{pswd}@{host}:{port}/{db}')
+engine  = create_engine(f'postgresql://{user}:{pswd}@{host}:{port}/{db}', echo=False)
 Session = sessionmaker(bind=engine)
 session = Session()
 Base    = declarative_base()
