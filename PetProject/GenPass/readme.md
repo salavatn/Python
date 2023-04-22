@@ -31,50 +31,64 @@
 
 Таким образом, пользователь сможет генерировать сильные пароли для своих аккаунтов, обеспечивая большую безопасность своих данных.
 
-## Example:
-
+## Example GenPass.v1.py
 ```sh
-Укажите длину пароля(8-20):     8
-Cложность (easy, medium, hard): easy
-Укажите колличество паролей:    3
-
-Пароли:
-  HFZBEYPn
-  kvLQzrOH
-  zDnFxaSy
+python GenPass.v1.py
 ```
-
-```sh
-Укажите длину пароля(8-20):     14
-Cложность (easy, medium, hard): medium
-Укажите колличество паролей:    7
-
-Пароли:
-  Nxeeje0PrSoc3C
-  SI8ZXy82Vw639J
-  Ds5B0JKcTPbrx8
-  K9xgcQ3wWpQdCD
-  U72lr7ANJYIs7y
-  STXX8SgjFe8rqc
-  PTLg4qCwRvbnp8
 ```
-
-```sh
-Укажите длину пароля(8-20):     20
+Укажите длину пароля(8-20):     16
 Cложность (easy, medium, hard): hard
-Укажите колличество паролей:    12
+Укажите колличество паролей:    5
 
 Пароли:
-  AdG$NCQ2r+g#*E2p1GrV
-  (jSOaH5s2*NHOYmA!H*#
-  tz+AcwCj3Cl8PM+nMJQz
-  #nS%U2tDU^P+35VmkK6z
-  aVXWl0ajnxik01kn0ERV
-  ry3@oF7u1hDpECN2k#!i
-  hU&E#*7LIPyGUcqLgBzo
-  &Ujv@1b2jXL$6hh^D%tu
-  Q%iwIQ9*Y^Tug&AdkUwJ
-  PIPPR)U)_*EUmqiI0*e_
-  +waOyNT_ode)(7ikdJWq
-  Nmy0qqCNybJ8BkZ9L83A
+  1J4jcUT(v651^Z+l
+  0j@Ko3USg7*Fbt^X
+  tB6uScC5mG&5OmQk
+  NtHq$EzoQ5MYubGy
+  @k&SE@Ba^KJiLXYd
 ```
+
+## GenPass.v2.py
+
+### Usage:
+```sh
+usage: GenPass.v2.py [-h] [--length LENGTH] [--level {easy,medium,hard}] [--count COUNT]
+```
+
+### Example:
+```sh
+python GenPass.v2.py --length 16 --level hard --count 5
+```
+```
+
+Password List:
+  fz2tHj_CDU0$s1H(
+  mx1X*al%)9cRM%Cf
+  @YFf1bFP*i_#lWTs
+  Lc$aMu%S1O5epHg2
+  73U)DLy@fTAAI!q_
+
+```
+
+## GenPass.v3.py
+
+### Usage:
+```sh
+usage: GenPass.v3.py [-h] [--len LEN] [--lvl {medium,hard}] [--cnt CNT]
+```
+
+### Example:
+```sh
+python GenPass.v3.py --len 16 --lvl hard --cnt 5
+```
+```
+
+Password List:
+  0%z9HhMxmChW@DEw
+  (Up1iR+2i$Ei#L1q
+  ^^QRZoPglTgA8y)m
+  8bFp$SKg#hFPlUxp
+  #kFuUOCi&hvj39rH
+
+```
+
