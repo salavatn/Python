@@ -1,0 +1,5 @@
+.env_db
+headhunter/__pycache__/*
+database/tables/__pycache__/
+database/__pycache__/*
+__pycache__/*
