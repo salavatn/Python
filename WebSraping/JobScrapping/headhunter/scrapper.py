@@ -4,11 +4,16 @@ import time
 
 
 class HeadHunter:
-    def __init__(self, keywords, page=0):
+    def __init__(self, file)# keywords, page=0):
         # Поиск по всем параметрам
         self.url  = f'https://hh.ru/search/vacancy?text={keywords}&page={page}'
-        
         # self.url  = f'https://hh.ru/search/vacancy?search_field=name&enable_snippets=true&text={keywords}&page={page}'
+
+        # Из локального HTML файла
+        with open(file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        self.url = content
+
 
     def get_job_cards(self):
         headers    = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
