@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import re
+from faker import Faker
+
+fake = Faker()
 
 
 
@@ -13,8 +16,11 @@ class ScrapperHeadHunter:
     def get_job_cards(self):
         # url  = f'https://hh.ru/search/vacancy?search_field=name&enable_snippets=true&text={self.keywords}&page={self.page}'
         url  = f'https://hh.ru/search/vacancy?text={self.keywords}&page={self.page}'
-       
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        # url = 'https://adsrv.hh.ru/click?b=398198&c=30&meta=RNRrqVwoKzUv6anCHfh4b4gaigO_YYWYyatHTFoX6Fydw-JcnEs3C62nRabfJXJMwI_nHGNSYGbLXEZzOuCu3x8OHc-igd7BGNKqV8sJACajiXOFpTJfczPnuAzNoyc7_TF6D0voeWkgTr2y7UD4gH4Wb4sGhRkkUP5q31gRhXyicgocbk8WK45glXMBju8ASKkZAJUtRCiQtifuS13jmQ%3D%3D&place=35&clickType=link_to_vacancy'
+        # print(f"URL:\t{url}")
+
+        # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        headers = {'User-Agent': fake.user_agent()}
         response = requests.get(url, headers=headers).content
         full_html = BeautifulSoup(response, 'html.parser')
         jobs_block = full_html.find('main', {'class': 'vacancy-serp-content'})
@@ -33,10 +39,15 @@ class ScrapperHeadHunter:
     def get_job_id(self, job_card):
         try:
             url     = job_card.find('a', {'data-qa': 'serp-item__title'})['href']
+            # print(f"URL:\t{url}")
             job_id  = url.split('?')[0].split('/')[-1]
+            if job_id.isdigit(): 
+                job_id = int(job_id)
+            # print(f"Job ID:\t{job_id}")
         except:
             return None
-        return int(job_id)
+        
+        return job_id
 
     def get_job_salary(self, job_card):
         try:
@@ -126,42 +137,3 @@ class ScrapperHeadHunter:
             return None
         return company_name
 
-
-# query = 'Python Developer'
-# query = query.replace(' ', '+')
-
-# count = 1
-# # page = 1
-# for page in range(0, 5):
-#     print (f"\n================== Page {page} ================== \n")
-#     website = HeadHunterScrapper(hh_query=query, hh_page=page)
-#     # page += 1
-#     cards = website.get_job_cards()
-
-    
-#     for card in cards:
-#         title   = website.get_job_title(card)
-#         job_id  = website.get_job_id(card)
-#         city    = website.get_job_city(card)
-#         link    = website.get_job_link(card)
-#         source  = website.get_job_source(card)
-#         # desc    = website.get_job_desc(link)
-#         salarymin, salarymax, job_currency = website.get_job_salary(card)
-#         company_id   = website.get_company_id(card)
-#         company = website.get_company_name(card)
-
-
-#         print(f"\n\n\n=============================================== Job #{count}")
-#         print(f"Job Title: {title}")
-#         print(f"Job City:  {city}")
-#         print(f"Company:   {company}")
-#         print(f"Salary:    {salarymin} - {salarymax} {job_currency}")
-#         print(f"Link:      {link}")
-#         print(f"Source:    {source}")
-#         print(f"Job ID:    {job_id}")
-#         print(f"Company ID: {company_id}")
-#         # print(f"Job Desc:  {desc}")
-
-#         time.sleep(1)
-#         count += 1
-        

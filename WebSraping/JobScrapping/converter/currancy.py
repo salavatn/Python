@@ -3,9 +3,9 @@ import json
 
 
 class Converter:
-    def __init__(self, from_currency = 'USD', to_currency = 'RUB'):
+    def __init__(self, from_currency = 'RUB'):
         self.valute_from  = from_currency
-        self.valute_to    = to_currency
+        self.valute_to    = 'USD'
 
     def get_convert(self):
         url      = "https://api.apilayer.com/currency_data/live"
@@ -19,8 +19,8 @@ class Converter:
             exchange_rate   = response_data["quotes"][from_to]
             amount_to       = 10000000 * exchange_rate
             result = amount_to / 10000000
-            result = {f"{self.valute_from}": 1,
-                      f"{self.valute_to}": result}
+            # result = {f"{self.valute_from}": 1,
+            #           f"{self.valute_to}": result}
 
             return result
         else:
