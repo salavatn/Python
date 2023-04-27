@@ -1,1 +1,1 @@
-from .scrapper import HeadHunter
+from .scrapper_hh import ScrapperHeadHunter
