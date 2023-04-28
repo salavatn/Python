@@ -6,7 +6,7 @@ from .tables.salary import TableSalaryUSD
 from .tables.salary import TableSalaryAll
 from .tables.website import TableWebsite
 from .tables.jobs import TableJob
-from converter import Converter
+from converter import ConverterV2
 import datetime
 
 
@@ -76,15 +76,26 @@ class HandlerDB:
             return salary_min, salary_max
 
         date    = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # date    = date.strftime('%Y-%m-%d %H:%M:%S')
         table   = session.query(self.SALARY_USD)
         record  = table.filter(self.SALARY_USD.currency_from == currency).first()
 
-        if not record:
-            
-            converter = Converter(from_currency=currency)
-            to_usd = converter.get_convert()
 
+        if record.currency_USD is None:
+            converter   = ConverterV2(from_currency=currency)
+            to_usd      = converter.get_convert()
+            # print(f'Current USD currency {record.currency_USD}')
+            # print(f'For 1 {currency} in USD = {to_usd}')
+
+            record.currency_USD = to_usd
+            session.commit()
+            USD = record.currency_USD
+            # print(f"USD: {USD}")
+
+        elif not record:
+            # print(f'Currency {currency} not in database. Adding...')
+            converter   = ConverterV2(from_currency=currency)
+            to_usd      = converter.get_convert()
+            # print(f'For 1 {currency} in USD = {to_usd}')
             new = self.SALARY_USD(
                 currency_from     = currency,
                 currency_USD      = to_usd,
@@ -93,22 +104,20 @@ class HandlerDB:
             session.add(new)
             session.commit()
             USD = new.currency_USD
-            # print(f'New currency {currency} added to database. USD = {USD}')
+            print(f'New currency {currency} added to database. USD = {USD}')
         else:
-            # Добавить проверку даты:
-            # Если дата в базе старше 1 дня, то обновить курс
-            # Если дата в базе меньше 1 дня, то взять курс из базы
-            if record.convertation_date != date:
-                converter = Converter(from_currency=currency)
-                to_usd = converter.get_convert()
-                record.currency_USD = to_usd
-                record.convertation_date = date
-                session.commit()
-                USD = record.currency_USD
-                # print(f'Currency {currency} updated in database. USD = {USD}')
-            else:
-                USD = record.currency_USD
-            # print(f'Currency {currency} already in database. USD = {USD}')
+            USD = record.currency_USD
+            print(f'Currency {currency} already in database. USD = {USD}')
+
+        if record.convertation_date != date:
+            converter   = ConverterV2(from_currency=currency)
+            to_usd      = converter.get_convert()
+            record.currency_USD      = to_usd
+            record.convertation_date = date
+            session.commit()
+            USD = record.currency_USD
+            # print(f'Currency {currency} updated in database. USD = {USD}')
+
         
         salary_min_usd = None
         salary_max_usd = None

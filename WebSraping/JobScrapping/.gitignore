@@ -1,5 +1,28 @@
 .env_db
+.env_api
+
+# Folder __pycache__ and its content
 headhunter/__pycache__/*
-database/tables/__pycache__/
+converter/__pycache__/*
 database/__pycache__/*
+database/tables/__pycache__/*
 __pycache__/*
+
+# Folder .pytest_cache and its content
+.pytest_cache/*
+
+# Folder .vscode and its content
+.vscode/*
+
+# Folder .idea and its content
+.idea/*
+
+# Folder .git and its content
+.git/*
+
+# Folder .gitignore and its content
+.gitignore
+
+
+# Ignore converter/__pycache__/currancy.cpython-311.pyc
+!converter/__pycache__/currancy.cpython-311.pyc

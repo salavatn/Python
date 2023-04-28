@@ -147,4 +147,39 @@ while True:
 - Категория навыков (skills)
 - Навыки (skills)
 + Компания
-'''
+# '''
+
+
+# Проблема:
+# =============================================== Job #124
+# Job ID:         79790662
+# Job Title:      Senior Backend developer (Python)
+# Job City ID:    Кипр
+# Salary:         None - None None
+# Company Name:   INSITECH Development
+# Company ID:     5289974
+# Company Link:   https://hh.ru/employer/5289974
+# Job Link:       https://hh.ru/vacancy/79790662
+# Job Source:     https://hh.ru/
+# Job Record ID:  135
+
+
+
+# =============================================== Job #125
+# Job ID:         78685384
+# Job Title:      Middle Backend Developer (Python)
+# Job City ID:    Томск
+# Salary:         120000 - 220000 RUB
+# Company Name:   Betting Software
+# Company ID:     3740808
+# Company Link:   https://hh.ru/employer/3740808
+# Job Link:       https://hh.ru/vacancy/78685384
+# Job Source:     https://hh.ru/
+# Traceback (most recent call last):
+#   File "/Users/salavat/GitHub/Python/WebSraping/JobScrapping/main.py", line 105, in <module>
+#     min_usd, max_usd = db.get_salary_usd(
+#                        ^^^^^^^^^^^^^^^^^^
+#   File "/Users/salavat/GitHub/Python/WebSraping/JobScrapping/database/db_handler.py", line 118, in get_salary_usd
+#     salary_min_usd = round((USD * salary_min), 2)
+#                             ~~~~^~~~~~~~~~~~
+# TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
