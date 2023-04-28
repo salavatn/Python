@@ -1,33 +1,43 @@
 
 ```
 JOBSCRAPPING/
-├── database
+├── converter/
+│   ├── __init__.py
+│   └── currancy.py
+│
+├── database/
 │   ├── __init__.py
 │   ├── db_connection.py
-│   ├── .env_db
+│   ├── db_handler.py
+│   │
 │   └── tables/
 │       ├── __init__.py
-│       ├── job.py
-│       └── skill.py
-└── headhunter
-    ├── __init__.py
-    └── scrapper.py
+│       ├── cities.py
+│       ├── description.py
+│       ├── employers.py
+│       ├── jobs.py
+│       ├── salary.py
+│       ├── skill.py
+│       └── website.py
+│
+├── headhunter/
+│   ├── __init__.py
+│   └── scrapper_hh.py
+│   
+├── tests/
+│   ├── __init__.py
+│   ├── test_converter.py
+│   ├── test_db_connection.py
+│   ├── test_db_handler.py
+│   ├── test_skraper_hh.py
+│   └── test_tables.py
+│   
+├── __init__.py
+├── .env_api
+├── .env_db
+├── .gitignore
+├── main.py
+├── README.md
+└── requirements.txt
+
 ```
-
-
-Файл headhunter/__init__.py:
-from database.db_connection import Base, engine, session
-from database.tables.skill  import TableSkill
-from database.tables.job    import TableJob
-
-Файл headhunter/scrapper.py:
-from database.db_connection import Base, engine, session
-from database.tables.job    import TableJob
-
-table = TableJob
-
-
-
-При запуске scrapper.py:
-    from database.tables.job    import TableJob
-ModuleNotFoundError: No module named 'database'

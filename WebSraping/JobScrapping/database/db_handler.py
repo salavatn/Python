@@ -1,12 +1,12 @@
-from .db_connection import session
-from .tables.cities import TableCity
-from .tables.employers import TableCompany
+from .db_connection      import session
+from .tables.cities      import TableCity
+from .tables.employers   import TableCompany
 from .tables.description import TableDescription
-from .tables.salary import TableSalaryUSD
-from .tables.salary import TableSalaryAll
-from .tables.website import TableWebsite
-from .tables.jobs import TableJob
-from converter import ConverterV2
+from .tables.salary      import TableSalaryUSD
+from .tables.salary      import TableSalaryAll
+from .tables.website     import TableWebsite
+from .tables.jobs        import TableJob
+from converter           import Converter
 import datetime
 
 
@@ -21,13 +21,13 @@ class HandlerDB:
                 table_website      = TableWebsite,
                 table_job          = TableJob
                  ):
-        self.CITY = table_city
-        self.COMPANY = table_company
-        self.DESCRIPTION = table_description
-        self.SALARY_USD = table_salary_usd
-        self.SALARY_ALL = table_salary_all
-        self.WEBSITE = table_website
-        self.JOB = table_job
+        self.CITY           = table_city
+        self.COMPANY        = table_company
+        self.DESCRIPTION    = table_description
+        self.SALARY_USD     = table_salary_usd
+        self.SALARY_ALL     = table_salary_all
+        self.WEBSITE        = table_website
+        self.JOB            = table_job
 
     def get_city_id(self, city_name):
         city_name = city_name.title().strip()
@@ -81,7 +81,7 @@ class HandlerDB:
 
 
         if record.currency_USD is None:
-            converter   = ConverterV2(from_currency=currency)
+            converter   = Converter(from_currency=currency)
             to_usd      = converter.get_convert()
             # print(f'Current USD currency {record.currency_USD}')
             # print(f'For 1 {currency} in USD = {to_usd}')
@@ -93,7 +93,7 @@ class HandlerDB:
 
         elif not record:
             # print(f'Currency {currency} not in database. Adding...')
-            converter   = ConverterV2(from_currency=currency)
+            converter   = Converter(from_currency=currency)
             to_usd      = converter.get_convert()
             # print(f'For 1 {currency} in USD = {to_usd}')
             new = self.SALARY_USD(
@@ -110,7 +110,7 @@ class HandlerDB:
             print(f'Currency {currency} already in database. USD = {USD}')
 
         if record.convertation_date != date:
-            converter   = ConverterV2(from_currency=currency)
+            converter   = Converter(from_currency=currency)
             to_usd      = converter.get_convert()
             record.currency_USD      = to_usd
             record.convertation_date = date
@@ -154,12 +154,10 @@ class HandlerDB:
             return record.id
         
     def add_job(self, 
-            set_job_id, set_job_title,
-            set_salary_min, set_salary_max,
-            set_salary_original_id,
-            set_job_link, set_city_id,
-            set_company_id, set_description_id,
-            set_website_id):
+            set_job_id,             set_job_title,      set_salary_min, set_salary_max,
+            set_salary_original_id, set_job_link,       set_city_id,
+            set_company_id,         set_description_id, set_website_id
+            ):
         table = session.query(self.JOB)
         record = table.filter(self.JOB.job_id == set_job_id).first()
         if not record:

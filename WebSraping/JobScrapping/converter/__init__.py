@@ -1,1 +1,1 @@
-from .currancy import Converter, ConverterV2
+from .currancy import Converter
