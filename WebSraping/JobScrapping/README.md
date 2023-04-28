@@ -1,3 +1,5 @@
+
+```
 JOBSCRAPPING/
 ├── database
 │   ├── __init__.py
@@ -10,6 +12,7 @@ JOBSCRAPPING/
 └── headhunter
     ├── __init__.py
     └── scrapper.py
+```
 
 
 Файл headhunter/__init__.py:
