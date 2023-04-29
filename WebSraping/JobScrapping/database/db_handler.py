@@ -1,9 +1,8 @@
 from .db_connection      import session
 from .tables.cities      import TableCity
-from .tables.employers   import TableCompany
+from .tables.companies   import TableCompany 
 from .tables.description import TableDescription
 from .tables.salary      import TableSalaryUSD
-from .tables.salary      import TableSalaryAll
 from .tables.website     import TableWebsite
 from .tables.jobs        import TableJob
 from converter           import Converter
@@ -17,7 +16,6 @@ class HandlerDB:
                 table_company      = TableCompany,
                 table_description  = TableDescription,
                 table_salary_usd   = TableSalaryUSD,
-                table_salary_all   = TableSalaryAll,
                 table_website      = TableWebsite,
                 table_job          = TableJob
                  ):
@@ -25,163 +23,141 @@ class HandlerDB:
         self.COMPANY        = table_company
         self.DESCRIPTION    = table_description
         self.SALARY_USD     = table_salary_usd
-        self.SALARY_ALL     = table_salary_all
         self.WEBSITE        = table_website
         self.JOB            = table_job
 
-    def get_city_id(self, city_name):
-        city_name = city_name.title().strip()
+    def get_city_id(self, set_city):
+        set_city  = set_city.title().strip()
         table     = session.query(self.CITY)
-        record    = table.filter(self.CITY.city == city_name).first()
+        record    = table.filter(self.CITY.name == set_city).first()
 
         if not record:
-            new = self.CITY(
-                city=city_name)
-            session.add(new)
+            row = self.CITY(name=set_city)
+            session.add(row)
             session.commit()
-            return new.id
-        else:
-            return record.id
+            return row.id
+        
+        return record.id
     
-    def get_company_id(self, company_id, company_name, company_link):
+    def get_company_id(self, set_id, set_name, set_link):
         table = session.query(self.COMPANY)
-        record = table.filter(self.COMPANY.id == company_id).first()
+        record = table.filter(self.COMPANY.company_id == set_id).first()
+
         if not record:
-            new = self.COMPANY(
-                id      = company_id, 
-                company = company_name, 
-                link    = company_link)
-            session.add(new)
+            row = self.COMPANY(company_id=set_id, name=set_name, link=set_link)
+            session.add(row)
             session.commit()
-            return new.id
-        else:
-            return record.id
+            return row.id
         
-    def get_description_id(self, job_description):
+        return record.id
+        
+    def get_job_desc_id(self, set_description):
         table = session.query(self.DESCRIPTION)
-        record = table.filter(self.DESCRIPTION.job_desc == job_description).first()
+        record = table.filter(self.DESCRIPTION.text == set_description).first()
+
         if not record:
-            new = self.DESCRIPTION(job_desc=job_description)
-            session.add(new)
+            row = self.DESCRIPTION(text=set_description)
+            session.add(row)
             session.commit()
-            return new.id
-        else:
-            return record.id
-
-    def get_salary_usd(self, currency, salary_min, salary_max):
-        if currency is None:
-            return None, None
+            return row.id
         
-        if currency == 'USD':
-            return salary_min, salary_max
+        return record.id
 
+    def get_salary_usd(self, set_from, set_min, set_max):
+        if set_from is None:
+            return None, None
+    
         date    = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         table   = session.query(self.SALARY_USD)
-        record  = table.filter(self.SALARY_USD.currency_from == currency).first()
+        record  = table.filter(self.SALARY_USD.currency == set_from).first()
 
-
-        if record.currency_USD is None:
-            converter   = Converter(from_currency=currency)
+        if not record:
+            if set_from == 'USD':
+                row = self.SALARY_USD(currency='USD', usd=1, date=date)
+                session.add(row)
+                session.commit()
+                USD = row.usd
+                print(f'{set_from} added to database. USD = {USD}')
+                return set_min, set_max
+            
+            converter   = Converter(from_currency=set_from)
             to_usd      = converter.get_convert()
-            # print(f'Current USD currency {record.currency_USD}')
-            # print(f'For 1 {currency} in USD = {to_usd}')
-
-            record.currency_USD = to_usd
+            row         = self.SALARY_USD(currency=set_from, usd=to_usd, date=date)
+            session.add(row)
             session.commit()
-            USD = record.currency_USD
-            # print(f"USD: {USD}")
-
-        elif not record:
-            # print(f'Currency {currency} not in database. Adding...')
-            converter   = Converter(from_currency=currency)
-            to_usd      = converter.get_convert()
-            # print(f'For 1 {currency} in USD = {to_usd}')
-            new = self.SALARY_USD(
-                currency_from     = currency,
-                currency_USD      = to_usd,
-                convertation_date = date
-                )
-            session.add(new)
-            session.commit()
-            USD = new.currency_USD
-            print(f'New currency {currency} added to database. USD = {USD}')
+            USD = row.usd
+            print(f'New currency {set_from} added to database. USD = {USD}')
         else:
-            USD = record.currency_USD
-            print(f'Currency {currency} already in database. USD = {USD}')
+            USD = record.usd
+            print(f'Currency {set_from} already in database. USD = {USD}')
 
-        if record.convertation_date != date:
-            converter   = Converter(from_currency=currency)
-            to_usd      = converter.get_convert()
-            record.currency_USD      = to_usd
-            record.convertation_date = date
-            session.commit()
-            USD = record.currency_USD
-            # print(f'Currency {currency} updated in database. USD = {USD}')
+        if set_min is not None:
+            set_min = round((USD * set_min), 2)
+        else:
+            set_min = None
 
-        
-        salary_min_usd = None
-        salary_max_usd = None
+        if set_max is not None:
+            set_max = round((USD * set_max), 2)
+        else:
+            set_max = None
 
-        # print(f"Salary min: {salary_min}, Salary max: {salary_max}")
-        if salary_min is not None:
-            salary_min_usd = round((USD * salary_min), 2)
-        if salary_max is not None:
-            salary_max_usd = round((USD * salary_max), 2)
+        return set_min, set_max
 
-        return salary_min_usd, salary_max_usd
-
-    def get_original_salary_id(self, currency, salary_min, salary_max):
-        if currency is None:
+    def get_currency_id(self, set_currency):
+        if set_currency is None:
             return None
-        new = self.SALARY_ALL(
-            min_original = salary_min,
-            max_original = salary_max,
-            currency     = currency
-            )
-        session.add(new)
-        session.commit()
-        return new.id
+        
+        table   = session.query(self.SALARY_USD)
+        record  = table.filter(self.SALARY_USD.currency == set_currency).first()
 
-    def get_website_id(self, website_url):
-        table = session.query(self.WEBSITE)
-        record = table.filter(self.WEBSITE.website == website_url).first()
         if not record:
-            new = self.WEBSITE(website=website_url)
-            session.add(new)
+            row = self.SALARY_USD(currency=set_currency)
+            session.add(row)
             session.commit()
-            return new.id
+            return row.id
+        
+        return record.id
+
+    def get_website_id(self, set_url):
+        table   = session.query(self.WEBSITE)
+        record  = table.filter(self.WEBSITE.url == set_url).first()
+
+        if not record:
+            row = self.WEBSITE(url=set_url)
+            session.add(row)
+            session.commit()
+            return row.id
         else:
             return record.id
         
-    def add_job(self, 
-            set_job_id,             set_job_title,      set_salary_min, set_salary_max,
-            set_salary_original_id, set_job_link,       set_city_id,
-            set_company_id,         set_description_id, set_website_id
-            ):
+    def add_job(self, set_id, set_title, set_link, set_min, set_max, set_usd_min, set_usd_max,
+                      set_currency_id, set_city_id, set_company_id, set_desc_id, set_website_id):
         table = session.query(self.JOB)
-        record = table.filter(self.JOB.job_id == set_job_id).first()
+        record = table.filter(self.JOB.job_id == set_id).first()
         if not record:
-            new = self.JOB(
-                job_id              = set_job_id,
-                job_title           = set_job_title,
-                salary_min          = set_salary_min,
-                salary_max          = set_salary_max,
-                id_original_salary  = set_salary_original_id,
-                job_link            = set_job_link,
-                id_city_name        = set_city_id,
-                id_company_name     = set_company_id,
-                id_description      = set_description_id,
-                id_website          = set_website_id
+            row = self.JOB(
+                job_id          = set_id,
+                title           = set_title,
+                usd_min         = set_usd_min,
+                usd_max         = set_usd_max,
+                current_min     = set_min,
+                current_max     = set_max,
+                currency        = set_currency_id,
+                link            = set_link,
+                city_id         = set_city_id,
+                company_id      = set_company_id,
+                job_desc_id     = set_desc_id,
+                job_website_id  = set_website_id
                 )
-            session.add(new)
+            session.add(row)
             session.commit()
-            return new.id
+            return row.id
         else:
             return record.id
 
-    def check_job(self, job_id):
-        table = session.query(self.JOB)
-        record = table.filter(self.JOB.job_id == job_id).first()
+    def check_job(self, check_id):
+        table   = session.query(self.JOB)
+        record  = table.filter(self.JOB.job_id == check_id).first()
         if not record:
             return False
         else:

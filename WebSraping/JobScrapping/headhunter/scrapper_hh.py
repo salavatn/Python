@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import time
+# import time
 import re
 from faker import Faker
 
@@ -9,17 +9,21 @@ fake = Faker()
 
 
 class ScrapperHeadHunter:
-    def __init__(self, hh_query, hh_page=0):
-        self.keywords = hh_query
-        self.page = hh_page
+    def __init__(self, hh_query, hh_page=0, hh_type='all'):
+        self.type     = hh_type
+        self.keywords   = hh_query
+        self.page       = hh_page
     
     def get_job_cards(self):
-        # url  = f'https://hh.ru/search/vacancy?search_field=name&enable_snippets=true&text={self.keywords}&page={self.page}'
-        url  = f'https://hh.ru/search/vacancy?text={self.keywords}&page={self.page}'
-        # url = 'https://adsrv.hh.ru/click?b=398198&c=30&meta=RNRrqVwoKzUv6anCHfh4b4gaigO_YYWYyatHTFoX6Fydw-JcnEs3C62nRabfJXJMwI_nHGNSYGbLXEZzOuCu3x8OHc-igd7BGNKqV8sJACajiXOFpTJfczPnuAzNoyc7_TF6D0voeWkgTr2y7UD4gH4Wb4sGhRkkUP5q31gRhXyicgocbk8WK45glXMBju8ASKkZAJUtRCiQtifuS13jmQ%3D%3D&place=35&clickType=link_to_vacancy'
-        # print(f"URL:\t{url}")
+        if self.type == 'title':
+            url = f'https://hh.ru/search/vacancy?search_field=name&enable_snippets=true&text={self.keywords}&page={self.page}'
+        elif self.type == 'subject':
+            url = f'https://hh.ru/search/vacancy?search_field=description&enable_snippets=true&text={self.keywords}&page={self.page}'
+        elif self.type == 'all':
+            url  = f'https://hh.ru/search/vacancy?text={self.keywords}&page={self.page}'
+        
+        print(f"URL:\t{url}")
 
-        # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
         headers = {'User-Agent': fake.user_agent()}
         response = requests.get(url, headers=headers).content
         full_html = BeautifulSoup(response, 'html.parser')

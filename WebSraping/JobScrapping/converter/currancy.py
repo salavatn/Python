@@ -1,37 +1,33 @@
 from dotenv import load_dotenv
 import requests
-import json
 import os
 
-# Load environment variables
 load_dotenv(dotenv_path='.env_api')
-YOUR_API_ID = os.getenv('YOUR_API_ID')
+app_id = os.getenv('YOUR_API_ID')
 
 
 class Converter:
     def __init__(self, from_currency = 'RUB'):
-        self.FROM = from_currency
+        self.FROM  = from_currency
         self.TO    = 'USD'
+
     def get_convert(self):
-        url      = f"https://openexchangerates.org/api/latest.json?app_id={YOUR_API_ID}"
-        headers  = {"accept": "application/json"}
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            current = response.json()["rates"][self.TO]
-            USD     = response.json()["rates"][self.FROM]
-            result  = current / USD
-            return result
-        else:
+        try:
+            url      = f"https://openexchangerates.org/api/latest.json?app_id={app_id}"
+            headers  = {"accept": "application/json"}
+            response = requests.get(url, headers=headers)
+
+            if response.status_code == 200:
+                current = response.json()["rates"][self.TO]
+                USD     = response.json()["rates"][self.FROM]
+                result  = current / USD
+                print(f"Request to API: {url}")         # DEBUG
+                return result
+        except:
             return None
         
     # API Service:
     # https://openexchangerates.org/account/usage
-
-
-
-
-
-
 
 
 
