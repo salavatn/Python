@@ -121,26 +121,25 @@ Available subcommands:
 
 ## Создание нового проекта
 
-* Создаем новый Django-проект с именем **PrjContacts**. Django-проект - это набор настроек и приложений, необходимых для создания веб-приложения. Команда startproject создает структуру каталогов проекта и набор файлов конфигурации Django, таких как `settings.py`, `urls.py` и `wsgi.py`.
+* Создаем новый Django-проект с именем **PrjContacts**. Django-проект - это набор настроек и приложений, необходимых для создания веб-приложения. Команда `startproject` создает структуру каталогов проекта и набор файлов конфигурации Django, таких как `settings.py`, `urls.py` и `wsgi.py`.
 
 ```sh
 django-admin startproject PrjContacts
 ```
 
 * В результате выполнения команды структура каталогов должна выглядеть примерно так:
-* Файл `manage.py` - это файл управления **Django**, который используется для запуска различных команд, связанных с проектом. Например, с помощью `manage.py runserver` можно запустить локальный веб-сервер для разработки и отладки приложения.
 
 ```
 DJANGO/
-├── PrjContacts/
-│   ├── PrjContacts/
-│   │   ├── __init__.py
-│   │   ├── asgi.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
+├── PrjContacts/            # New
+│   ├── PrjContacts/        # New
+│   │   ├── __init__.py     # New
+│   │   ├── asgi.py         # New
+│   │   ├── settings.py     # New
+│   │   ├── urls.py         # New
+│   │   └── wsgi.py         # New
 │   │   
-│   └── manage.py
+│   └── manage.py           # New
 │
 ├── venv/
 │   ├── bin/
@@ -151,6 +150,8 @@ DJANGO/
 ├── README.md
 └── requirements.txt
 ```
+* Файл `manage.py` - это файл управления **Django**, который используется для запуска различных команд, связанных с проектом. Например, с помощью `manage.py runserver` можно запустить локальный веб-сервер для разработки и отладки приложения.
+
 
 ## Создание нового приложения
 * Создаем новое приложение Django с именем "**AppContacts**" внутри проекта "**PrjContacts**". Django-приложение - это компонент проекта, который выполняет определенную функцию, такую как управление контактами, обработка форм или отображение списка новостей. Команда `startapp` создает структуру каталогов для приложения и набор файлов, таких как `models.py`, `views.py` и `urls.py`:
@@ -161,19 +162,18 @@ python manage.py startapp AppContacts
 ```
 
 * В результате выполнения команды структура каталогов должна выглядеть примерно так:
-* После создания приложения `AppContacts`, его нужно будет зарегистрировать его в файле `settings.py` проекта, добавив имя приложения в список `INSTALLED_APPS`. Кроме того, вам необходимо будет настроить маршрутизацию **URL** для приложения, определив соответствующие URL-адреса в файле `urls.py` приложения и добавив их в основной файл `urls.py` проекта.
 ```
 DJANGO/
 ├── PrjContacts/
-│   ├── AppContacts/
-│   │   ├── migrations/
-│   │   │   └── __init__.py
-│   │   ├── __init__.py
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── models.py
-│   │   ├── tests.py
-│   │   └── views.py
+│   ├── AppContacts/                # New
+│   │   ├── migrations/             # New
+│   │   │   └── __init__.py         # New
+│   │   ├── __init__.py             # New
+│   │   ├── admin.py                # New
+│   │   ├── apps.py                 # New
+│   │   ├── models.py               # New
+│   │   ├── tests.py                # New
+│   │   └── views.py                # New
 │   │
 │   ├── PrjContacts/
 │   │   ├── __init__.py
@@ -193,6 +193,29 @@ DJANGO/
 ├── README.md
 └── requirements.txt
 ```
+* После создания приложения `AppContacts`, его нужно будет зарегистрировать его в файле `settings.py` проекта, добавив имя приложения в список `INSTALLED_APPS`. Кроме того, вам необходимо будет настроить маршрутизацию **URL** для приложения, определив соответствующие URL-адреса в файле `urls.py` приложения и добавив их в основной файл `urls.py` проекта.
+
+
+## Добавление нового приложения
+
+* Откройте файл `PrjContacts/PrjContacts/settings.py`
+* Найдите список установленных приложений **INSTALLED_APPS**.
+* Добавьте `'AppContacts'` в список установленных приложений:
+
+```python
+INSTALLED_APPS = [
+    'AppContacts',              # Новое приложение
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
+* Сохраните изменения в файле `settings.py`. 
+* Теперь приложение **AppContacts** будет установлено в проект Django.
+
 
 ## Добавить подключение к БД PostgreSQL
 * Откройте файл `PrjContacts/PrjContacts/settings.py` в текстовом редакторе.
@@ -211,38 +234,15 @@ DATABASES = {
     }
 }
 ```
-
 * Сохраните изменения в файле `settings.py`. 
 * Теперь проект Django будет использовать базу данных `PostgreSQL` с указанными параметрами.
 
 
-
-
-## Добавить новое приложение в список
-
-открыть файл `PrjContacts/PrjContacts/settings.py`
-
-Добавить `AppContacts`:
-
-```python
-
-INSTALLED_APPS = [
-    'AppContacts',              # Новое приложение
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
-
-```
-
-
 ## Define Contacts model
 
-Open file `PrjContacts/AppContacts/models.py`
-
+* Откройте файл `PrjContacts/AppContacts/models.py`
+* Добавьте модели для базы данных, например:
+  
 ```python
 from django.db import models
 
@@ -257,16 +257,18 @@ class Contacts(models.Model):
 ```
 
 ## Создать миграции
+* Создаем новые файлы миграции на основе изменений, внесенных в модели приложения **AppContacts**. Она анализирует текущее состояние моделей и сравнивает их с последней примененной миграцией, а затем генерирует необходимые SQL-команды для создания или изменения таблиц базы данных на основе изменений:
 
 ```sh
 python manage.py makemigrations AppContacts
 ```
+
+* Вывод показывает, что создан новый файл миграции `0001_initial.py`, который будет содержать необходимые SQL-команды для начальной настройки модели **Contacts** в базе данных.
 ```
 Migrations for 'AppContacts':
   AppContacts/migrations/0001_initial.py
     - Create model Contacts
 ```
-
 
 ```
 DJANGO/
@@ -302,6 +304,9 @@ DJANGO/
 └── requirements.txt
 ```
 
+---
+
+* Выполняем все необходимые миграции, создавая соответствующие таблицы в базе данных.
 ```sh
 python manage.py migrate
 ```
@@ -330,7 +335,7 @@ Running migrations:
   Applying sessions.0001_initial... OK
 ```
 
-PostgreSQL, были созданы таблицы:
+* Была создана таблица `AppContacts_contacts` для модели **Contacts** в приложении **AppContacts**, а также другие таблицы, которые необходимы для работы Django и его стандартных приложений, таких как auth, admin и т.д:
 ```
 AppContacts_contacts
 auth_group
