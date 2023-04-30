@@ -351,19 +351,21 @@ Running migrations:
 * Была создана таблица `AppContacts_contacts` для модели **Contacts** в приложении **AppContacts**, а также другие таблицы, которые необходимы для работы Django и его стандартных приложений, таких как auth, admin и т.д:
 ```
 AppContacts_contacts
+
 auth_group
 auth_group_permissions
 auth_permission
 auth_user
 auth_user_groups
 auth_user_user_permissions
+
 django_admin_log
 django_content_type
 django_migrations
 django_sessions
 ```
 
-* **ContactsApp_contacts** - это таблица, которую вы создали в вашем приложении ContactsApp для хранения контактов
+* **ContactsApp_contacts** - это таблица, которую мы создали в нашем приложении **ContactsApp** для хранения контактов
 * **auth_\*\*\*** - это таблицы, которые связаны с аутентификацией и авторизацией в Django.
 * **django_admin_log** - это таблица, которая используется для журналирования действий администраторов в Django административной панели.
 * **django_content_type** - это таблица, которая хранит информацию о моделях приложений Django.
