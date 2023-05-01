@@ -244,6 +244,76 @@ INSTALLED_APPS = [
 
 ## 2. Подключение к Базе Данных
 
+```sh
+cd ..
+ls -la
+```
+```
+(venv) salavat@Salavat Django % ls -la
+total 48
+drwxr-xr-x@  8 salavat  staff    256 May  1 10:40 .
+drwxr-xr-x  41 salavat  staff   1312 Apr 30 16:06 ..
+-rw-r--r--@  1 salavat  staff      0 May  1 10:40 .env
+drwxr-xr-x@  5 salavat  staff    160 May  1 09:56 PrjContacts
+-rw-r--r--@  1 salavat  staff  19961 May  1 10:39 README.md
+-rw-r--r--@  1 salavat  staff     22 Apr 30 17:04 requirements.txt
+drwxr-xr-x@  6 salavat  staff    192 Apr 30 17:56 venv
+```
+
+```sh
+echo python-dotenv >> requirements.txt
+cat requirements.txt
+```
+```
+django
+psycopg2-binary
+python-dotenv
+```
+
+```sh
+pip install -r requirements.txt
+pip list
+```
+```
+Package         Version
+--------------- -------
+asgiref         3.6.0
+Django          4.2
+pip             23.1.2
+psycopg2-binary 2.9.6
+python-dotenv   1.0.0
+setuptools      65.5.0
+sqlparse        0.4.4
+```
+
+```sh
+touch .env
+```
+
+Отредактировать файл .env
+```
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=Pa$$word
+```
+
+Открыть файл `PrjContacts/PrjContacts/settings.py` и добавить:
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path='.env')
+host  = os.getenv('POSTGRES_HOST')
+port  = os.getenv('POSTGRES_PORT')
+db    = os.getenv('POSTGRES_DB')
+user  = os.getenv('POSTGRES_USER')
+psswd = os.getenv('POSTGRES_PASSWORD')
+```
+
+
 ### 2.1. Добавить подключение к БД PostgreSQL
 * Откройте файл `PrjContacts/PrjContacts/settings.py` в текстовом редакторе.
 * Найдите блок настроек базы данных `DATABASES`.
@@ -252,12 +322,12 @@ INSTALLED_APPS = [
 ```python
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':     'имя_базы_данных',
-        'USER':     'пользователь',
-        'PASSWORD': 'пароль',
-        'HOST':     'адрес_хоста',
-        'PORT':     'порт',
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     pg_db,
+        'USER':     pg_user,
+        'PASSWORD': pg_psswd,
+        'HOST':     pg_host,
+        'PORT':     pg_port,
     }
 }
 ```
@@ -286,6 +356,7 @@ class Contacts(models.Model):
 ### 2.3. Создать миграции
 * Создаем новые файлы миграции на основе изменений, внесенных в модели приложения **AppContacts**. Она анализирует текущее состояние моделей и сравнивает их с последней примененной миграцией, а затем генерирует необходимые SQL-команды для создания или изменения таблиц базы данных на основе изменений:
 
+**Расположение:** `Django/PrjContacts`
 ```sh
 python manage.py makemigrations AppContacts
 ```

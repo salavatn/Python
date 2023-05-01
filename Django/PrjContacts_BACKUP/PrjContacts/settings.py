@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+import os
+
+
 """
 Django settings for PrjContacts project.
 
@@ -11,6 +15,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+
+
+load_dotenv(dotenv_path='.env')
+pg_host  = os.getenv('POSTGRES_HOST')
+pg_port  = os.getenv('POSTGRES_PORT')
+pg_db    = os.getenv('POSTGRES_DB')
+pg_user  = os.getenv('POSTGRES_USER')
+pg_psswd = os.getenv('POSTGRES_PASSWORD')
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,11 +92,11 @@ WSGI_APPLICATION = 'PrjContacts.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.postgresql',
-        'NAME':     'postgres',
-        'USER':     'postgres',
-        'PASSWORD': 'fusxix-nusmiN-kugza5',
-        'HOST':     'db.zorvmuaqwcpbfqjpifmo.supabase.co',
-        'PORT':     '5432',
+        'NAME':     pg_db,
+        'USER':     pg_user,
+        'PASSWORD': pg_psswd,
+        'HOST':     pg_host,
+        'PORT':     pg_port,
     }
 }
 
