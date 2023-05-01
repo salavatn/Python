@@ -185,18 +185,20 @@ Type 'manage.py help <subcommand>' for help on a specific subcommand.
 
 Available subcommands:
 
-[auth]          # содержит подкоманды, связанные с аутентификацией, такие как "changepassword" и "createsuperuser".
-  ...
+[auth]          # содержит подкоманды, связанные с аутентификацией, 
+  ...           # такие как "changepassword" и "createsuperuser".
 
-[contenttypes]  # содержит подкоманду "remove_stale_contenttypes", которая удаляет старые типы содержимого.
-  ...
-[django]        # содержит множество подкоманд, связанных с управлением проектом Django, таких как makemigrations, migrate, test и т.д.
-  ...
+[contenttypes]  # содержит подкоманду "remove_stale_contenttypes", 
+  ...           # которая удаляет старые типы содержимого.
 
-[sessions]      # содержит подкоманду "clearsessions", которая очищает сессии в базе данных.
-  ...
-[staticfiles]   # содержит подкоманды, связанные со статическими файлами, такие как "collectstatic", "findstatic" и "runserver".
-  ...
+[django]        # содержит множество подкоманд, связанных с управлением проектом Django, 
+  ...           # таких как makemigrations, migrate, test и т.д.
+
+[sessions]      # содержит подкоманду "clearsessions", 
+  ...           # которая очищает сессии в базе данных.
+
+[staticfiles]   # содержит подкоманды, связанные со статическими файлами, 
+  ...           # такие как "collectstatic", "findstatic" и "runserver".
 
 ```
 
