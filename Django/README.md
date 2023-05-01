@@ -12,10 +12,13 @@
     - [1.3. Создание нового проекта](#13-создание-нового-проекта)
     - [1.4. Создание нового приложения](#14-создание-нового-приложения)
     - [1.5. Регистрация созданного приложения](#15-регистрация-созданного-приложения)
-  - [2. Подключение к Базе Данных](#2-подключение-к-базе-данных)
-    - [2.1. Добавить подключение к БД PostgreSQL](#21-добавить-подключение-к-бд-postgresql)
-    - [2.2. Добавить модели для PostgreSQL](#22-добавить-модели-для-postgresql)
-    - [2.3. Создать миграции](#23-создать-миграции)
+  - [2. Добавить модели для PostgreSQL](#2-добавить-модели-для-postgresql)
+  - [3. Подключение к Базе Данных](#3-подключение-к-базе-данных)
+    - [3.1. Создание переменных окружения](#31-создание-переменных-окружения)
+    - [3.2.Использование библиотеки dotenv](#32использование-библиотеки-dotenv)
+  - [4. Создать миграции](#4-создать-миграции)
+    - [4.1. Новые файлы миграции](#41-новые-файлы-миграции)
+    - [4.2. Миграция](#42-миграция)
     - [Добавить запись в базу данных](#добавить-запись-в-базу-данных)
 - [Django Admin](#django-admin)
   - [Create new Super User](#create-new-super-user)
@@ -242,33 +245,32 @@ INSTALLED_APPS = [
 * Теперь приложение **AppContacts** будет установлено в проект Django.
 
 
-## 2. Подключение к Базе Данных
+## 2. Добавить модели для PostgreSQL
 
-```sh
-cd ..
-ls -la
-```
-```
-(venv) salavat@Salavat Django % ls -la
-total 48
-drwxr-xr-x@  8 salavat  staff    256 May  1 10:40 .
-drwxr-xr-x  41 salavat  staff   1312 Apr 30 16:06 ..
--rw-r--r--@  1 salavat  staff      0 May  1 10:40 .env
-drwxr-xr-x@  5 salavat  staff    160 May  1 09:56 PrjContacts
--rw-r--r--@  1 salavat  staff  19961 May  1 10:39 README.md
--rw-r--r--@  1 salavat  staff     22 Apr 30 17:04 requirements.txt
-drwxr-xr-x@  6 salavat  staff    192 Apr 30 17:56 venv
+* Откройте файл `PrjContacts/AppContacts/models.py`
+* Добавьте модели для базы данных, например:
+  
+```python
+from django.db import models
+
+
+class Contacts(models.Model):
+    FirstName   = models.CharField(max_length=50)
+    LastName    = models.CharField(max_length=50)
+    City        = models.CharField(max_length=50)
+    Email       = models.EmailField()
+    Birthday    = models.DateField()
+
 ```
 
-```sh
-echo python-dotenv >> requirements.txt
-cat requirements.txt
-```
-```
-django
-psycopg2-binary
-python-dotenv
-```
+
+
+## 3. Подключение к Базе Данных
+
+Для подключения к базе данных в проекте необходимо выполнить следующие шаги:
+
+### 3.1. Создание переменных окружения
+Добавить библиотеку `python-dotenv` в файл `DJANGO/requirements.txt`
 
 ```sh
 pip install -r requirements.txt
@@ -286,11 +288,7 @@ setuptools      65.5.0
 sqlparse        0.4.4
 ```
 
-```sh
-touch .env
-```
-
-Отредактировать файл .env
+Создать и отредактировать файл `DJANGO/.env`, указав параметры подключения к базе данных:
 ```
 POSTGRES_HOST=127.0.0.1
 POSTGRES_PORT=5432
@@ -299,23 +297,32 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=Pa$$word
 ```
 
-Открыть файл `PrjContacts/PrjContacts/settings.py` и добавить:
+Здесь указаны следующие параметры подключения к базе данных:
+* **POSTGRES_HOST** - IP-адрес хоста, на котором находится база данных;
+* **POSTGRES_PORT** - порт, на котором запущен сервер базы данных;
+* **POSTGRES_DB** - имя базы данных;
+* **POSTGRES_USER** - имя пользователя базы данных;
+* **POSTGRES_PASSWORD** - пароль пользователя базы данных.
+
+### 3.2.Использование библиотеки dotenv
+1. Открыть файл `PrjContacts/PrjContacts/settings.py` и добавить следующий код в начало файла:
 
 ```python
 from dotenv import load_dotenv
 import os
 
 load_dotenv(dotenv_path='.env')
-host  = os.getenv('POSTGRES_HOST')
-port  = os.getenv('POSTGRES_PORT')
-db    = os.getenv('POSTGRES_DB')
-user  = os.getenv('POSTGRES_USER')
-psswd = os.getenv('POSTGRES_PASSWORD')
+pg_host  = os.getenv('POSTGRES_HOST')
+pg_port  = os.getenv('POSTGRES_PORT')
+pg_db    = os.getenv('POSTGRES_DB')
+pg_user  = os.getenv('POSTGRES_USER')
+pg_psswd = os.getenv('POSTGRES_PASSWORD')
 ```
+Этот код загрузит переменные окружения из файла **.env** и присвоит их значения соответствующим переменным `pg_host`, `pg_port`, `pg_db`, `pg_user` и `pg_psswd`.
 
 
-### 2.1. Добавить подключение к БД PostgreSQL
-* Откройте файл `PrjContacts/PrjContacts/settings.py` в текстовом редакторе.
+2. Добавить настройки подключения к базе данных в файл `PrjContacts/PrjContacts/settings.py`:
+
 * Найдите блок настроек базы данных `DATABASES`.
 * Замените настройки базы данных в блоке **DATABASES** на следующий код:
 
@@ -335,28 +342,11 @@ DATABASES = {
 * Теперь проект Django будет использовать базу данных `PostgreSQL` с указанными параметрами.
 
 
-### 2.2. Добавить модели для PostgreSQL
 
-* Откройте файл `PrjContacts/AppContacts/models.py`
-* Добавьте модели для базы данных, например:
-  
-```python
-from django.db import models
-
-
-class Contacts(models.Model):
-    FirstName   = models.CharField(max_length=50)
-    LastName    = models.CharField(max_length=50)
-    City        = models.CharField(max_length=50)
-    Email       = models.EmailField()
-    Birthday    = models.DateField()
-
-```
-
-### 2.3. Создать миграции
+## 4. Создать миграции
 * Создаем новые файлы миграции на основе изменений, внесенных в модели приложения **AppContacts**. Она анализирует текущее состояние моделей и сравнивает их с последней примененной миграцией, а затем генерирует необходимые SQL-команды для создания или изменения таблиц базы данных на основе изменений:
 
-**Расположение:** `Django/PrjContacts`
+### 4.1. Новые файлы миграции
 ```sh
 python manage.py makemigrations AppContacts
 ```
@@ -403,7 +393,7 @@ DJANGO/
 ```
 
 ---
-
+### 4.2. Миграция
 * Выполняем все необходимые миграции, создавая соответствующие таблицы в базе данных.
 ```sh
 python manage.py migrate
@@ -480,39 +470,6 @@ new_contact.save()
 python main.py
 ```
 
-```
-DJANGO/
-├── PrjContacts/
-│   ├── AppContacts/
-│   │   ├── migrations/
-│   │   │   ├── __init__.py
-│   │   │   └── 0001_initial.py     # New
-│   │   │
-│   │   ├── __init__.py
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── models.py
-│   │   ├── tests.py
-│   │   └── views.py
-│   │
-│   ├── PrjContacts/
-│   │   ├── __init__.py
-│   │   ├── asgi.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
-│   │   
-│   └── manage.py
-│
-├── venv/
-│   ├── bin/
-│   ├── include/
-│   ├── lib/
-│   └── pyvenv.cfg
-│
-├── README.md
-└── requirements.txt
-```
 
 
 # Django Admin
