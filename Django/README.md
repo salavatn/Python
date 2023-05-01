@@ -309,7 +309,7 @@ setuptools      65.5.0
 sqlparse        0.4.4
 ```
 
-Создать и отредактировать файл `DJANGO/.env`, указав параметры подключения к базе данных:
+Создать и отредактировать файл `DJANGO/PrjContacts/.env`, указав параметры подключения к базе данных:
 ```
 POSTGRES_HOST=127.0.0.1
 POSTGRES_PORT=5432
@@ -324,6 +324,41 @@ POSTGRES_PASSWORD=Pa$$word
 * **POSTGRES_DB** - имя базы данных;
 * **POSTGRES_USER** - имя пользователя базы данных;
 * **POSTGRES_PASSWORD** - пароль пользователя базы данных.
+
+
+```
+DJANGO/
+├── PrjContacts/
+│   ├── AppContacts/         
+│   │   ├── migrations/          
+│   │   │   └── __init__.py     
+│   │   ├── __init__.py       
+│   │   ├── admin.py            
+│   │   ├── apps.py          
+│   │   ├── models.py           
+│   │   ├── tests.py            
+│   │   └── views.py  
+│   │
+│   ├── PrjContacts/
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   │   
+│   ├── .env                    # New
+│   └── manage.py
+│
+├── venv/
+│   ├── bin/
+│   ├── include/
+│   ├── lib/
+│   └── pyvenv.cfg
+│
+├── README.md
+└── requirements.txt
+```
+
 
 ### 3.2.Использование библиотеки dotenv
 1. Открыть файл `PrjContacts/PrjContacts/settings.py` и добавить следующий код в начало файла:
