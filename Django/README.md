@@ -346,7 +346,7 @@ DJANGO/
 │   │   ├── urls.py
 │   │   └── wsgi.py
 │   │   
-│   ├── .env                    # New
+│   ├── .env   <---------------│ New File "Environment Variables"
 │   └── manage.py
 │
 ├── venv/
