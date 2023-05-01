@@ -134,7 +134,7 @@ Available subcommands:
     testserver       - Запуск веб-сервера с тестовыми данными.
 ```
 
-> После создания проекта, мы будем использовать `python manage.py <subcommands>`, вместо `django-admin <subcommands>`.
+*После создания проекта, мы будем использовать `python manage.py <subcommands>`, вместо `django-admin <subcommands>`.*
 
 * Команда выводит версию Django:
 ```sh
@@ -197,7 +197,7 @@ Available subcommands:
   ...
 [staticfiles]   # содержит подкоманды, связанные со статическими файлами, такие как "collectstatic", "findstatic" и "runserver".
   ...
-  
+
 ```
 
 ### 1.4. Создание нового приложения
