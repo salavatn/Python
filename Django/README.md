@@ -16,6 +16,8 @@
   - [4. Создать миграции](#4-создать-миграции)
     - [4.1. Новые файлы миграции](#41-новые-файлы-миграции)
     - [4.2. Миграция](#42-миграция)
+  - [5. Использование скриптов в Django](#5-использование-скриптов-в-django)
+    - [5.1. Подготовка](#51-подготовка)
     - [Добавить запись в базу данных](#добавить-запись-в-базу-данных)
 - [Django Admin](#django-admin)
   - [Create new Super User](#create-new-super-user)
@@ -501,6 +503,74 @@ django_sessions
 * **django_content_type** - это таблица, которая хранит информацию о моделях приложений Django.
 * **django_migrations** - это таблица, которая используется для отслеживания миграций, которые были применены в вашем проекте.
 * **django_sessions** - это таблица, которая используется для хранения информации о сессиях пользователей в Django.
+
+
+## 5. Использование скриптов в Django
+
+### 5.1. Подготовка
+
+1. Установите библиотеку `django-extensions`
+```sh
+pip install django-extensions
+pip list
+```
+```
+Package           Version
+----------------- -------
+asgiref           3.6.0
+Django            4.2
+django-extensions 3.2.1
+pip               23.1.2
+psycopg2-binary   2.9.6
+python-dotenv     1.0.0
+setuptools        65.5.0
+```
+
+2. Добавить `django-extensions` в список установленных приложений в файле settings.py:
+
+```python
+INSTALLED_APPS = [
+    # ...
+    'django_extensions',
+]
+```
+
+3. Создать каталог `scripts` в корневой директории проекта.
+```sh
+mkdir scripts
+ls -la
+```
+```
+total 16
+drwxr-xr-x@  7 salavat  staff  224 May  2 22:39 .
+drwxr-xr-x@ 11 salavat  staff  352 May  2 21:14 ..
+-rw-r--r--@  1 salavat  staff  152 May  2 21:17 .env
+drwxr-xr-x@ 10 salavat  staff  320 May  2 21:57 Contacts
+drwxr-xr-x@  8 salavat  staff  256 May  2 21:15 ORM
+-rwxr-xr-x@  1 salavat  staff  659 May  2 21:14 manage.py
+drwxr-xr-x@  4 salavat  staff  128 May  2 21:58 scripts
+```
+
+4. Создайте файл со скриптом и функцией `run()` внутри каталога scripts.
+
+```python
+# file: my_script.py
+def run():
+  print('Hello, World! From Django Project')
+``` 
+
+5. Запустите скрипт:
+```sh
+python manage.py runscript my_script.
+```
+
+
+
+
+
+
+
+
 
 
 ### Добавить запись в базу данных
