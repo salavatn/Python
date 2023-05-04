@@ -140,7 +140,7 @@ django-admin startproject PrjContacts
 * В результате выполнения команды структура каталогов должна выглядеть примерно так:
 
 ```python
-DJANGO/
+LAB-01/
 ├── PrjContacts/          # New: Корневой каталог
 │   ├── PrjContacts/      # New: Подкаталог содержит
 │   │   ├── __init__.py   # New: Определяем каталог как Python пакет
@@ -221,4 +221,4 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-![Django Test Page](img.png)
+![Django Test Page](./.images/img.png)
