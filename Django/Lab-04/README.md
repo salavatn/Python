@@ -49,24 +49,33 @@ pip install -r requirements.txt
 pip list
 ```
 ```
-Package    Version
----------- -------
-asgiref    3.6.0
-Django     4.2.1
-pip        23.1.2
-setuptools 65.5.0
-sqlparse   0.4.4
+Package           Version
+----------------- -------
+asgiref           3.6.0
+Django            4.2.1
+django-extensions 3.2.1
+pip               23.1.2
+setuptools        65.5.0
+sqlparse          0.4.4
 ```
 
 ### 2.2. Зарегистрировать django-extensions
-* Добавить `django-extensions` в список установленных приложений в файле `Lab-04/Books/Books/settings.py`:
+* Добавить `django-extensions` в список установленных приложений <br> в файле `Lab-04/Books/Books/settings.py`:
 
 ```python
 INSTALLED_APPS = [
-    # ...
-    'django_extensions',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django_extensions',            # New
 ]
 ```
+
+---
+* Проверить (новые) расширенные команды:
 ```sh
 ./manage.py help 
 ```
@@ -89,54 +98,53 @@ Available subcommands:
     testserver
 
 [django_extensions]
-    admin_generator # генерирует шаблоны админки Django на основе моделей
-    clean_pyc # удаляет скомпилированные файлы Python (.pyc)
-    clear_cache # очищает кэш Django
-    compile_pyc # компилирует все файлы Python в байт-код (.pyc)
-    create_command # создает новую Django-команду
-    create_jobs # создает одну или несколько работ из очереди задач Celery
-    create_template_tags # создает файл тегов шаблонов Django
-    delete_squashed_migrations # удаляет слитые миграции Django
-    describe_form # выводит описание формы Django
-    drop_test_database # удаляет тестовую базу данных
-    dumpscript # выводит содержимое базы данных в виде скрипта SQL
-    export_emails # экспортирует адреса электронной почты из пользовательской модели Django в CSV-файл
-    find_template # ищет и выводит информацию о шаблоне Django
-    generate_password # генерирует случайный пароль
+    admin_generator     # генерирует шаблоны админки Django на основе моделей
+    clean_pyc       # удаляет скомпилированные файлы Python (.pyc)
+    clear_cache     # очищает кэш Django
+    compile_pyc     # компилирует все файлы Python в байт-код (.pyc)
+    create_command  # создает новую Django-команду
+    create_jobs     # создает одну или несколько работ из очереди задач Celery
+    create_template_tags    # создает файл тегов шаблонов Django
+    delete_squashed_migrations  # удаляет слитые миграции Django
+    describe_form       # выводит описание формы Django
+    drop_test_database  # удаляет тестовую базу данных
+    dumpscript      # выводит содержимое базы данных в виде скрипта SQL
+    export_emails   # экспортирует адреса электронной почты из пользовательской модели Django в CSV-файл
+    find_template   # ищет и выводит информацию о шаблоне Django
+    generate_password   # генерирует случайный пароль
     generate_secret_key # генерирует новый секретный ключ Django
-    graph_models # создает изображение графа моделей Django
+    graph_models    # создает изображение графа моделей Django
     list_model_info # выводит информацию о моделях Django
-    list_signals # выводит информацию о сигналах Django
-    mail_debug # запускает SMTP-сервер для отладки электронной почты
-    merge_model_instances # объединяет экземпляры модели Django
-    notes # выводит заметки для моделей Django
-    pipchecker # проверяет доступность обновлений Python-пакетов, используемых в Django-проекте
-    print_settings # выводит настройки Django-проекта
-    print_user_for_session # выводит пользователя для указанной сессии Django
-    raise_test_exception # вызывает исключение для тестирования механизма обработки ошибок
-    reset_db # сбрасывает базу данных Django
-    reset_schema # сбрасывает схему базы данных Django
-    runjob # запускает отдельную работу в Celery
-    runjobs # запускает все работы в Celery
-    runprofileserver # запускает сервер Django с профилированием
+    list_signals    # выводит информацию о сигналах Django
+    mail_debug      # запускает SMTP-сервер для отладки электронной почты
+    merge_model_instances   # объединяет экземпляры модели Django
+    notes           # выводит заметки для моделей Django
+    pipchecker      # проверяет доступность обновлений Python-пакетов, используемых в Django-проекте
+    print_settings  # выводит настройки Django-проекта
+    print_user_for_session  # выводит пользователя для указанной сессии Django
+    raise_test_exception    # вызывает исключение для тестирования механизма обработки ошибок
+    reset_db        # сбрасывает базу данных Django
+    reset_schema    # сбрасывает схему базы данных Django
+    runjob          # запускает отдельную работу в Celery
+    runjobs         # запускает все работы в Celery
+    runprofileserver    # запускает сервер Django с профилированием
 
-    runscript # запускает пользовательский скрипт Django
+    runscript           # запускает пользовательский скрипт Django
     
-    runserver_plus # запускает сервер разработки Django с дополнительными функциями
-    set_default_site # устанавливает сайт по умолчанию Django
-    set_fake_passwords # устанавливает фейковые пароли для тестирования.
-    shell_plus # запускает интерактивную оболочку Django с загрузкой моделей и других утилит.
-    show_template_tags # выводит список всех тегов шаблонов, доступных в проекте.
-    show_urls # выводит список всех URL-адресов, доступных в проекте.
-    sqlcreate # создает файл SQL, который создает все таблицы в базе данных, используемой в проекте.
-    sqldiff # создает файл SQL, который содержит изменения в базе данных, которые должны быть применены.
-    sqldsn # создает строку подключения к базе данных на основе настроек проекта.
-    sync_s3 # копирует статические файлы на Amazon S3.
-    syncdata # копирует данные между базами данных, используемыми в проекте.
-    unreferenced_files # находит файлы в проекте, которые больше не используются.
-    update_permissions # обновляет права доступа на все модели в проекте.
-    validate_templates # проверяет шаблоны проекта на ошибки.
-
+    runserver_plus      # запускает сервер разработки Django с дополнительными функциями
+    set_default_site    # устанавливает сайт по умолчанию Django
+    set_fake_passwords  # устанавливает фейковые пароли для тестирования.
+    shell_plus          # запускает интерактивную оболочку Django с загрузкой моделей и других утилит.
+    show_template_tags  # выводит список всех тегов шаблонов, доступных в проекте.
+    show_urls           # выводит список всех URL-адресов, доступных в проекте.
+    sqlcreate   # создает файл SQL, который создает все таблицы в базе данных, используемой в проекте.
+    sqldiff     # создает файл SQL, который содержит изменения в базе данных, которые должны быть применены.
+    sqldsn      # создает строку подключения к базе данных на основе настроек проекта.
+    sync_s3     # копирует статические файлы на Amazon S3.
+    syncdata    # копирует данные между базами данных, используемыми в проекте.
+    unreferenced_files  # находит файлы в проекте, которые больше не используются.
+    update_permissions  # обновляет права доступа на все модели в проекте.
+    validate_templates  # проверяет шаблоны проекта на ошибки.
 
 
 [sessions]
@@ -166,7 +174,7 @@ drwxr-xr-x@ 8 salavat  staff  256 May  4 22:29 Books
 drwxr-xr-x@ 2 salavat  staff   64 May  4 22:35 scripts
 ```
 
-* Создайте файл `Lab-04/Books/scripts/main.py` со скриптом и функцией `run()` внутри каталога scripts:
+* Создайте python файл `Lab-04/Books/scripts/main.py` c функцией `run()` внутри каталога scripts:
 
 ```python
 def run():
