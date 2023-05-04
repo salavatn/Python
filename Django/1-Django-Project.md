@@ -130,18 +130,6 @@ Available subcommands:
     testserver       - Запуск веб-сервера с тестовыми данными.
 ```
 
----
-
-**Notes:**
-1. После создания проекта, мы вместо **django-admin <subcommands>** будем использовать **python manage.py <subcommands>**
-   - `django-admin <subcommands>` 
-   - `python manage.py <subcommands>`
-2. Так как в файле **manage.py** присутствует строка `#!/usr/bin/env python` мы можем запускать скрипт без указания **python**:
-   - `python manage.py <subcommands>`
-   - `./manage.py <subcommands>`
-
----
-
 * Команда выводит версию Django:
 ```sh
 django-admin --version
@@ -184,6 +172,16 @@ DJANGO/
 └── requirements.txt
 ```
 * Файл `manage.py` - это файл управления **Django**, который используется для запуска различных команд, связанных с проектом. Например, с помощью `manage.py runserver` можно запустить локальный веб-сервер для разработки и отладки приложения.
+
+---
+
+**Notes:**
+1. После создания проекта, мы вместо **django-admin <subcommands>** будем использовать **python manage.py <subcommands>**
+   - `django-admin <subcommands>` 
+   - `python manage.py <subcommands>`
+2. Так как в файле **manage.py** присутствует строка `#!/usr/bin/env python` мы можем запускать скрипт без указания **python**:
+   - `python manage.py <subcommands>`
+   - `./manage.py <subcommands>`
 
 --- 
 
