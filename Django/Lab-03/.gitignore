@@ -1,2 +1,7 @@
-University/.env
-University/University/__pycache__/**
+
+#Environment Variables:
+.env
+
+# Python сache:
+__pycache__/
+*.pyc
