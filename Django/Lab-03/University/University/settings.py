@@ -9,7 +9,7 @@ pg_db    = os.getenv('POSTGRES_DB')
 pg_user  = os.getenv('POSTGRES_USER')
 pg_psswd = os.getenv('POSTGRES_PASSWORD')
 
-print(pg_host)
+# print(pg_host)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Students',
 ]
 
 MIDDLEWARE = [
