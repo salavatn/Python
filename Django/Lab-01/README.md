@@ -6,8 +6,7 @@
     - [1.1. Подготовка виртуального окружения](#11-подготовка-виртуального-окружения)
     - [1.2. Знакомство с django-admin](#12-знакомство-с-django-admin)
     - [1.3. Создание нового проекта](#13-создание-нового-проекта)
-  - [2. Создать миграции](#2-создать-миграции)
-    - [2.1. Миграция](#21-миграция)
+  - [2. Тестовый запуск веб-приложения](#2-тестовый-запуск-веб-приложения)
 
 
 ## 1. Создание проекта 
@@ -34,14 +33,11 @@ setuptools 65.5.0
 
 ---
 
-* Добавляем строку `django` в файл "requirements.txt" 
-* Добавляем строку `psycopg2-binary` в файл "requirements.txt", эта библиотека для работы с PostgreSQL.
+* Добавляем строку `django` в файл "requirements.txt"
 * Устанавливаем все зависимости, перечисленные в файле "requirements.txt". 
 
 ```sh 
-echo django          >> requirements.txt
-echo psycopg2-binary >> requirements.txt
-
+echo django >> requirements.txt
 pip install -r requirements.txt
 pip list
 ```
@@ -66,7 +62,7 @@ Cтруктура каталогов проекта **Django**. Краткое �
 * **requirements.txt** - Файл, содержащий список всех зависимостей проекта.
 
 ```python
-DJANGO/
+LAB-01/
 ├── venv/
 │   ├── bin/
 │   ├── include/
@@ -87,7 +83,7 @@ DJANGO/
   - и многое другое.
 
 ```sh
-django-admin --help
+django-admin help
 ```
 ```
 Type 'django-admin help <subcommand>' for help on a specific subcommand.
@@ -124,7 +120,7 @@ Available subcommands:
 
 * Команда выводит версию Django:
 ```sh
-django-admin --version
+django-admin version
 ```
 ```
 4.2
@@ -133,7 +129,9 @@ django-admin --version
 
 ### 1.3. Создание нового проекта
 
-* Создаем новый Django-проект с именем **PrjContacts** (*Проект Контакты*). Django-проект - это набор настроек и приложений, необходимых для создания веб-приложения. Команда `startproject` создает структуру каталогов проекта и набор файлов конфигурации Django, таких как `settings.py`, `urls.py` и `wsgi.py`.
+* Создаем новый Django-проект с именем **PrjContacts** (*Проект Контакты*).
+* Django-проект - это набор настроек и приложений, необходимых для создания веб-приложения. 
+* Команда `startproject` создает структуру каталогов проекта и набор файлов конфигурации Django, таких как `settings.py`, `urls.py` и `wsgi.py`.
 
 ```sh
 django-admin startproject PrjContacts
@@ -177,6 +175,7 @@ DJANGO/
 --- 
 
 ```sh
+cd PrjContacts/ 
 ./manage.py --help
 ```
 ```
@@ -202,59 +201,24 @@ Available subcommands:
 ```
 
 
+## 2. Тестовый запуск веб-приложения
 
-## 2. Создать миграции
-
-### 2.1. Миграция
-* Выполняем все необходимые миграции, создавая соответствующие таблицы в базе данных.
 ```sh
-./manage.py migrate
+./manage.py runserver
 ```
-```
-Operations to perform:
-  Apply all migrations: AppContacts, admin, auth, contenttypes, sessions
-Running migrations:
-  Applying AppContacts.0001_initial... OK
-  Applying contenttypes.0001_initial... OK
-  Applying auth.0001_initial... OK
-  Applying admin.0001_initial... OK
-  Applying admin.0002_logentry_remove_auto_add... OK
-  Applying admin.0003_logentry_add_action_flag_choices... OK
-  Applying contenttypes.0002_remove_content_type_name... OK
-  Applying auth.0002_alter_permission_name_max_length... OK
-  Applying auth.0003_alter_user_email_max_length... OK
-  Applying auth.0004_alter_user_username_opts... OK
-  Applying auth.0005_alter_user_last_login_null... OK
-  Applying auth.0006_require_contenttypes_0002... OK
-  Applying auth.0007_alter_validators_add_error_messages... OK
-  Applying auth.0008_alter_user_username_max_length... OK
-  Applying auth.0009_alter_user_last_name_max_length... OK
-  Applying auth.0010_alter_group_name_max_length... OK
-  Applying auth.0011_update_proxy_permissions... OK
-  Applying auth.0012_alter_user_first_name_max_length... OK
-  Applying sessions.0001_initial... OK
+```log
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+May 04, 2023 - 12:52:46
+Django version 4.2.1, using settings 'PrjContacts.settings'
+
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
 ```
 
-> Была создана таблица `AppContacts_contacts` для модели **Contacts** в приложении **AppContacts**, а также другие таблицы, которые необходимы для работы Django и его стандартных приложений, таких как auth, admin и т.д:
-```
-AppContacts_contacts
-
-auth_group
-auth_group_permissions
-auth_permission
-auth_user
-auth_user_groups
-auth_user_user_permissions
-
-django_admin_log
-django_content_type
-django_migrations
-django_sessions
-```
-
-* **ContactsApp_contacts** - это таблица, которую мы создали в нашем приложении **ContactsApp** для хранения контактов
-* **auth_\*\*\*** - это таблицы, которые связаны с аутентификацией и авторизацией в Django.
-* **django_admin_log** - это таблица, которая используется для журналирования действий администраторов в Django административной панели.
-* **django_content_type** - это таблица, которая хранит информацию о моделях приложений Django.
-* **django_migrations** - это таблица, которая используется для отслеживания миграций, которые были применены в вашем проекте.
-* **django_sessions** - это таблица, которая используется для хранения информации о сессиях пользователей в Django.
+![Django Test Page](img.png)
