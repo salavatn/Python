@@ -104,7 +104,7 @@ Available subcommands:
     compile_pyc     # компилирует все файлы Python в байт-код (.pyc)
     create_command  # создает новую Django-команду
     create_jobs     # создает одну или несколько работ из очереди задач Celery
-    create_template_tags    # создает файл тегов шаблонов Django
+    create_template_tags        # создает файл тегов шаблонов Django
     delete_squashed_migrations  # удаляет слитые миграции Django
     describe_form       # выводит описание формы Django
     drop_test_database  # удаляет тестовую базу данных
