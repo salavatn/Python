@@ -1,12 +1,8 @@
 # Django ORM - Запросы
 
 **Оглавление:**
-- [Создание Django Проекта](#создание-django-проекта)
-  - [1. Создание проекта](#1-создание-проекта)
-    - [1.1. Подготовка виртуального окружения](#11-подготовка-виртуального-окружения)
-    - [1.2. Знакомство с django-admin](#12-знакомство-с-django-admin)
-    - [1.3. Создание нового проекта](#13-создание-нового-проекта)
-  - [2. Тестовый запуск веб-приложения](#2-тестовый-запуск-веб-приложения)
+- [Django ORM - Запросы](#django-orm---запросы)
+  - [1. Подготовка проекта](#1-подготовка-проекта)
 
 
 ## 1. Подготовка проекта 
@@ -138,13 +134,14 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 <pre><code>from django.db import models
 <br>
 class TableAutomobiles(models.Model):
-    id          = models.AutoField(primary_key=True)
-    Model       = models.CharField(max_length=50)
-    Year        = models.IntegerField()
-    Color       = models.CharField(max_length=50)
-    Price       = models.IntegerField()
-    EngineSize  = models.IntegerField()
-    VIN         = models.CharField(max_length=50)
+    id      = models.IntegerField(primary_key=True)
+    Brand   = models.CharField(max_length=50)
+    Model   = models.CharField(max_length=50)
+    Year    = models.IntegerField()
+    Color   = models.CharField(max_length=50)
+    Price   = models.IntegerField()
+    Engine  = models.CharField(max_length=50)
+    VIN     = models.CharField(max_length=50)
 </code></pre>
 </details>
 
