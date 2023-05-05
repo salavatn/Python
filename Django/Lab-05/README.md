@@ -186,16 +186,24 @@ LAB-05/
 ```
 
 Таблицы в базе данных PostgreSQL:
-| table_name                 |
-| -------------------------- |
-| Automobiles_automobiles    |
-| auth_group                 |
-| auth_group_permissions     |
-| auth_permission            |
-| auth_user                  |
-| auth_user_groups           |
-| auth_user_user_permissions |
-| django_admin_log           |
-| django_content_type        |
-| django_migrations          |
-| django_session             |
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+ORDER BY table_name;
+```
+
+| table_name                   |
+| ---------------------------- |
+| Automobiles_tableautomobiles |
+| Students_tablestudents       |
+| auth_group                   |
+| auth_group_permissions       |
+| auth_permission              |
+| auth_user                    |
+| auth_user_groups             |
+| auth_user_user_permissions   |
+| django_admin_log             |
+| django_content_type          |
+| django_migrations            |
+| django_session               |
