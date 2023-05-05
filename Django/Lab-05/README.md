@@ -117,7 +117,8 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 
 <details markdown="1"> 
 <summary>1.11. Создайте модель для "Automobiles"</summary>
-<b>Файл:</b> <code>FranceCars/Automobiles/models.py</code>
+<br>
+<code style="color: green; text-align: right;">FranceCars/Automobiles/models.py</code>
 <pre><code>from django.db import models
 <br>
 class Automobiles(models.Model):
