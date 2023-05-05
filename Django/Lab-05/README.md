@@ -13,31 +13,29 @@
 
 
 <details markdown="1"> 
-    <summary>1.1. Подготовить виртуальное окружение </summary>
-    <code>
-        python -m venv venv             <br>    
-        source venv/bin/activate        <br>
-    </code>
+<summary>1.1. Подготовить виртуальное окружение </summary>
+<pre><code>python -m venv venv            
+source venv/bin/activate      
+</code></pre>
 </details>
 
 <details markdown="1"> 
-    <summary>1.2. Добавить библиотеки в requirements.txt и установить</summary>
-    <code>
-        echo django             >> requirements.txt  <br>    
-        echo django-extensions  >> requirements.txt  <br>    
-        echo psycopg2-binary    >> requirements.txt  <br>    
-        echo python-dotenv      >> requirements.txt  <br>    
-        pip install -r requirements.txt              <br>
-    </code>
+<summary>1.2. Добавить библиотеки в requirements.txt и установить</summary>
+<pre><code>echo django             >> requirements.txt    
+echo django-extensions  >> requirements.txt   
+echo psycopg2-binary    >> requirements.txt      
+echo python-dotenv      >> requirements.txt    
+pip install -r requirements.txt            
+</code></pre>
 </details>
 
 <details markdown="1"> 
-    <summary>1.3. Создать проект "FranceCars"</summary>
+<summary>1.3. Создать проект "FranceCars"</summary>
 <pre><code>django-admin startproject FranceCars</code></pre>
 </details>
 
 <details markdown="1"> 
-    <summary>1.4. Сформируйте .env с параметрами подключения к PostgeSQL</summary>
+<summary>1.4. Сформируйте .env с параметрами подключения к PostgeSQL</summary>
 <pre><code>POSTGRES_HOST=127.0.0.1    
 POSTGRES_PORT=5432       
 POSTGRES_DB=postgres       
@@ -48,7 +46,7 @@ POSTGRES_PASSWORD=Pa$$word
 
 
 <details markdown="1"> 
-<summary>1.5. Настройте в settings.py подключение к PostgreSQL</summary>
+<summary>1.5. Подгрузите переменные из .env в settings.py</summary>
 <pre><code>from dotenv import load_dotenv     
 import os                         
 <br>
@@ -58,8 +56,13 @@ pg_port  = os.getenv('POSTGRES_PORT')
 pg_db    = os.getenv('POSTGRES_DB')        
 pg_user  = os.getenv('POSTGRES_USER')       
 pg_psswd = os.getenv('POSTGRES_PASSWORD')   
-<br>
-DATABASES = {
+</code></pre>
+</details>
+
+
+<details markdown="1"> 
+<summary>1.6. Настройте в settings.py подключение к PostgreSQL</summary>
+<pre><code>DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.postgresql',
         'NAME':     pg_db,
@@ -71,4 +74,3 @@ DATABASES = {
 }
 </code></pre>
 </details>
-
