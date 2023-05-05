@@ -135,7 +135,7 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 <code>LAB-05/FranceCars/Automobiles/models.py:</code>
 <pre><code>from django.db import models
 <br>
-class Automobiles(models.Model):
+class TableAutomobiles(models.Model):
     id          = models.AutoField(primary_key=True)
     Model       = models.CharField(max_length=50)
     Year        = models.IntegerField()
@@ -147,4 +147,10 @@ class Automobiles(models.Model):
 </details>
 
 
-
+<details markdown="1"> 
+<summary>1.12. Создайте файлы миграции и запустите миграцию</summary>
+<br>
+<code>LAB-05/FranceCars/</code>
+<pre><code>./manage.py makemigrations Automobiles
+./manage.py migrate </code></pre>
+</details>
