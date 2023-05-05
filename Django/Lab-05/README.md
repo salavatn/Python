@@ -14,6 +14,8 @@
 
 <details markdown="1"> 
 <summary>1.01. Подготовить виртуальное окружение </summary>
+<br>
+<code>LAB-05/</code>
 <pre><code>python -m venv venv            
 source venv/bin/activate      
 </code></pre>
@@ -21,6 +23,8 @@ source venv/bin/activate
 
 <details markdown="1"> 
 <summary>1.02. Добавить библиотеки в requirements.txt и установить</summary>
+<br>
+<code>LAB-05/</code>
 <pre><code>echo django             >> requirements.txt    
 echo django-extensions  >> requirements.txt   
 echo psycopg2-binary    >> requirements.txt      
@@ -32,6 +36,8 @@ pip install -r requirements.txt
 
 <details markdown="1"> 
 <summary>1.03. Создать проект "FranceCars"</summary>
+<br>
+<code>LAB-05/</code>
 <pre><code>django-admin startproject FranceCars</code></pre>
 </details>
 
@@ -46,7 +52,6 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=Pa$$word  
 </code></pre>
 </details>
-
 
 <details markdown="1"> 
 <summary>1.05. Подгрузите переменные из .env в settings.py</summary>
@@ -64,7 +69,6 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 </code></pre>
 </details>
 
-
 <details markdown="1"> 
 <summary>1.06. Настройте в settings.py подключение к PostgreSQL</summary>
 <br>
@@ -81,7 +85,6 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 }
 </code></pre>
 </details>
-
 
 <details markdown="1"> 
 <summary>1.07. Запустите миграцию</summary>
@@ -111,7 +114,6 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 <code>LAB-05/FranceCars/</code>
 <pre><code>./manage.py startapp Automobiles</code></pre>
 </details>
-
 
 <details markdown="1"> 
 <summary>1.10. Зарегистрировать приложение "Automobiles"</summary>
@@ -146,7 +148,6 @@ class TableAutomobiles(models.Model):
 </code></pre>
 </details>
 
-
 <details markdown="1"> 
 <summary>1.12. Создайте файлы миграции и запустите миграцию</summary>
 <br>
@@ -154,3 +155,50 @@ class TableAutomobiles(models.Model):
 <pre><code>./manage.py makemigrations Automobiles
 ./manage.py migrate </code></pre>
 </details>
+
+**К этому шагу вы должны иметь:**
+Структура проекта:
+```sh
+LAB-05/
+├── FranceCars/
+│   ├── FranceCars/
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   │
+│   ├── Automobiles/            
+│   │   ├── migrations/      
+│   │   │   ├── __init__.py
+│   │   │   └── 0001_initial.py
+│   │   │
+│   │   ├── __init__.py      
+│   │   ├── admin.py         
+│   │   ├── apps.py         
+│   │   ├── models.py        
+│   │   ├── tests.py        
+│   │   └── views.py         
+│   │   
+│   ├── .env
+│   └── manage.py  
+│
+├── venv/
+├── README.md
+└── requirements.txt
+```
+
+Таблицы в базе данных PostgreSQL:
+| table_name                 |
+| -------------------------- |
+| Automobiles_automobiles    |
+| auth_group                 |
+| auth_group_permissions     |
+| auth_permission            |
+| auth_user                  |
+| auth_user_groups           |
+| auth_user_user_permissions |
+| django_admin_log           |
+| django_content_type        |
+| django_migrations          |
+| django_session             |
