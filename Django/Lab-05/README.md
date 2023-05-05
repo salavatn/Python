@@ -37,6 +37,8 @@ pip install -r requirements.txt
 
 <details markdown="1"> 
 <summary>1.04. Сформируйте .env с параметрами подключения к PostgeSQL</summary>
+<br>
+<code>LAB-05/FranceCars/.env:</code>
 <pre><code>POSTGRES_HOST=127.0.0.1    
 POSTGRES_PORT=5432       
 POSTGRES_DB=postgres       
@@ -48,6 +50,8 @@ POSTGRES_PASSWORD=Pa$$word
 
 <details markdown="1"> 
 <summary>1.05. Подгрузите переменные из .env в settings.py</summary>
+<br>
+<code>LAB-05/FranceCars/FranceCars/settings.py:</code>
 <pre><code>from dotenv import load_dotenv     
 import os                         
 <br>
@@ -63,6 +67,8 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 
 <details markdown="1"> 
 <summary>1.06. Настройте в settings.py подключение к PostgreSQL</summary>
+<br>
+<code>LAB-05/FranceCars/FranceCars/settings.py:</code>
 <pre><code>DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.postgresql',
@@ -79,11 +85,15 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 
 <details markdown="1"> 
 <summary>1.07. Запустите миграцию</summary>
+<br>
+<code>LAB-05/FranceCars/</code>
 <pre><code>./manage.py migrate </code></pre>
 </details>
 
 <details markdown="1"> 
 <summary>1.08. Зарегистрировать приложение django_extensions</summary>
+<br>
+<code>LAB-05/FranceCars/FranceCars/settings.py:</code>
 <pre><code>INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -97,12 +107,16 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 
 <details markdown="1"> 
 <summary>1.09. Создать новое приложение "Automobiles"</summary>
+<br>
+<code>LAB-05/FranceCars/</code>
 <pre><code>./manage.py startapp Automobiles</code></pre>
 </details>
 
 
 <details markdown="1"> 
 <summary>1.10. Зарегистрировать приложение "Automobiles"</summary>
+<br>
+<code>LAB-05/FranceCars/FranceCars/settings.py:</code>
 <pre><code>INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,7 +132,7 @@ pg_psswd = os.getenv('POSTGRES_PASSWORD')
 <details markdown="1"> 
 <summary>1.11. Создайте модель для "Automobiles"</summary>
 <br>
-<code style="color: green; text-align: right;">FranceCars/Automobiles/models.py</code>
+<code>LAB-05/FranceCars/Automobiles/models.py:</code>
 <pre><code>from django.db import models
 <br>
 class Automobiles(models.Model):
