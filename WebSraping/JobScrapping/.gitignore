@@ -1,15 +1,12 @@
 .env_db
 .env_api
 
-# Folder __pycache__ and its content
-headhunter/__pycache__/*
-converter/__pycache__/*
-database/__pycache__/*
-database/tables/__pycache__/*
-__pycache__/*
 
 # Folder .pytest_cache and its content
 .pytest_cache/*
+__pycache__/
+*.pyc
+
 
 # Folder .vscode and its content
 .vscode/*

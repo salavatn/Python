@@ -3,6 +3,7 @@
 **Оглавление:**
 - [Django ORM - Запросы](#django-orm---запросы)
   - [1. Подготовка проекта](#1-подготовка-проекта)
+  - [2. Использование ORM запросов](#2-использование-orm-запросов)
 
 
 ## 1. Подготовка проекта 
@@ -154,7 +155,7 @@ class TableAutomobiles(models.Model):
 </details>
 
 **К этому шагу вы должны иметь:**
-Структура проекта:
+* Структура проекта:
 ```sh
 LAB-05/
 ├── FranceCars/
@@ -185,7 +186,7 @@ LAB-05/
 └── requirements.txt
 ```
 
-Таблицы в базе данных PostgreSQL:
+* Таблицы в базе данных PostgreSQL:
 ```sql
 SELECT table_name
 FROM information_schema.tables
@@ -207,3 +208,7 @@ ORDER BY table_name;
 | django_content_type          |
 | django_migrations            |
 | django_session               |
+
+
+
+## 2. Использование ORM запросов
