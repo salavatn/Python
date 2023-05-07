@@ -127,8 +127,8 @@ class HandlerDB:
             session.add(row)
             session.commit()
             return row.id
-        else:
-            return record.id
+        
+        return record.id
         
     def add_job(self, set_id, set_title, set_link, set_min, set_max, set_usd_min, set_usd_max,
                       set_currency_id, set_city_id, set_company_id, set_desc_id, set_website_id):
@@ -162,3 +162,21 @@ class HandlerDB:
             return False
         else:
             return True
+
+'''
+# Обратить внимание:
+# command exeption
+# Type Hint
+
+# Lib Typing
+from typing import Optional, List, Dict, Tuple, Union, Any, Callable, TypeVar, Generic, Type, cast, overload
+
+def fn() -> List[int]:
+    pass
+
+Optional[int] # Union[int, None]
+# Callable
+
+# ООП
+'''
+

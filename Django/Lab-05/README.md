@@ -4,6 +4,7 @@
 - [Django ORM - Запросы](#django-orm---запросы)
   - [1. Подготовка проекта](#1-подготовка-проекта)
   - [2. Использование ORM запросов](#2-использование-orm-запросов)
+    - [2.1. Подготовка скрипта для запросов](#21-подготовка-скрипта-для-запросов)
 
 
 ## 1. Подготовка проекта 
@@ -212,3 +213,10 @@ ORDER BY table_name;
 
 
 ## 2. Использование ORM запросов
+
+### 2.1. Подготовка скрипта для запросов
+(venv) salavat@Salavat Lab-05 % cd FranceCars 
+(venv) salavat@Salavat FranceCars % cd Automobiles 
+(venv) salavat@Salavat Automobiles % mkdir scripts
+(venv) salavat@Salavat Automobiles % cd scripts 
+(venv) salavat@Salavat scripts % touch main.py

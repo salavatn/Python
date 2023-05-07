@@ -60,6 +60,7 @@ class ScrapperHeadHunter:
             salary = salary.replace("\n", " ")
             salary = re.sub(r'\s+', ' ', salary)
             salary = salary.split(" ")
+            # print(f"Salary:\t{salary}")
         except:
             return None, None, None
 
@@ -141,3 +142,6 @@ class ScrapperHeadHunter:
             return None
         return company_name
 
+
+
+# command exeption
