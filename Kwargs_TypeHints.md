@@ -126,6 +126,8 @@ from typing import Any, List
 
 ## Define a function №5. Using **kwargs and Type Hinting
 ```python
+from typing import Any, List
+
 def car(**kwargs: Any) -> List[str]:
     model:str    = kwargs['model']
     car:str      = kwargs['car']
