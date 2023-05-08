@@ -543,10 +543,10 @@ WHERE (
 ### 3.1 Text, Case Sensitive 
 
 ```python
+q_color = Q(Color='Black')              # Case Sensitive & Exact:       Black
+q_color = Q(Color__exact='Black')       # Case Sensitive & Exact:       Black
 q_color = Q(Color__contains='W')        # Case Sensitive:               White
 q_color = Q(Color__startswith='Bl')     # Case Sensitive & Starts With: Black, Blue 
-q_color = Q(Color__exact='Black')       # Case Sensitive & Exact:       Black
-q_color = Q(Color='Black')              # Case Sensitive & Exact:       Black
 q_color = Q(Color__endswith='e')        # Case Sensitive & Ends With:   White, Blue 
 q_color = Q(Color__regex=r'^(Wh|Bl)')   # Case Sensitive & Regex:       White, Blue, Black
 ```
@@ -554,10 +554,9 @@ q_color = Q(Color__regex=r'^(Wh|Bl)')   # Case Sensitive & Regex:       White, B
 ### 3.2. Text, Case-Insensitive
 
 ```python
-# Color queries
+q_color = Q(Color__iexact='white')      # Case Insensitive & Exact:         white, White, WHITE
 q_color = Q(Color__icontains='w')       # Case Insensitive:                 aws, AWS, brown, BROWN, white, White 
 q_color = Q(Color__istartswith='w')     # Case Insensitive & Starts With:   white, White
-q_color = Q(Color__iexact='white')      # Case Insensitive & Exact:         white, White, WHITE
 q_color = Q(Color__iendswith='e')       # Case Insensitive & Ends With:     white, WHITE, e, E
 q_color = Q(Color__iregex=r'^(Wh|Bl)')  # Case Insensitive & Regex:         white, WHTIE, Blue, BLUE, Black, BLACK
 ```
