@@ -594,6 +594,10 @@ q_query = ~Q(Color='White') & Q(Year=2019)      # NOT AND: Matches records where
 
 ### 3.5. Full code example
 
+```sh
+./manage.py runscript main
+```
+
 ```python
 from Automobiles.models import TableAutomobiles
 from django.db.models import Q
