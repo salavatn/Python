@@ -250,17 +250,37 @@ The table:
 | 16 | Kia           | Forte    | 2020 | Red    | 1500000 | 2.0L MPI            | 3KPF24AD0LE123456 | Available |
 
 ### 2.1. Подготовка скрипта для запросов
-(venv) salavat@Salavat Lab-05 % cd FranceCars 
-(venv) salavat@Salavat FranceCars % cd Automobiles 
-(venv) salavat@Salavat Automobiles % mkdir scripts
-(venv) salavat@Salavat Automobiles % cd scripts 
-(venv) salavat@Salavat scripts % touch main.py
+```sh
+cd FranceCars 
+cd Automobiles 
+mkdir scripts
+cd scripts 
+touch main.py
+```
 
 ### 2.2. Insert
 
 ```python
-automobile = {'Brand': 'Kia', 'Model': 'Forte', 'Year': 2020, 'Color': 'Red', 'Price': 1500000, 'Engine': '2.0L MPI', 'VIN': '3KPF24AD0LE123456'}
-car = TableAutomobiles(**automobile)
+car_list = [
+    {'Brand': 'Peugeot', 'Model': '3008', 'Year': 2019, 'Color': 'White', 'Price': 2000000, 'Engine': '1.6 PureTech', 'VIN': 'VF3RFE00V5E000000'},
+    {'Brand': 'Dodge', 'Model': 'Ram', 'Year': 2019, 'Color': 'White', 'Price': 2000000, 'Engine': '1.6 PureTech', 'VIN': 'VF3RFE00V5E000000'},
+    {'Brand': 'Peugeot', 'Model': '3008', 'Year': 2019, 'Color': 'White', 'Price': 2000000, 'Engine': '1.6 PureTech', 'VIN': 'VF3RFE00V5E000000'},
+    {'Brand': 'Renault', 'Model': 'Arkana', 'Year': 2019, 'Color': 'Brown', 'Price': 1350000, 'Engine': '1.3 TCe', 'VIN': 'VF1RFE00V5E000000'},
+    {'Brand': 'Audi', 'Model': 'Q5', 'Year': 2020, 'Color': 'Black', 'Price': 2500000, 'Engine': '2.0 TFSI', 'VIN': 'WAUZZZFYXJ1234567'},
+    {'Brand': 'BMW', 'Model': '3 Series', 'Year': 2021, 'Color': 'Blue', 'Price': 2800000, 'Engine': '2.0 TwinPower Turbo', 'VIN': 'WBA5R1C50M7C12345'},
+    {'Brand': 'Mercedes-Benz', 'Model': 'GLE', 'Year': 2022, 'Color': 'Silver', 'Price': 3500000, 'Engine': '3.0L Inline-6 Turbo', 'VIN': 'W1N0G8EB2LX123456'},
+    {'Brand': 'Toyota', 'Model': 'Camry', 'Year': 2021, 'Color': 'Red', 'Price': 1800000, 'Engine': '2.5L Dynamic Force', 'VIN': '4T1C11BKXLU123456'},
+    {'Brand': 'Honda', 'Model': 'Civic', 'Year': 2020, 'Color': 'White', 'Price': 1500000, 'Engine': '1.5L Turbocharged', 'VIN': '2HGFC1F31LH123456'},
+    {'Brand': 'Ford', 'Model': 'Mustang', 'Year': 2022, 'Color': 'Yellow', 'Price': 3200000, 'Engine': '5.0L V8', 'VIN': '1FA6P8CF6L1234567'},
+    {'Brand': 'Volkswagen', 'Model': 'Passat', 'Year': 2021, 'Color': 'Gray', 'Price': 1900000, 'Engine': '2.0 TSI', 'VIN': '1VWAA7A31LC123456'},
+    {'Brand': 'Nissan', 'Model': 'Sentra', 'Year': 2020, 'Color': 'Black', 'Price': 1400000, 'Engine': '1.8L DOHC', 'VIN': '3N1AB8CV5LY123456'},
+    {'Brand': 'Chevrolet', 'Model': 'Optima', 'Year': 2021, 'Color': 'Silver', 'Price': 1700000, 'Engine': '1.6L Turbo', 'VIN': '3GNKBKRSXJG123456'},
+    {'Brand': 'Hyundai', 'Model': 'Elantra', 'Year': 2022, 'Color': 'White', 'Price': 1600000, 'Engine': '2.0L MPI', 'VIN': '5NPD84LF7LH123456'},
+    {'Brand': 'Subaru', 'Model': 'Legacy', 'Year': 2021, 'Color': 'Blue', 'Price': 2000000, 'Engine': '2.5L BOXER', 'VIN': '4S3BWAN65M3000000'},
+    {'Brand': 'Kia', 'Model': 'Forte', 'Year': 2020, 'Color': 'Red', 'Price': 1500000, 'Engine': '2.0L MPI', 'VIN': '3KPF24AD0LE123456'}
+]
+
+car = t_automobiles(**car_list)
 car.save()
 ```
 
@@ -607,7 +627,7 @@ def run():
 
 table    = TableAutomobiles.objects
 q_color  = Q(Color='Brown') | Q(Color='Yellow')
-query    = TableAutomobiles.objects.filter(q_color)
+query    = table.filter(q_color)
 result   = query.values('Brand', 'Model', 'Color', 'Year')
 
 for item in result:
@@ -631,3 +651,4 @@ WHERE (
     "Automobiles_tableautomobiles"."Color" = Brown OR 
     "Automobiles_tableautomobiles"."Color" = Yellow)
 ```
+
