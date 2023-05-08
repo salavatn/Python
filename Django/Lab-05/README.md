@@ -14,6 +14,11 @@
     - [2.8. Get records where Value Contain](#28-get-records-where-value-contain)
     - [2.9. Get records where Value StartsWith](#29-get-records-where-value-startswith)
     - [2.10. Get records Combining](#210-get-records-combining)
+  - [Q Objects:](#q-objects)
+    - [Text, Case Sensitive](#text-case-sensitive)
+    - [Text, Case-Insensitive \_\_i\*\*\*](#text-case-insensitive-__i)
+    - [Numbers](#numbers)
+    - [Combining queries](#combining-queries)
 
 
 ## 1. Подготовка проекта 
@@ -511,4 +516,78 @@ FROM "Automobiles_tableautomobiles"
 WHERE (
     ("Automobiles_tableautomobiles"."Price" > 1300000 OR "Automobiles_tableautomobiles"."Price" < 2000000) 
     AND "Automobiles_tableautomobiles"."Year" = 2021)
+```
+
+
+## Q Objects:
+
+| Brand         | Model    | Year | Color  |
+| ------------- | -------- | ---- | ------ |
+| Dodge         | Ram      | 2019 | White  |
+| Peugeot       | 3008     | 2019 | White  |
+| Renault       | Arkana   | 2019 | Brown  |
+| Audi          | Q5       | 2020 | Black  |
+| BMW           | 3 Series | 2021 | Blue   |
+| Mercedes-Benz | GLE      | 2022 | Silver |
+| Toyota        | Camry    | 2021 | Red    |
+| Honda         | Civic    | 2020 | White  |
+| Ford          | Mustang  | 2022 | Yellow |
+| Volkswagen    | Passat   | 2021 | Gray   |
+| Nissan        | Sentra   | 2020 | Black  |
+| Chevrolet     | Optima   | 2021 | Silver |
+| Hyundai       | Elantra  | 2022 | White  |
+| Subaru        | Legacy   | 2021 | Blue   |
+| Kia           | Forte    | 2020 | Red    |
+
+### Text, Case Sensitive 
+
+```python
+q_color = Q(Color__contains='W')        # Case Sensitive:               White
+q_color = Q(Color__startswith='Bl')     # Case Sensitive & Starts With: Black, Blue 
+q_color = Q(Color__exact='Black')       # Case Sensitive & Exact:       Black
+q_color = Q(Color='Black')              # Case Sensitive & Exact:       Black
+q_color = Q(Color__endswith='e')        # Case Sensitive & Ends With:   White, Blue 
+q_color = Q(Color__regex=r'^(Wh|Bl)')   # Case Sensitive & Regex:       White, Blue, Black
+```
+
+### Text, Case-Insensitive __i***
+
+```python
+# Color queries
+q_color = Q(Color__icontains='w')       # Case Insensitive:                 aws, AWS, brown, BROWN, white, White 
+q_color = Q(Color__istartswith='w')     # Case Insensitive & Starts With:   white, White
+q_color = Q(Color__iexact='white')      # Case Insensitive & Exact:         white, White, WHITE
+q_color = Q(Color__iendswith='e')       # Case Insensitive & Ends With:     white, WHITE, e, E
+q_color = Q(Color__iregex=r'^(Wh|Bl)')  # Case Insensitive & Regex:         white, WHTIE, Blue, BLUE, Black, BLACK
+```
+
+### Numbers
+
+```python
+q_year  = Q(Year=2019)                  # Exact:                    Matches years exactly equal to 2019
+q_year  = Q(Year__exact=2019)           # Exact:                    Matches years exactly equal to 2019
+
+q_year  = Q(Year__gt=2019)              # Greater Than:             Matches years greater than 2019
+q_year  = Q(Year__gte=2019)             # Greater Than or Equal:    Matches years greater than or equal to 2019
+
+q_year  = Q(Year__lt=2020)              # Less Than:                Matches years less than 2020
+q_year  = Q(Year__lte=2020)             # Less Than or Equal:       Matches years less than or equal to 2020
+
+q_year  = Q(Year__range=(2019, 2021))   # Range:                    Matches years within the range 2019-2021
+q_year  = Q(Year__in=[2019, 2020, 2021])# In:                       Matches years that are in the list [2019, 2020, 2021]
+
+q_year  = Q(Year__isnull=True)          # Is Null:                  Matches records where the Year is null
+q_year  = Q(Year__isnull=False)         # Is Not Null:              Matches records where the Year is not null
+```
+
+### Combining queries
+
+```python
+q_year  = Q(Year=2019) | Q(Year=2020)           # OR:   Matches years that are either 2019 or 2020
+q_color = Q(Color='White') | Q(Color='Black')   # OR:   Matches colors that are either 'White' or 'Black'
+
+q_query = Q(Color='White') & Q(Year=2019)       # AND:  Matches records where the Color is 'White' and the Year is 2019
+
+q_query = ~Q(Color='White')                     # NOT:  Matches records where the Color is not 'White'
+q_query = ~Q(Color='White') & Q(Year=2019)      # NOT AND: Matches records where
 ```
