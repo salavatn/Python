@@ -19,6 +19,7 @@
     - [3.2. Text, Case-Insensitive](#32-text-case-insensitive)
     - [3.3. Numbers](#33-numbers)
     - [3.4. Combining queries](#34-combining-queries)
+    - [3.5. Full code example](#35-full-code-example)
 
 
 ## 1. Подготовка проекта 
@@ -590,4 +591,40 @@ q_query = Q(Color='White') & Q(Year=2019)       # AND:  Matches records where th
 
 q_query = ~Q(Color='White')                     # NOT:  Matches records where the Color is not 'White'
 q_query = ~Q(Color='White') & Q(Year=2019)      # NOT AND: Matches records where
+```
+
+### 3.5. Full code example
+
+```python
+from Automobiles.models import TableAutomobiles
+from django.db.models import Q
+
+def run():
+    pass
+
+table    = TableAutomobiles.objects
+q_color  = Q(Color='Brown') | Q(Color='Yellow')
+query    = TableAutomobiles.objects.filter(q_color)
+result   = query.values('Brand', 'Model', 'Color', 'Year')
+
+for item in result:
+    print(item)
+```
+
+**Result:**
+```
+{'Brand': 'Renault', 'Model': 'Arkana', 'Color': 'Brown', 'Year': 2019}
+{'Brand': 'Ford', 'Model': 'Mustang', 'Color': 'Yellow', 'Year': 2022}
+```
+
+```sql
+SELECT 
+    "Automobiles_tableautomobiles"."Brand", 
+    "Automobiles_tableautomobiles"."Model", 
+    "Automobiles_tableautomobiles"."Color", 
+    "Automobiles_tableautomobiles"."Year" 
+FROM "Automobiles_tableautomobiles" 
+WHERE (
+    "Automobiles_tableautomobiles"."Color" = Brown OR 
+    "Automobiles_tableautomobiles"."Color" = Yellow)
 ```
