@@ -2,6 +2,7 @@ from rich.console import Console
 from rich.table import Table
 
 table_src_args = Table(title="\nSource Arguments")
+
 col_src_args = ["ID", "Type", "Random Value", "Specific Value", "Example"]
 row_src_args = [
     ["1", "IP Address",     "-src ip:*", "172.30.1.22",      "-src ip:172.30.1.22"],
