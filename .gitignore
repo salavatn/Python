@@ -1,6 +1,13 @@
 .idea
 .DS_Store
 FOLDER
-WebSraping/Ufanet/.env_db_BACKUP
-WebSraping/venv
+.env_db_BACKUP
 venv
+
+# Python Cache
+__pycache__
+
+
+# My TMP projects:
+AWS
+Django/TEST
