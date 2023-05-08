@@ -14,11 +14,11 @@
     - [2.8. Get records where Value Contain](#28-get-records-where-value-contain)
     - [2.9. Get records where Value StartsWith](#29-get-records-where-value-startswith)
     - [2.10. Get records Combining](#210-get-records-combining)
-  - [Q Objects:](#q-objects)
-    - [Text, Case Sensitive](#text-case-sensitive)
-    - [Text, Case-Insensitive \_\_i\*\*\*](#text-case-insensitive-__i)
-    - [Numbers](#numbers)
-    - [Combining queries](#combining-queries)
+  - [3. Q Objects:](#3-q-objects)
+    - [3.1 Text, Case Sensitive](#31-text-case-sensitive)
+    - [3.2. Text, Case-Insensitive](#32-text-case-insensitive)
+    - [3.3. Numbers](#33-numbers)
+    - [3.4. Combining queries](#34-combining-queries)
 
 
 ## 1. Подготовка проекта 
@@ -519,7 +519,7 @@ WHERE (
 ```
 
 
-## Q Objects:
+## 3. Q Objects:
 
 | Brand         | Model    | Year | Color  |
 | ------------- | -------- | ---- | ------ |
@@ -539,7 +539,7 @@ WHERE (
 | Subaru        | Legacy   | 2021 | Blue   |
 | Kia           | Forte    | 2020 | Red    |
 
-### Text, Case Sensitive 
+### 3.1 Text, Case Sensitive 
 
 ```python
 q_color = Q(Color__contains='W')        # Case Sensitive:               White
@@ -550,7 +550,7 @@ q_color = Q(Color__endswith='e')        # Case Sensitive & Ends With:   White, B
 q_color = Q(Color__regex=r'^(Wh|Bl)')   # Case Sensitive & Regex:       White, Blue, Black
 ```
 
-### Text, Case-Insensitive __i***
+### 3.2. Text, Case-Insensitive
 
 ```python
 # Color queries
@@ -561,7 +561,7 @@ q_color = Q(Color__iendswith='e')       # Case Insensitive & Ends With:     whit
 q_color = Q(Color__iregex=r'^(Wh|Bl)')  # Case Insensitive & Regex:         white, WHTIE, Blue, BLUE, Black, BLACK
 ```
 
-### Numbers
+### 3.3. Numbers
 
 ```python
 q_year  = Q(Year=2019)                  # Exact:                    Matches years exactly equal to 2019
@@ -580,7 +580,7 @@ q_year  = Q(Year__isnull=True)          # Is Null:                  Matches reco
 q_year  = Q(Year__isnull=False)         # Is Not Null:              Matches records where the Year is not null
 ```
 
-### Combining queries
+### 3.4. Combining queries
 
 ```python
 q_year  = Q(Year=2019) | Q(Year=2020)           # OR:   Matches years that are either 2019 or 2020
