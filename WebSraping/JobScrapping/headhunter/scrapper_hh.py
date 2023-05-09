@@ -24,10 +24,10 @@ class ScrapperHeadHunter:
         
         print(f"URL:\t{url}")
 
-        headers = {'User-Agent': fake.user_agent()}
-        response = requests.get(url, headers=headers).content
-        full_html = BeautifulSoup(response, 'html.parser')
-        jobs_block = full_html.find('main', {'class': 'vacancy-serp-content'})
+        headers     = {'User-Agent': fake.user_agent()}
+        response    = requests.get(url, headers=headers).content
+        full_html   = BeautifulSoup(response, 'html.parser')
+        jobs_block  = full_html.find('main', {'class': 'vacancy-serp-content'})
         if jobs_block is None:
             return None
         job_cards  = jobs_block.find_all('div', {'class': 'serp-item'})
@@ -60,7 +60,7 @@ class ScrapperHeadHunter:
             salary = salary.replace("\n", " ")
             salary = re.sub(r'\s+', ' ', salary)
             salary = salary.split(" ")
-            # print(f"Salary:\t{salary}")
+            
         except:
             return None, None, None
 
@@ -144,4 +144,3 @@ class ScrapperHeadHunter:
 
 
 
-# command exeption

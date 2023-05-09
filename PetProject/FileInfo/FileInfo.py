@@ -84,7 +84,10 @@ class GetInfo:
         :return: A dictionary containing the host information.
         '''
         fqdn    = socket.getfqdn()
-        ipaddr  = socket.gethostbyname(fqdn)
+        try:
+            ipaddr  = socket.gethostbyname(fqdn)
+        except socket.gaierror:
+            ipaddr = "Nodename nor servname provided, or not known"
 
         result = {
             "FQDN": fqdn,

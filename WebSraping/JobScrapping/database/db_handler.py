@@ -165,7 +165,7 @@ class HandlerDB:
 
 '''
 # Обратить внимание:
-# command exeption
+# command exсeption
 # Type Hint
 
 # Lib Typing
