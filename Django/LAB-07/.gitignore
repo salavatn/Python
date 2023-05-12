@@ -1,0 +1,7 @@
+
+#Environment Variables:
+.env
+
+# Python сache:
+__pycache__/
+*.pyc

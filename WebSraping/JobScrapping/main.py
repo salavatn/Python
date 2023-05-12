@@ -1,18 +1,12 @@
+from database.db_handler import HandlerDB
 from database.db_connection import session
 from headhunter import ScrapperHeadHunter
-from database.tables.salary import TableSalaryUSD
-from database.tables.cities import TableCity
-from database.tables.companies import TableCompany
-from database.tables.website import TableWebsite
-from database.tables.description import TableDescription
-from database.tables.jobs import TableJob
+from database.tables import TableCity, TableCompany, TableWebsite, TableSalaryUSD, TableDescription, TableJob
 import argparse
 import time
-from database.db_handler import HandlerDB
 
 
 db = HandlerDB()
-
 
 parser = argparse.ArgumentParser(description='Search vacancies on Job sites')
 parser.add_argument('--search', type=str, help='Search term', required=True)
@@ -23,7 +17,6 @@ args = parser.parse_args()
 search_job = args.search.replace(' ', '+')
 pages_job  = args.page
 
-
 table_city      = TableCity
 table_company   = TableCompany
 table_website   = TableWebsite
@@ -31,9 +24,10 @@ table_salary_usd= TableSalaryUSD
 table_desc      = TableDescription
 table_job       = TableJob
 
-
 scan_count = 0
+
 while True:
+    args
     hh = ScrapperHeadHunter(hh_query=search_job, hh_page=pages_job, hh_type=args.type)
     job_cards = hh.get_job_cards()
     if job_cards is None or len(job_cards) == 0:   
@@ -41,14 +35,13 @@ while True:
         break
 
     pages_job += 1
-
     for card in job_cards:
         scan_count += 1
         job_link    = hh.get_job_link(card)
         if "adsrv.hh.ru" in job_link:   
             continue
         
-        print(f"\n\n\n=============================================== Job #{scan_count}")
+        print(f"\n\n\n=============================================== Job Scanning #{scan_count}")
        
         job_id      = hh.get_job_id(card)
         check_job   = db.check_job(check_id=job_id)

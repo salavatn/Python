@@ -1,0 +1,7 @@
+django
+django-extensions
+psycopg2-binary
+python-dotenv
+faker
+requests
+beautifulsoup4

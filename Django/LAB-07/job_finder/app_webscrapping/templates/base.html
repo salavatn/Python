@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    
+    {% endblock %}
+    <meta charset="utf-8">
+    <title>{% block title %} My Django App {% endblock %}</title>
+</head>
+<body>
+    <header>
+        <div>Content</div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {% now "Y" %} My Django App. All rights reserved.</p>
+    </footer>
+</body>
+</html>
