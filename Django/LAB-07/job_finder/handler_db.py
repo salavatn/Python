@@ -5,6 +5,9 @@ import logging
 import logging.config
 from app_webscrapping.scrapper_hh import ScrapperHeadHunter
 
+# Import Q from django.db.models
+from django.db.models import Q
+
 
 # Set up Django environment
 os.environ.setdefault(key='DJANGO_SETTINGS_MODULE', value='job_finder.settings')
@@ -19,7 +22,7 @@ from app_db import models
 from currancy import Converter
 import datetime
 
-logger.debug('FILE: handler_scrapping.py')
+logger.debug('FILE: handler_db.py')
 
 
 class HandlerDB:
@@ -42,30 +45,41 @@ class HandlerDB:
             return False
 
 
-    def set_location(self, city: str, country: str = None) -> int:
+    def set_location(self, city: str, country: str) -> int:
         '''Table LOCATION: add City and return ID'''
-        data  = {'city': city, 'country': country}
+        logger.debug(f'HandlerDB.location: City={city}; Country={country};')
+        
         table = self.location.objects.filter(city=city).first()
+
         if table:
-            return table.id
+            logger.debug(f'HandlerDB.location: Exist in Database;')
         else:
+            data  = {'city': city, 'country': country}
             table = self.location(**data)
             table.save()
-            return table.id
+            logger.debug(f'HandlerDB.location: Added to Database;')
+        
+        return table.id
             
 
     def set_company(self, company: str, city: str, link: int) -> int:
         '''Table COMPANIES: add Company and return ID'''
 
-        data  = {'company': company, 'city': city, 'link': link}
+        logger.debug(f'HandlerDB.company: Company={company}; City={city}; URL={link};')
+
+        city_id = self.location.objects.filter(city=city).first()
+        # q_filter = Q(company=company) & Q(city=city)
         table = self.company.objects.filter(company=company).first()
 
         if table:
-            return table.id
+            logger.debug(f'HandlerDB.company: Exist in Database;')
         else:
+            data  = {'company': company, 'city': city_id, 'link': link}
             table = self.company(**data)
             table.save()
-            return table.id
+            logger.debug(f'HandlerDB.company: Added to Database;')
+
+        return table.id
         
         
     def set_description(self, description: str) -> int:
@@ -82,23 +96,21 @@ class HandlerDB:
             return table.id
             
 
-    def get_usd_salary(self, currency: str, minimum:int, maximum:int) -> Tuple[Optional[float], Optional[float]]: #currency: str, minimum:int, maximum:int
-
+    def get_usd_salary(self, currency: str, minimum:int, maximum:int) -> Tuple[Optional[float], Optional[float]]: 
         '''Table CURRENCIES: add Currency and return ID'''
         
-        date = datetime.datetime.now().strftime('%Y-%m-%d')
-
-
         # Checking #1: If currency is None, return None, None
         if currency is None:
-            logger.debug(f'Currency is None. Minimum: {minimum}, Maximum: {maximum}')
+            logger.debug(f'HandlerDB.currency: Current={currency}; Min={minimum}; Max={maximum};')
+            # logger.debug(f'Currency is None. Minimum: {minimum}, Maximum: {maximum}')
             return None, None
         
+        date  = datetime.datetime.now().strftime('%Y-%m-%d')
         table = self.currencies.objects.filter(currency=currency).first()
 
-        # Checking #2: If currency is USD, return minimum, maximum
+        # Checking #2: If currency is USD, return Min, Max
         if currency == 'USD':    
-            logger.debug(f'Currency is USD. Minimum: {minimum}, Maximum: {maximum}')
+            logger.debug(f'HandlerDB.currency: Current={currency}; Min={minimum}; Max={maximum};')
             return minimum, maximum
 
         # Checking #3: If currency is not USD, convert to USD
@@ -108,22 +120,34 @@ class HandlerDB:
             data  = {'currency': currency, 'usd': from_to_usd, 'date': date}
             table = self.currencies(**data)
             table.save()
-            logger.debug(f'New currency {currency} added to database. USD = {from_to_usd}')
+            logger.debug(f'HandlerDB.currency: Convering; 1 {currency} = {from_to_usd} USD;')
         else:
             from_to_usd = table.usd
-            logger.debug(f'Currency {currency} already exist in database. USD = {from_to_usd}')
+            # logger.debug(f'HandlerDB.currency: Current={currency}; Min={minimum}; Max={maximum};')
+            logger.debug(f'HandlerDB.currency: Exist in database; 1 {currency} = {from_to_usd} USD;')
 
+        # # Checking #4: If date is not today, update currency
+        # if table.date.strftime('%Y-%m-%d') != date:
+        #     converter    = Converter(currency=currency)
+        #     from_to_usd  = converter.get_convert()
+        #     table.usd    = from_to_usd
+        #     table.date   = date
+        #     table.save()
+        #     logger.debug(f'Currency {currency} updated in database. USD = {from_to_usd}')
+
+        logger.debug(f'HandlerDB.currency: Current={currency}; Min={minimum}; Max={maximum};')
 
         if minimum is not None: 
-            logger.debug(f'Converting {minimum} {currency} to USD')
+            # logger.debug(f'HandlerDB.currency: Min {minimum} {currency} to USD;')
             minimum = round((from_to_usd * minimum), 2)
 
 
         if maximum is not None: 
-            logger.debug(f'Converting {maximum} {currency} to USD')
+            # logger.debug(f'HandlerDB.currency: Max {maximum} {currency} to USD;')
             maximum = round((from_to_usd * maximum), 2)
 
-        logger.debug(f'Currency is USD. Minimum: {minimum} USD, Maximum: {maximum} USD.')
+        logger.debug(f'HandlerDB.currency: Current=USD; Min={minimum}; Max={maximum};')
+
 
         return minimum, maximum
 

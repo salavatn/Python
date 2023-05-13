@@ -72,12 +72,21 @@ for card in job_cards:
     logging.debug(f"Job Posted:     {job_posted}")
     logging.debug(f"")
 
-    time.sleep(4)
+    time.sleep(2)
 
     # Save to PostgreSQL
-    data = {'minimum': salary_min, 'maximum': salary_max, 'currency': currency}
-    logger.debug(f"Minimum: {salary_min}, Maximum: {salary_max}, Currency: {currency}")
-    minimum, maximum = db.get_usd_salary(**data)
-    logger.debug(f"Salary is {minimum} - {maximum} USD")
 
-    # exit()
+    # Table CURRENCIES: add Currency and Min/Max USD
+    data = {'minimum': salary_min, 'maximum': salary_max, 'currency': currency}
+    minimum, maximum = db.get_usd_salary(**data)
+
+
+    # Table LOCATION: add City and return ID
+    data = {'city': job_city, 'country': 'Unknown'}
+    city_id = db.set_location(**data)
+
+
+
+    # Table COMPANIES: add Company and return ID
+    data = {'company': company_name, 'city': job_city, 'link': company_link}
+    company_id = db.set_company(**data)
