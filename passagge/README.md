@@ -148,3 +148,31 @@ python client.py --brand 'GaBBana' --color "красный" --price 25000-26000 
 ```output
 2023-05-18 15:45:37:45S - root - INFO - {'_id': ObjectId('6465404fe4a9c7ea27f615d9'), 'title': 'трусы', 'sku': 'O2B23T-FSA4T', 'color': 'HSYJN/красный леопард', 'brand': 'Dolce&Gabbana', 'sex': 'Ж', 'material': '96% шелк, 4% эластан', 'size_table_type': 'Белье Ж', 'root_category': 'Одежда без маркировки', 'fashion_season': '2023-1', 'fashion_collection': 'Dolce&Gabbana UW Donna SS 2023', 'fashion_collection_inner': 'Dolce&Gabbana Womens UW Precollection', 'manufacture_country': 'ИТАЛИЯ', 'category': 'трусы', 'price': 25290, 'discount_price': 25290, 'in_the_sale': False, 'leftovers': [{'size': '1', 'count': 1, 'price': 25290}, {'size': '2', 'count': 2, 'price': 25290}]}
 ```
+
+
+
+## Part-04
+
+* Добавил фильтр по категорию ("root_category": "Косметика")
+* Сформирована таблица для отображения множества записей по фильтру
+
+```
+(venv) salavat@Linux passagge % python client.py --sku 47268                       
+
+2023-05-18 17:27:21:27S - root - INFO - Connected successfully to MongoDB!
+2023-05-18 17:27:21:27S - root - INFO - Output format: table
+2023-05-18 17:27:21:27S - root - INFO - Filter: {'sku': re.compile('47268', re.IGNORECASE)}
+                                                                                                                                                                     
+  Title     SKU            Color             Brand   Size Table Type   Root Category          Country      Category   Price   Leftovers                              
+ ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  Ботинки   47268-A        01-black/черный   Bronx   Обувь Ж Россия    Обувь без маркировки   ПОРТУГАЛИЯ   ботинки    18330   Size: 42,  Count: 0,  Price: 8630 RUB  
+  Ботинки   47268-A-01     01/черный         Bronx   Обувь Ж Россия    Обувь без маркировки   ПОРТУГАЛИЯ   ботинки    19360   Size: 36,  Count: 1,  Price: 8070 RUB  
+                                                                                                                              Size: 39,  Count: 2,  Price: 8070 RUB  
+  Ботинки   47268-A-3104   3104/белый        Bronx   Обувь Ж Россия    Обувь без маркировки   ПОРТУГАЛИЯ   ботинки    20710   Size: 36,  Count: 0,  Price: 8630 RUB  
+                                                                                                                              Size: 37,  Count: 1,  Price: 8630 RUB  
+                                                                                                                              Size: 38,  Count: 1,  Price: 8630 RUB  
+                                                                                                                              Size: 39,  Count: 2,  Price: 8630 RUB  
+                                                                                                                              Size: 40,  Count: 1,  Price: 8630 RUB  
+```                                                                                                           
+
+* Разбор задач (ТЗ)
