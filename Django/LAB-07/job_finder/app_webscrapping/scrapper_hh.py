@@ -3,11 +3,14 @@ from bs4    import BeautifulSoup
 from typing import List, Dict, Union, Optional, Any, Tuple, Callable, TypeVar, Generic, Sequence, Iterable, Mapping, Set, Deque, Iterator, NamedTuple, overload, cast, no_type_check
 import requests
 import re
-
+import logging
+import logging.config
 
 import datetime
 import locale
 
+logging.config.fileConfig('logging.conf')
+logger = logging.getLogger()
 
 
 fake = Faker()
@@ -150,7 +153,12 @@ class ScrapperHeadHunter:
         else:
             return None
         full_html = BeautifulSoup(html, 'html.parser')
-        job_published = full_html.find('p', {'class': 'vacancy-creation-time-redesigned'}).text.strip()
+        job_published = full_html.find('p', {'class': 'vacancy-creation-time-redesigned'})
+        if job_published is None:
+            job_published = full_html.find('p', {'class': 'vacancy-creation-time'})
+            logger.debug(f'ScrapperHH.published: Used old style class="vacancy-creation-time"')
+        job_published = job_published.text.strip()
+        logger.debug(f'ScrapperHH.published: {job_published}')
         locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
         date_string = job_published.split('опубликована ')[1].split(' в ')[0].strip() # 12 июля 2021
         date = datetime.datetime.strptime(date_string, '%d %B %Y')

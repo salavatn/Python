@@ -1,5 +1,6 @@
 import os
 import django
+from typing import Optional, List, Dict, Tuple, Union, Any, Callable, TypeVar, Generic, Type, cast, overload
 import time
 import logging
 import logging.config
@@ -17,7 +18,7 @@ django.setup()
 logging.config.fileConfig('logging.conf')
 logger = logging.getLogger()
 
-from typing import Optional, List, Dict, Tuple, Union, Any, Callable, TypeVar, Generic, Type, cast, overload
+from typing import Optional, List, Dict, Tuple, Union, Any, Callable, TypeVar, Generic, Type, cast, overload, Sequence, Iterable, Mapping, Set, Deque, Iterator, NamedTuple, no_type_check
 from app_db import models
 from currancy import Converter
 import datetime
@@ -40,8 +41,10 @@ class HandlerDB:
         '''Table VACANCIES: check if job is already in database'''
         table = self.vacancy.objects.filter(job_id=check_id).first()
         if table:
+            logger.debug(f'HandlerDB.checking: Exist in Database; Job ID={check_id};')
             return True
         else:
+            logger.debug(f'HandlerDB.checking: Not exist in Database; Job ID={check_id};')
             return False
 
 
@@ -64,11 +67,8 @@ class HandlerDB:
 
     def set_company(self, company: str, city: str, link: int) -> int:
         '''Table COMPANIES: add Company and return ID'''
-
         logger.debug(f'HandlerDB.company: Company={company}; City={city}; URL={link};')
-
         city_id = self.location.objects.filter(city=city).first()
-        # q_filter = Q(company=company) & Q(city=city)
         table = self.company.objects.filter(company=company).first()
 
         if table:
@@ -84,16 +84,18 @@ class HandlerDB:
         
     def set_description(self, description: str) -> int:
         '''Table DESCRIPTIONS: add Description and return ID'''
-
-        data  = {'text': description}
+        logger.debug(f'HandlerDB.description: Description={description[0:35]}...;')
+        
         table = self.description.objects.filter(text=description).first()
 
         if table:
-            return table.id
-        else: 
+            logger.debug(f'HandlerDB.description: Exist in Database;')
+        else:
+            data  = {'text': description}
             table = self.description(**data)
             table.save()
-            return table.id
+            logger.debug(f'HandlerDB.description: Added to Database;')
+        return table.id
             
 
     def get_usd_salary(self, currency: str, minimum:int, maximum:int) -> Tuple[Optional[float], Optional[float]]: 
@@ -152,21 +154,58 @@ class HandlerDB:
         return minimum, maximum
 
 
+    '''
+    What to do:
+    1. Add job source to database (table RESOURCE)
+    2. Add job to database (table VACANCIES)
+    3. Check all tables in database
+    4. Check scanning all pages in hh.ru
+    '''
 
 
+    def set_resource(self, url: str) -> int:
+        '''Table RESOURCE: add Resource and return ID'''
+        table = self.resouce.objects.filter(link=url).first()
 
-    # def get_website_id(self, set_url):
-    #     table   = session.query(self.WEBSITE)
-    #     record  = table.filter(self.WEBSITE.url == set_url).first()
-
-    #     if not record:
-    #         row = self.WEBSITE(url=set_url)
-    #         session.add(row)
-    #         session.commit()
-    #         return row.id
+        if table:
+            logger.debug(f'HandlerDB.resource: Exist in Database; URL={url};')
+        else:
+            data  = {'link': url}
+            table = self.resouce(**data)
+            table.save()
+            logger.debug(f'HandlerDB.resource: Added to Database; URL={url};')
         
-    #     return record.id
+        return table.id
+    
+
+    def set_vacancy(self, **kwargs) -> int:
+
+        table = self.vacancy.objects.filter(job_id=kwargs['job_id']).first()
+
+        if table:
+            logger.debug(f'HandlerDB.vacancy: Exist in Database; Job ID={kwargs["job_id"]};')
+        else:
+            data  = {
+                'job_id':    kwargs['job_id'],
+                'job_title': kwargs['job_title'],
+                'job_link':  kwargs['job_link'],
+                'salary_min_usd': kwargs['salary_min_usd'],
+                'salary_max_usd': kwargs['salary_max_usd'],
+                'salary_min':   kwargs['salary_min'],
+                'salary_max':   kwargs['salary_max'],
+                'currency':  kwargs['currency'],
+                'city_id':      kwargs['city'],
+                'company_id':   kwargs['company'],
+                'resource_id':  kwargs['resource'],
+                'desc_id':      kwargs['desc'],
+                'published':    kwargs['published']
+            }
+            table = self.vacancy(**data)
+            table.save()
+            logger.debug(f'HandlerDB.vacancy: Added to Database; Job ID={kwargs["job_id"]};')
         
+        return table.id
+
     # def add_job(self, set_id, set_title, set_link, set_min, set_max, set_usd_min, set_usd_max,
     #                   set_currency_id, set_city_id, set_company_id, set_desc_id, set_website_id):
     #     table = session.query(self.JOB)
