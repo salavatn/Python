@@ -1,17 +1,21 @@
-Отчет каждые 2 часа:
-1) Формирование структуры проекта
-2) Анализ JSON файла и выбор в качестве Database - MongoDB 
-3) Регистрация и изучение работы с MongoDB (first time)
-4) Загрузил в MongoDB содержимое data.json:
+# Report every 2 hours:
+
+## Part-01
+* Формирование структуры проекта
+* Анализ JSON файла и выбор в качестве Database - MongoDB 
+* Регистрация и изучение работы с MongoDB (first time)
+* Загрузил в MongoDB содержимое data.json:
 ```log
 2023-05-18 00:03:07:03S - root - INFO - Connected successfully to MongoDB!
 2023-05-18 00:03:07:03S - root - INFO - Count of documents in collection: 20625
 ```
-5) Изучение на MongoDB фильтры:
-   - Получить первую запись по фильтру `documents = collection.find_one(filter)`
-   - Получить запись по двум параметрам   `filter = {"title": "юбка", "price": 37500}`
 
-6) Анализ JSON + [Боевыми данными](https://ppassage.com/product/iubka-acne-studios-fn-wn-skir000099-oranzhevyi/)
+* Изучение фильтров в MongoDB:
+   - Сформировать фильтр по двум параметрам   `filter = {"title": "юбка", "price": 37500}`
+   - Получить первую запись по фильтру `documents = collection.find_one(filter)`
+
+
+* Анализ JSON + [Боевые данные](https://ppassage.com/product/iubka-acne-studios-fn-wn-skir000099-oranzhevyi/):
 
 ```python
 {
@@ -42,20 +46,20 @@
 ]}
 ```
 
-Имеются фильтры:
-- Все {title}
-- Все {title} + {brand}
-- Все товары {brand}
+* На веб-сайте имеются фильтры:
+  - Все `{title}`
+  - Все `{title}` + `{brand}`
+  - Все товары `{brand}`
 
-Похожие товары:
-- {title} + {brand}
-
-
+* Похожие товары:
+  - `{title}` + `{brand}`
 
 
 
-Отчет каждые 2 часа:
-1) Cформировал Client.py, по фильтру выдает первый результат:
+
+
+## Part-02
+1) Cформировал `Client.py`, получаем первый результат:
 ```sh
 2023-05-18 11:21:04:21S - root - INFO - Connected successfully to MongoDB!
                                                                     
@@ -83,29 +87,36 @@
   Leftovers                  ♦ Size: S, Count: 0, Price: 23630 RUB  
 ```
 
-2) Знакомство с задание - какие фильтры по полям необходимо использовать
+* Знакомство с задание - какие фильтры по полям необходимо использовать
 
 
 
 
 
-Отчет каждые 2 часа:
-1) Добавил поиск данных по фильтрам
-   1) • Поискпоназванию   =  title    DONE
-   2) • Артикул           =  sku      DONE
-   3) • Цвет              =  color    DONE
-   4) • Бренд             =  brand    DONE
-   5) • Размер            =  size     DONE
-   6) • Диапазонцен       =  price    DONE
-2) Возможность отображать данные в JSON и Табличном виде
-3) Примеры:
 
+## Part-03
+
+* Добавил поиск данных по фильтрам
+```
+   1) Поискпоназванию   =  title    DONE
+   2) Артикул           =  sku      DONE
+   3) Цвет              =  color    DONE
+   4) Бренд             =  brand    DONE
+   5) Размер            =  size     DONE
+   6) Диапазонцен       =  price    DONE
+```
+
+* Возможность отображать данные в **JSON** и **Табличном** виде
+
+**Примеры:**
+
+* Отображение в табличном виде [by default]
 ```sh
 (venv) salavat@Linux passagge % python client.py --brand 'GaBBana' --color "красный" --price 25000-26000
 ```
 ```output                                                                                             
   Title                      Value                                                           
- ─────────────────────────────────────────────────────────────────────────────────────────── 
+ ────────────────────────────────────────────────────────────────────────────
   ID                         6465404fe4a9c7ea27f615d9                                        
   Title                      Трусы                                                           
   SKU                        O2B23T-FSA4T                                                    
@@ -129,7 +140,7 @@
 ```
 
 --- 
-
+* Отображение в JSON формате
 ```sh
 python client.py --brand 'GaBBana' --color "красный" --price 25000-26000 --format json
 ```
