@@ -176,3 +176,61 @@ python client.py --brand 'GaBBana' --color "красный" --price 25000-26000 
 ```                                                                                                           
 
 * Разбор задач (ТЗ)
+
+
+
+## Part-05
+
+* Разбор и анализ задач (ТЗ)
+
+python client.py --sku "GY6IET-FUFJR"
+python client.py --sku "GH590A-FUFJR" 
+
+```
+(venv) salavat@Linux passagge % python client.py --sku "GH590A-FUFJR"
+2023-05-18 18:07:48:07S - root - INFO - Connected successfully to MongoDB!
+2023-05-18 18:07:48:07S - root - INFO - Output format: table
+2023-05-18 18:07:48:07S - root - INFO - Filter: {'sku': re.compile('GH590A-FUFJR', re.IGNORECASE)}
+2023-05-18 18:07:48:07S - root - INFO - Output format: table
+2023-05-18 18:07:48:07S - root - INFO - Color: W0800/белый
+                                                                                               
+  Title                      Value                                                             
+ ───────────────────────────────────────────────────────────────────────────────────────────── 
+  ID                         6465404fe4a9c7ea27f5ec13                                          
+  Title                      Кепка                                                             
+  SKU                        GH590A-FUFJR-1                                                    
+  Color                      Белый                                                             
+  Brand                      Dolce&Gabbana                                                     
+  Gender                     М                                                                 
+  Material                   97% Хлопок, 3% Эластан                                            
+  Size Table Type            Головные уборы                                                    
+  Root Category              Одежда аксессуары                                                 
+  Fashion Season             2022-1                                                            
+  Fashion Collection         Dolce&Gabbana Accessori Uomo SS 2022                              
+  Fashion Collection Inner   Dolce&Gabbana Mens Accessories Precollection                      
+  Country                    ИТАЛИЯ                                                            
+  Category                   Кепка                                                             
+  Price                      31610 RUB                                                         
+  Discount                   18730 RUB                                                         
+  Sale                       True                                                              
+  Leftovers                  ♦ Size: 57,     Count: 0,       Price: 18730 RUB                  
+  Leftovers                  ♦ Size: 58,     Count: 0,       Price: 18730 RUB                  
+  Leftovers                  ♦ Size: 59,     Count: 0,       Price: 18730 RUB                  
+  Leftovers                  ♦ Size: 60,     Count: 0,       Price: 18730 RUB                  
+  URL Link:                  https://ppassage.com/women/catalog/?search=GH590A-FUFJR-1&page=1  
+                                                                                               
+                                                                                                                                                                           
+  Title   SKU              Color               Brand           Size Table Type   Root Category       Country    Category   Price   Leftovers                               
+ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  Кепка   GH590A-FUFJR-1   W0800/белый         Dolce&Gabbana   Головные уборы    Одежда аксессуары   ИТАЛИЯ     кепка      31610   Size: 57,  Count: 0,  Price: 18730 RUB  
+                                                                                                                                   Size: 58,  Count: 0,  Price: 18730 RUB  
+                                                                                                                                   Size: 59,  Count: 0,  Price: 18730 RUB  
+                                                                                                                                   Size: 60,  Count: 0,  Price: 18730 RUB  
+  Кепка   GH590A-FUFJR-R   B0665/темно-синий   Dolce&Gabbana   Головные уборы    Одежда аксессуары   ИТАЛИЯ     кепка      26750   Size: 58,  Count: 1,  Price: 26750 RUB  
+                                                                                                                                   Size: 59,  Count: 0,  Price: 26750 RUB  
+                                                                                                                                   Size: 60,  Count: 0,  Price: 26750 RUB  
+  Кепка   GH590A-FUFJR-R   N0000/черный        Dolce&Gabbana   Головные уборы    Одежда аксессуары   ИТАЛИЯ     кепка      26750   Size: 58,  Count: 0,  Price: 26750 RUB  
+                                                                                                                                   Size: 59,  Count: 0,  Price: 26750 RUB  
+                                                                                                                                   Size: 60,  Count: 0,  Price: 26750 RUB  
+                                                                                                            
+```                                                                                                            
