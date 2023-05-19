@@ -268,7 +268,7 @@ options:
 ---
 
 ```s
-(venv) salavat@Linux passagge % python mongodb_client.py --title джИнсЫ  --color 'сИнИй' --price 
+(venv) salavat@Linux passagge % python mongodb_client.py --title джИнсЫ  --color 'сИнИй' --price 20500-34800
 
 20500-34800 --type " м" --country ТУНИС
 2023-05-19 12:19:23:19S - root - INFO - Connected successfully to MongoDB!
@@ -322,3 +322,80 @@ options:
   Leftovers                  ♦ Size: 36,     Count: 0,       Price: 21430 RUB                
   URL Link:                  https://ppassage.com/women/catalog/?search=PJ184-CT2910&page=1  
 ```
+
+
+## Part-07
+* Refactoring
+* Added optional Leftover in table
+
+```s
+(venv) salavat@Linux passagge % python mongodb_client.py --country Турция --color Синий
+2023-05-19 16:20:21:20S - root - INFO - Connected successfully to MongoDB!
+2023-05-19 16:20:21:20S - root - INFO - Start mongodb_client.py
+                                                                                                                                                             
+             ID              Title    SKU               Color               Brand               Type             Category           Country       Price      
+ ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  6465404fe4a9c7ea27f5e531   Джинсы   Q70252012Z        23L/Синий           By Malene Birger    Джинсы Ж   Одежда без маркировки     Турция   23 720,00 RUB  
+  6465404fe4a9c7ea27f5e516   Джинсы   A-06-1100-405-1   BLUE/синий          Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   26 030,00 RUB  
+  6465404fe4a9c7ea27f5e5ea   Джинсы   VH781-ZZ307       K09/Синий           Ermenegildo Zegna   Джинсы М   Одежда без маркировки     Турция   3 080,00 RUB   
+  6465404fe4a9c7ea27f5e678   Джинсы   5000006513        DENIM/Синий         Ksubi               Джинсы Ж   Одежда без маркировки     Турция   31 760,00 RUB  
+  6465404fe4a9c7ea27f5e67b   Джинсы   5000006829        DENIM/Синий         Ksubi               Джинсы Ж   Одежда без маркировки     Турция   28 960,00 RUB  
+  6465404fe4a9c7ea27f5e700   Джинсы   M1104207          G03/синий           Theory              Джинсы Ж   Одежда без маркировки     Турция   23 520,00 RUB  
+  6465404fe4a9c7ea27f5e51d   Джинсы   A-06-3089-405     DARKBLUE/Синий      Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   34 500,00 RUB  
+  6465404fe4a9c7ea27f5e66d   Джинсы   5000004989        DENIM/темно-синий   Ksubi               Джинсы М   Одежда без маркировки     Турция   16 290,00 RUB  
+  6465404fe4a9c7ea27f5e51a   Джинсы   A-06-1113-440     WASHED-BLUE/Синий   Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   41 400,00 RUB  
+  6465404fe4a9c7ea27f5e51b   Джинсы   A-06-1113-477     BLUE/синий          Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   28 290,00 RUB
+```
+
+
+```s
+(venv) salavat@Linux passagge % python mongodb_client.py --country Турция --color Синий --size show
+2023-05-19 16:20:48:20S - root - INFO - Connected successfully to MongoDB!
+2023-05-19 16:20:48:20S - root - INFO - Start mongodb_client.py
+                                                                                                                                                                                                   
+             ID              Title    SKU               Color               Brand               Type             Category           Country       Price                                  Leftover  
+ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  6465404fe4a9c7ea27f5e531   Джинсы   Q70252012Z        23L/Синий           By Malene Birger    Джинсы Ж   Одежда без маркировки     Турция   23 720,00 RUB    9 890,00 RUB,  Size: 26,  Count: 0  
+                                                                                                                                                               9 890,00 RUB,  Size: 27,  Count: 1  
+                                                                                                                                                               9 890,00 RUB,  Size: 30,  Count: 0  
+  6465404fe4a9c7ea27f5e516   Джинсы   A-06-1100-405-1   BLUE/синий          Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   26 030,00 RUB   26 030,00 RUB,  Size: 25,  Count: 1  
+                                                                                                                                                              26 030,00 RUB,  Size: 26,  Count: 1  
+                                                                                                                                                              26 030,00 RUB,  Size: 27,  Count: 1  
+                                                                                                                                                              26 030,00 RUB,  Size: 28,  Count: 0  
+                                                                                                                                                              26 030,00 RUB,  Size: 29,  Count: 1  
+                                                                                                                                                              26 030,00 RUB,  Size: 30,  Count: 1  
+                                                                                                                                                              26 030,00 RUB,  Size: 31,  Count: 1  
+  6465404fe4a9c7ea27f5e5ea   Джинсы   VH781-ZZ307       K09/Синий           Ermenegildo Zegna   Джинсы М   Одежда без маркировки     Турция   3 080,00 RUB     3 080,00 RUB,  Size: 30,  Count: 0  
+  6465404fe4a9c7ea27f5e678   Джинсы   5000006513        DENIM/Синий         Ksubi               Джинсы Ж   Одежда без маркировки     Турция   31 760,00 RUB   16 280,00 RUB,  Size: 25,  Count: 0  
+  6465404fe4a9c7ea27f5e67b   Джинсы   5000006829        DENIM/Синий         Ksubi               Джинсы Ж   Одежда без маркировки     Турция   28 960,00 RUB   14 810,00 RUB,  Size: 24,  Count: 0  
+                                                                                                                                                              14 810,00 RUB,  Size: 26,  Count: 1  
+                                                                                                                                                              14 810,00 RUB,  Size: 27,  Count: 1  
+                                                                                                                                                              14 810,00 RUB,  Size: 28,  Count: 1  
+                                                                                                                                                              14 810,00 RUB,  Size: 29,  Count: 2  
+                                                                                                                                                              14 810,00 RUB,  Size: 30,  Count: 2  
+                                                                                                                                                              14 810,00 RUB,  Size: 31,  Count: 1  
+  6465404fe4a9c7ea27f5e700   Джинсы   M1104207          G03/синий           Theory              Джинсы Ж   Одежда без маркировки     Турция   23 520,00 RUB   23 520,00 RUB,  Size: 25,  Count: 1  
+                                                                                                                                                              23 520,00 RUB,  Size: 26,  Count: 1  
+                                                                                                                                                              23 520,00 RUB,  Size: 27,  Count: 1  
+                                                                                                                                                              23 520,00 RUB,  Size: 28,  Count: 1  
+                                                                                                                                                              23 520,00 RUB,  Size: 29,  Count: 1  
+  6465404fe4a9c7ea27f5e51d   Джинсы   A-06-3089-405     DARKBLUE/Синий      Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   34 500,00 RUB   12 840,00 RUB,  Size: 28,  Count: 1  
+                                                                                                                                                              12 840,00 RUB,  Size: 29,  Count: 1  
+                                                                                                                                                              12 840,00 RUB,  Size: 30,  Count: 1  
+                                                                                                                                                              12 840,00 RUB,  Size: 31,  Count: 1  
+  6465404fe4a9c7ea27f5e66d   Джинсы   5000004989        DENIM/темно-синий   Ksubi               Джинсы М   Одежда без маркировки     Турция   16 290,00 RUB   16 290,00 RUB,  Size: 32,  Count: 2  
+                                                                                                                                                              16 290,00 RUB,  Size: 33,  Count: 2  
+                                                                                                                                                              16 290,00 RUB,  Size: 34,  Count: 2  
+                                                                                                                                                              16 290,00 RUB,  Size: 36,  Count: 1  
+  6465404fe4a9c7ea27f5e51a   Джинсы   A-06-1113-440     WASHED-BLUE/Синий   Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   41 400,00 RUB   12 840,00 RUB,  Size: 25,  Count: 0  
+                                                                                                                                                              12 840,00 RUB,  Size: 26,  Count: 0  
+                                                                                                                                                              12 840,00 RUB,  Size: 28,  Count: 0  
+                                                                                                                                                              12 840,00 RUB,  Size: 30,  Count: 0  
+  6465404fe4a9c7ea27f5e51b   Джинсы   A-06-1113-477     BLUE/синий          Anine Bing          Джинсы Ж   Одежда без маркировки     Турция   28 290,00 RUB   28 290,00 RUB,  Size: 25,  Count: 1  
+                                                                                                                                                              28 290,00 RUB,  Size: 26,  Count: 1  
+                                                                                                                                                              28 290,00 RUB,  Size: 27,  Count: 1  
+                                                                                                                                                              28 290,00 RUB,  Size: 28,  Count: 1  
+                                                                                                                                                              28 290,00 RUB,  Size: 29,  Count: 1  
+                                                                                                                                                              28 290,00 RUB,  Size: 30,  Count: 1  
+                                                                                                                                                              28 290,00 RUB,  Size: 31,  Count: 1  
+                                                                                                                    ```
