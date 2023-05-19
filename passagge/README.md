@@ -1,4 +1,4 @@
-# Report every 2 hours:
+# Day Preparing. Report every 2 hours:
 
 ## Part-01
 * Формирование структуры проекта
@@ -55,7 +55,7 @@
   - `{title}` + `{brand}`
 
 
-
+# Day 1. Report every 2 hours:
 
 
 ## Part-02
@@ -233,4 +233,92 @@ python client.py --sku "GH590A-FUFJR"
                                                                                                                                    Size: 59,  Count: 0,  Price: 26750 RUB  
                                                                                                                                    Size: 60,  Count: 0,  Price: 26750 RUB  
                                                                                                             
-```                                                                                                            
+```                                                                                                     
+
+# Day 2
+
+## Part-06
+* Refactoring of project structure 
+* Refactoring MongoDB Client
+
+**Result:**
+
+```s
+(venv) salavat@Linux passagge % python mongodb_client.py --help                                                                                     
+2023-05-19 12:22:19:22S - root - INFO - Connected successfully to MongoDB!
+usage: ppassage [-h] [--title TITLE] [--sku SKU] [--color COLOR] [--brand BRAND] [--type TYPE] [--category CATEGORY] [--country COUNTRY] [--price PRICE] [--output {json,table}] [--limit {one,all}]
+
+Search products
+
+options:
+  -h, --help            show this help message and exit
+  --title TITLE         Product title
+  --sku SKU             Product SKU
+  --color COLOR         Product color
+  --brand BRAND         Product brand
+  --type TYPE           Product type
+  --category CATEGORY   Product category
+  --country COUNTRY     Product country
+  --price PRICE         Product price
+  --output {json,table}
+                        Output format
+  --limit {one,all}     Show limit count
+```
+
+---
+
+```s
+(venv) salavat@Linux passagge % python mongodb_client.py --title джИнсЫ  --color 'сИнИй' --price 
+
+20500-34800 --type " м" --country ТУНИС
+2023-05-19 12:19:23:19S - root - INFO - Connected successfully to MongoDB!
+2023-05-19 12:19:23:19S - root - INFO - Start mongodb_client.py
+2023-05-19 12:19:23:19S - root - INFO - FORMAT: table, LIMIT: 10
+                                                                                                                                                            
+             ID              Title    SKU                 Color                        Brand   Type             Category           Country           Price  
+ ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  6465404fe4a9c7ea27f5e50c   Джинсы   PJ184-CT2910        13114/Синий   Aeronautica Militare   Джинсы М   Одежда без маркировки      ТУНИС   21 430,00 RUB  
+  6465404fe4a9c7ea27f5e625   Джинсы   21APA0867-21A018H   30BU/Синий           Isabel Marant   Джинсы М   Одежда без маркировки      ТУНИС   29 380,00 RUB 
+```
+
+--- 
+
+```s
+(venv) salavat@Linux passagge % python mongodb_client.py --title джИнсЫ  --color 'сИнИй' --price 20500-34800 --type " м" --country ТУНИС --output json
+2023-05-19 12:20:13:20S - root - INFO - Connected successfully to MongoDB!
+2023-05-19 12:20:13:20S - root - INFO - Start mongodb_client.py
+2023-05-19 12:20:13:20S - root - INFO - FORMAT: json, LIMIT: 10
+2023-05-19 12:20:13:20S - root - INFO - {'_id': ObjectId('6465404fe4a9c7ea27f5e50c'), 'title': 'джинсы', 'sku': 'PJ184-CT2910', 'color': '13114/Синий', 'brand': 'Aeronautica Militare', 'sex': 'М', 'material': ' 98% хлопок, 2% эластан', 'size_table_type': 'Джинсы М', 'root_category': 'Одежда без маркировки', 'fashion_season': '2021-2', 'fashion_collection': 'Aeronautica Militare Uomo FW 2021', 'fashion_collection_inner': 'Aeronautica Militare Mens RTW Fashion', 'manufacture_country': 'ТУНИС', 'category': 'джинсы', 'price': 21430, 'discount_price': 21430, 'in_the_sale': False, 'leftovers': [{'size': '36', 'count': 0, 'price': 21430}]}
+2023-05-19 12:20:13:20S - root - INFO - {'_id': ObjectId('6465404fe4a9c7ea27f5e625'), 'title': 'джинсы', 'sku': '21APA0867-21A018H', 'color': '30BU/Синий', 'brand': 'Isabel Marant', 'sex': 'М', 'material': ' 100% хлопок', 'size_table_type': 'Джинсы М', 'root_category': 'Одежда без маркировки', 'fashion_season': '2021-2', 'fashion_collection': 'Isabel Marant Uomo FW 2021', 'fashion_collection_inner': 'Isabel Marant mens rtw precollection', 'manufacture_country': 'ТУНИС', 'category': 'джинсы', 'price': 29380, 'discount_price': 17140, 'in_the_sale': True, 'leftovers': [{'size': '31', 'count': 1, 'price': 17140}, {'size': '32', 'count': 1, 'price': 17140}, {'size': '33', 'count': 0, 'price': 17140}, {'size': '34', 'count': 1, 'price': 17140}]}
+```
+
+---
+
+```s
+(venv) salavat@Linux passagge % python mongodb_client.py --title джИнсЫ  --color 'сИнИй' --price 20500-34800 --type " м" --country ТУНИС --limit one      
+2023-05-19 12:21:30:21S - root - INFO - Connected successfully to MongoDB!
+2023-05-19 12:21:30:21S - root - INFO - Start mongodb_client.py
+2023-05-19 12:21:30:21S - root - INFO - FORMAT: table, LIMIT: one
+                                                                                             
+  Title                      Value                                                           
+ ─────────────────────────────────────────────────────────────────────────────────────────── 
+  ID                         6465404fe4a9c7ea27f5e50c                                        
+  Title                      Джинсы                                                          
+  SKU                        PJ184-CT2910                                                    
+  Color                      Синий                                                           
+  Brand                      Aeronautica Militare                                            
+  Gender                     М                                                               
+  Material                   98% Хлопок, 2% Эластан                                          
+  Size Table Type            Джинсы М                                                        
+  Root Category              Одежда без маркировки                                           
+  Fashion Season             2021-2                                                          
+  Fashion Collection         Aeronautica Militare Uomo FW 2021                               
+  Fashion Collection Inner   Aeronautica Militare Mens RTW Fashion                           
+  Country                    ТУНИС                                                           
+  Category                   Джинсы                                                          
+  Price                      21430 RUB                                                       
+  Discount                   21430 RUB                                                       
+  Sale                       False                                                           
+  Leftovers                  ♦ Size: 36,     Count: 0,       Price: 21430 RUB                
+  URL Link:                  https://ppassage.com/women/catalog/?search=PJ184-CT2910&page=1  
+```
