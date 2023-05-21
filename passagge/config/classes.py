@@ -1,6 +1,8 @@
 from config.settings import logger, re, locale, Union, Dict, Any
 from config.settings import Table, box, console
 
+
+
 class Converting:
     '''Converting data for flexible search'''
 
@@ -10,18 +12,14 @@ class Converting:
 
     def sensitive_off(self, keywords: str) -> re.Pattern:
         '''Converting keywords to insensitive search'''
+        # if "|" in keywords:
+        #     keywords = list(keywords.split('|')).strip()
+        #     filter = {"$or": [{"color": "Red"}, {"color": "Blue"}]}
+        #     logger.debug(f'Converter.sensitive_off: {keywords}')
         data = re.compile(keywords, re.IGNORECASE)
         logger.debug(f'Converter.sensitive_off: {data}')
+
         return data
-    
-    '''    
-    def check_size(self, value: str):
-        if isinstance(value, str):
-            value = self.sensitive_off(value)
-            return value
-        elif isinstance(value, int):
-            return value
-    '''
     
     
     def price_range(self, price: str) -> Union[int, Dict[str, int]]:
@@ -62,7 +60,7 @@ class Converting:
             return 'table'
 
 
-class MongoDB:
+class ClientMongoDB:
     '''MongoDB class for working with MongoDB'''
     def __init__(self, converter, collection):
         self.converter = converter
@@ -76,7 +74,7 @@ class MongoDB:
         # FILTER for MongoDB:
         filter = {}
         if args.title:    filter['title']   = self.converter.sensitive_off(args.title)
-        if args.sku:      filter['sku']     = self.converter.sensitive_off(args.sku)
+        if args.sku:      filter['sku']     = self.converter.sensitive_off(args.sku)        
         if args.color:    filter['color']   = self.converter.sensitive_off(args.color)
         if args.brand:    filter['brand']   = self.converter.sensitive_off(args.brand)
         if args.price:    filter['price']   = self.converter.price_range(args.price)
@@ -96,6 +94,7 @@ class MongoDB:
 
         return filter, output_format, output_limit, output_size
 
+
     def get_limit(self, limit: Union[str, int]) -> Union[str, int]:
         if limit == 'all':
             logger.debug('MongoDB.get_limit: Limit=all')
@@ -105,8 +104,9 @@ class MongoDB:
             logger.debug(f'MongoDB.get_limit: Limit={limit}')
             return limit
 
+
     def show_record(self, filter: dict, format: str) -> None:
-        # Get first record from collection by filter
+        '''Get first record from collection by filter'''
 
         table   = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE)
         record  = self.collection.find_one(filter)
@@ -134,31 +134,32 @@ class MongoDB:
 
 
         # Add a row for each info type
-        table.add_row("ID",     str(record['_id']))
-        table.add_row("Title",  str(record['title'].title()))
-        table.add_row("SKU",    str(record['sku']))
-        table.add_row("Color",  color)
-        table.add_row("Brand",  str(record['brand']))
-        table.add_row("Gender", str(record['sex']))
-        table.add_row("Material",           str(record['material']).strip().title())
-        table.add_row("Size Table Type",    str(record['size_table_type']))
-        table.add_row("Root Category",      str(record['root_category']))
-        table.add_row("Fashion Season ",    str(record['fashion_season']))
+        table.add_row("ID",                         str(record['_id']))
+        table.add_row("Title",                      str(record['title'].title()))
+        table.add_row("SKU",                        str(record['sku']))
+        table.add_row("Color",                      color)
+        table.add_row("Brand",                      str(record['brand']))
+        table.add_row("Gender",                     str(record['sex']))
+        table.add_row("Material",                   str(record['material']).strip().title())
+        table.add_row("Size Table Type",            str(record['size_table_type']))
+        table.add_row("Root Category",              str(record['root_category']))
+        table.add_row("Fashion Season ",            str(record['fashion_season']))
         table.add_row("Fashion Collection",         str(record['fashion_collection']))
         table.add_row("Fashion Collection Inner",   str(record['fashion_collection_inner']))
-        table.add_row("Country ",   str(record['manufacture_country']))
-        table.add_row("Category",   str(record['category']).title())
-        table.add_row("Price",      str(record['price']) + ' RUB' )
-        table.add_row("Discount",   str(record['discount_price']) + ' RUB')
-        table.add_row("Sale",       str(record['in_the_sale']))
+        table.add_row("Country ",                   str(record['manufacture_country']))
+        table.add_row("Category",                   str(record['category']).title())
+        table.add_row("Price",                      str(record['price']) + ' RUB' )
+        table.add_row("Discount",                   str(record['discount_price']) + ' RUB')
+        table.add_row("Sale",                       str(record['in_the_sale']))
+
         leftovers = record['leftovers']
-        list_LO   = []
+        list_leftovers   = []
 
         for leftover in leftovers:
             data = f'♦ Size: {leftover["size"]},\tCount: {leftover["count"]},\tPrice: {leftover["price"]} RUB'
-            list_LO.append(data)
+            list_leftovers.append(data)
 
-        for leftover in list_LO:
+        for leftover in list_leftovers:
             table.add_row("Leftovers", leftover)
         
         table.add_row("URL Link: ", f"https://ppassage.com/women/catalog/?search={record['sku']}&page=1")
@@ -187,9 +188,9 @@ class MongoDB:
         table.add_column("Color",       style="dim", justify="left")
         table.add_column("Brand",       style="dim", justify="left")
         table.add_column("Type",        style="dim", justify="left")
-        table.add_column("Category",    style="dim", justify="center")
+        table.add_column("Category",    style="dim", justify="left")
         table.add_column("Country ",    style="dim", justify="right") #, width=15)
-        table.add_column("Price",       style="dim", justify="center")
+        table.add_column("Price",       style="dim", justify="right")
         if self.args.size == 'show':
             table.add_column("Leftover",    style="dim", justify="right")
 
@@ -223,4 +224,9 @@ class MongoDB:
             table.add_row(*data)    
 
         console.print(table)
+
+class APImongodb:
+    def __init__(self, converter, collection):
+        self.converter = converter
+        self.collection = collection
 
