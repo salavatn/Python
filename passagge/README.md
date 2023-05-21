@@ -2,6 +2,7 @@
 # Internet Market
 
 ## Project Structure
+```
 PASSAGE/
 ├── config/
 │   ├── __init__.py
@@ -26,10 +27,11 @@ PASSAGE/
 ├── README.md
 ├── requirements.txt
 └── webapp.py
+```
 
 ## Libraries and frameworks
 - [FastAPI](https://fastapi.tiangolo.com/)
-- [Rich](
+-  Rich
 - [PyMongo](https://pymongo.readthedocs.io/en/stable/)
 - [Pydantic](https://pydantic-docs.helpmanual.io/)
 - [Argparse](https://docs.python.org/3/library/argparse.html)
