@@ -9,8 +9,8 @@ Origin: http://example.com
   "filters": [
     {
       "title": "price",
-      "operator": "BETWEEN",
-      "value": "50280 | 34600"
+      "operator": "LT",
+      "value": "50280"
     }
   ],
   "limit": 2
@@ -27,9 +27,9 @@ Origin: http://example.com
 {
   "filters": [
     {
-      "title": "color",
-      "operator": "BETWEEN",
-      "value": " черный |    красный "
+      "title": "price",
+      "operator": "LT",
+      "value": " 0 "
     }
   ],
   "limit": 3
