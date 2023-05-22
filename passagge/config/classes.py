@@ -305,12 +305,25 @@ class MongodbFilters:
         return filter_element
 
     def operator_gt(self, title, value):
-        if value.isdigit():
-            value = int(value)  
-        filter_element = {title: {'$gt': value}}
-        logger.debug(f"MongodbFilters.operator_gt: Filter Greater Then={filter_element}")
+        '''Filter for Number - Greater Then'''
+
+        log_header = 'MongodbFilters.operator_gt:'
+
+        number = value.strip()
+
+        if not number.isdigit():
+            error_message = f"Waiting the numbers. But received {number}"
+            logger.error(f"{log_header} {error_message}")
+            raise HTTPException(status_code=404, detail=error_message)
+
+        number = int(number)  
+        filter_element = {title: {'$gt': number}}
+
+        logger.debug(f"{log_header} Filter Greater Then={filter_element}")
+
         return filter_element
     
+
     def operator_lt(self, title: str, value: str) -> Dict[str, Any]:
         '''Filter for Number - Less Then'''
 
@@ -325,7 +338,7 @@ class MongodbFilters:
 
         number = int(number)  
         filter_element = {title: {'$lt': number}}
-        
+
         logger.debug(f"{log_header} Filter Less Then={filter_element}")
 
         return filter_element

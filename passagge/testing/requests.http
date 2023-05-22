@@ -27,9 +27,9 @@ Origin: http://example.com
 {
   "filters": [
     {
-      "title": "price",
-      "operator": "LT",
-      "value": " 0 "
+      "title": "discount_price",
+      "operator": "BETWEEN",
+      "value": " 25000 | 340 "
     }
   ],
   "limit": 3
