@@ -319,7 +319,7 @@ class MongodbFilters:
         return filter_element
        
 
-    def operator_between(self, title: str, value_list: list):
+    def operator_between(self, title: str, value_list: list) -> Dict[str, Any]:
         log_header = 'MongodbFilters.operator_between:'
 
         count = len(value_list)
