@@ -22,14 +22,14 @@ app.add_middleware(CORSMiddleware, **data)
 async def get_data(query: Filter) -> Dict:
     '''Get data from MongoDB'''
     log_header      = 'WebApp[/api/data]:'
-
     query           = json.loads(query.json())
+    logger.debug(f"{log_header} Query={query}")
+
     query_limit     = query['limit']
+    logger.debug(f"{log_header} Limit={query_limit}")
+
     mongodb_filters = MongodbFilters(query)
     filter          = mongodb_filters.get_filter()
-
-    logger.debug(f"{log_header} Query={query}")
-    logger.debug(f"{log_header} Limit={query_limit}")
     logger.debug(f"{log_header} Filter={filter}")
 
     exclude_id = {"_id": 0}

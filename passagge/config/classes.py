@@ -264,6 +264,8 @@ class MongodbFilters:
 
         if "|" in value:
             value = list(value.split('|'))
+        else:
+            value = value.strip()
         
         logger.debug(f"{log_header} Value={value}")
 
@@ -294,19 +296,27 @@ class MongodbFilters:
 
         return filter_element
 
+
     def operator_eq(self, title: str, value:str) -> Dict[str, Any]:
         '''Filter for String - Equal'''
-
         log_header = 'MongodbFilters.operator_eq:'
 
+        if isinstance(value, list):
+            erros_message = f"Operator EQ not support multiple values. Use OR operator"
+            logger.error(f"{log_header} {erros_message}")
+            raise HTTPException(status_code=404, detail=erros_message)
+        
+        value = value.strip()
+        
         if value.isdigit():
             value = int(value)  
         else:
             value = re.compile(value, re.IGNORECASE)
 
         filter_element = {title: value}
-        logger.debug(f"{log_header} Filter Equal={filter_element}")
-        
+
+        logger.debug(f"{log_header} Filter={filter_element}")
+
         return filter_element
 
 

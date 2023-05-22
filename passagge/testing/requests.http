@@ -27,9 +27,9 @@ Origin: http://example.com
 {
   "filters": [
     {
-      "title": "title",
+      "title": "price",
       "operator": "EQ",
-      "value": " шуба "
+      "value": "   128000  "
     }
   ],
   "limit": 3
