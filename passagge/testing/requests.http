@@ -27,9 +27,9 @@ Origin: http://example.com
 {
   "filters": [
     {
-      "title": "discount_price",
-      "operator": "BETWEEN",
-      "value": " 25000 | 340 "
+      "title": "title",
+      "operator": "EQ",
+      "value": " шуба "
     }
   ],
   "limit": 3

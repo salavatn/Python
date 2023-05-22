@@ -294,17 +294,23 @@ class MongodbFilters:
 
         return filter_element
 
-    def operator_eq(self, title, value):
+    def operator_eq(self, title: str, value:str) -> Dict[str, Any]:
+        '''Filter for String - Equal'''
+
+        log_header = 'MongodbFilters.operator_eq:'
+
         if value.isdigit():
             value = int(value)  
         else:
             value = re.compile(value, re.IGNORECASE)
 
         filter_element = {title: value}
-        logger.debug(f"MongodbFilters.operator_eq: Filter Equal={filter_element}")
+        logger.debug(f"{log_header} Filter Equal={filter_element}")
+        
         return filter_element
 
-    def operator_gt(self, title, value):
+
+    def operator_gt(self, title: str, value:str) -> Dict[str, Any]:
         '''Filter for Number - Greater Then'''
 
         log_header = 'MongodbFilters.operator_gt:'
