@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, Union
+from typing import Optional, Union, List, Dict
 
 class Product(BaseModel):
     title:      Optional[str] = Field(title='Product title')
@@ -21,7 +21,14 @@ class Product(BaseModel):
     count:      Optional[int] = Field(title='Product count')
     limit:      Optional[int] = Field(title='Get limit count')
 
+class FilterCondition(BaseModel):
+    title:      Optional[str] = Field(title='Product title', min_length=3, max_length=50)
+    operator:   Optional[str] = Field(title='Operator',      min_length=2, max_length=15, regex='^(OR|EQ|GT|LT|BETWEEN)$')
+    value:      Optional[str] = Field(title='Value',         min_length=3, max_length=50)
+
+class ResultLimit(BaseModel):
+    limit:      Optional[int] = Field(title='Get limit count', ge=1, le=100, default=10)
+
 class Filter(BaseModel):
-    limit:      Optional[int] = Field(title='Get limit count')
-
-
+    filters: Optional[List[FilterCondition]] = Field(default=None)
+    limit: Optional[int] = Field(title='Get limit count', ge=1, le=100, default=10)

@@ -1,11 +1,14 @@
 from config.settings import FastAPI, CORSMiddleware, Query
 from config.settings import uvicorn
-from config.classes import Converting
+from config.settings import logger
+from config.classes import Converting, MongodbFilters
 from config.schema import Product, Filter
 from mongodb.connection import collection
 import json
 
 converting = Converting()
+
+
 
 app = FastAPI(
     title="Internet Market",
@@ -22,38 +25,24 @@ app.add_middleware(
     allow_headers=["*"])
 
 
-def get_query(query):
-    filter = {}
-    limit = 10
 
-    if query.title:     filter['title'] = converting.sensitive_off(query.title)
-    if query.sku:       filter['sku']   = converting.sensitive_off(query.sku)
-    if query.color:     filter['color'] = converting.sensitive_off(query.color)
-    if query.brand:     filter['brand'] = converting.sensitive_off(query.brand)
-    if query.price:     filter['price'] = converting.price_range(query.price)
-    if query.type:      filter['size_table_type'] = converting.sensitive_off(query.type)
-    if query.category:  filter['category'] = converting.sensitive_off(query.category)
-    if query.country:   filter['manufacture_country'] = converting.sensitive_off(query.country)
-    if query.limit:     limit = query.limit
-    
+@app.post("/api/data")
+async def get_data(query: Filter):
+
+    query = json.loads(query.json())
+    query_limit  = query['limit']
+    mongodb_filters = MongodbFilters(query)
 
 
-    return filter, limit
+    logger.debug(f"webapp[/api/data]: Query={query}")
+    logger.debug(f"webapp[/api/data]: Limit={query_limit}")
 
 
-@app.post("/api/items/")
-async def search_items(query: Product):
-    filter = get_query(query)[0]
-    limit  = get_query(query)[1]
-
-    print(f"Filter: {filter}")
-    print(f"Limit:  {limit}\n")
+    filter = mongodb_filters.get_filter()
+    logger.debug(f"WebApp[/api/data]: Filter={filter}")
 
     projection = {"_id": 0}  # Exclude the _id field
-
-    result_cursor = collection.find(filter, projection).limit(limit)
-
-    print(f"Result cursor: {result_cursor}\n")
+    result_cursor = collection.find(filter, projection).limit(query_limit)
 
     results = []
     for doc in result_cursor:
@@ -62,9 +51,54 @@ async def search_items(query: Product):
     if results == []:
         return {"Error": "No results found"}
     
-    print(f'Result: {results}\n')
+    logger.debug(f'WebApp[/api/data]: Result: {results}\n')
 
     return results  
+
+
+
+
+
+# filter = {'$or': [{'title': 'Юбка'}, {'title': 'джинсы'}]}
+# result  = collection.find_one(filter)
+# print(f'Result: {result}\n')
+
+
+
+
+
+example = {
+  "filters": [
+    {
+      "title": "title",
+      "operator": "OR",
+      "value": "бабочка | джинсы"
+    }
+  ]
+}
+
+'''
+title    = filter['title']
+operator = filter['operator']
+value    = filter['value']
+
+# MongoDB Filter OR
+if operator == 'OR':
+    list_values = value.split('|').strip()
+    count = len(list_values) 
+    conditions = []
+
+    for i in range(count):
+        conditions.append({title: list_values[i]})
+
+    filter = {'$or': conditions}
+
+'''
+
+# MongoDB Filter BETWEEN
+
+
+
 
 
 if __name__ == '__main__':

@@ -59,7 +59,6 @@ class Converting:
             logger.debug(f'Converter.output_format: {format}')
             return 'table'
 
-
 class ClientMongoDB:
     '''MongoDB class for working with MongoDB'''
     def __init__(self, converter, collection):
@@ -229,4 +228,155 @@ class APImongodb:
     def __init__(self, converter, collection):
         self.converter = converter
         self.collection = collection
+
+class MongodbFilters:
+    def __init__(self, query):
+        self.query = query
+
+    def filter_analyzer(self, key, value, operator):
+        value = self.check_value(value)
+
+        if operator == 'OR':    filter_element = self.operator_or(key, value)
+        if operator == 'EQ':    filter_element = self.operator_eq(key, value)
+        if operator == 'GT':    filter_element = self.operator_gt(key, value)
+        if operator == 'LT':    filter_element = self.operator_lt(key, value)
+        if operator == 'BETWEEN': filter_element = self.operator_between(key, value)
+
+        logger.debug(f"MongodbFilters.filter_analyzer: Filter={filter_element}")
+
+        return filter_element
+
+
+    def check_value(self, value):
+        if "|" in value:
+            value = list(value.split('|'))
+            logger.debug(f"MongodbFilters.check_value: List Values={value}")
+        return value
+        
+    def operator_or(self, title, value_list):
+        logger.debug(f"MongodbFilters.operator_or: Title={title}")
+        logger.debug(f"MongodbFilters.operator_or: Values={value_list}")
+
+        count       = len(value_list)
+        conditions  = []
+
+
+        for i in range(count):
+            value = value_list[i].strip()
+            logger.debug(f"MongodbFilters.operator_or: Value={value}")
+            if value.isdigit():
+                value = int(value)  
+            else:
+                value = re.compile(value, re.IGNORECASE)
+
+            conditions.append({title: value})
+            logger.debug(f"MongodbFilters.operator_or: Condition-{i+1}={conditions[i]}")
+
+    
+        filter_element = {'$or': conditions}
+        logger.debug(f"MongodbFilters.operator_or: Filter OR={filter_element}")
+
+        return filter_element
+
+    def operator_eq(self, title, value):
+        if value.isdigit():
+            value = int(value)  
+        else:
+            value = re.compile(value, re.IGNORECASE)
+
+        filter_element = {title: value}
+        logger.debug(f"MongodbFilters.operator_eq: Filter Equal={filter_element}")
+        return filter_element
+
+    def operator_gt(self, title, value):
+        if value.isdigit():
+            value = int(value)  
+        filter_element = {title: {'$gt': value}}
+        logger.debug(f"MongodbFilters.operator_gt: Filter Greater Then={filter_element}")
+        return filter_element
+    
+    def operator_lt(self, title, value):
+        if value.isdigit():
+            value = int(value)  
+        filter_element = {title: {'$lt': value}}
+        logger.debug(f"MongodbFilters.operator_lt: Filter Less Then={filter_element}")
+        return filter_element
+       
+    def operator_between(self, title, value_list):
+        count       = len(value_list)
+
+        if count != 2:
+            logger.error(f"MongodbFilters.operator_between: Wrong count of values={count}")
+            return AttributeError
+
+        conditions  = {}
+
+        number1 = int(value_list[0])
+        number2 = int(value_list[1])
+
+
+        if number1 < number2:
+            query = {'$gte': number1, '$lte': number2}
+            logger.debug(f"MongodbFilters.operator_between: Numbers={number1}-{number2}")
+        else:
+            query = {'$gte': number2, '$lte': number1}
+            logger.debug(f"MongodbFilters.operator_between: Numbers={number2}-{number1}")
+
+     
+        conditions[title] = query
+        logger.debug(f"MongodbFilters.operator_between: Filter Between={conditions}")
+
+        return conditions
+
+
+    def get_filter(self):
+        logger.debug(f"MongodbFilters.get_filter: Query={self.query}")
+
+        count_conditions = len(self.query['filters'])
+
+        if count_conditions == 1:
+            logger.debug(f"MongodbFilters.get_filter: count conditions={count_conditions}")
+
+            final_filter = {}  
+
+            key      = self.query['filters'][0]['title']
+            value    = self.query['filters'][0]['value']
+            operator = self.query['filters'][0]['operator']
+
+            final_filter = self.filter_analyzer(key, value, operator)
+
+            logger.debug(f"MongodbFilters.get_filter: Final filter={final_filter}")
+            return final_filter
+
+
+        logger.debug(f"MongodbFilters.get_filter: count conditions={count_conditions}")
+        mongodb_filter = {'$and': []}  # Initialize with an empty $and array
+        logger.debug(f"MongodbFilters.get_filter: MongoDB Filter={mongodb_filter}")
+
+        for i in range(count_conditions):
+            title    = self.query['filters'][i]['title']
+            operator = self.query['filters'][i]['operator']
+            value    = self.query['filters'][i]['value']
+
+            logger.debug(f"webapp.get_mongodb_filter: Title={title}")
+            logger.debug(f"webapp.get_mongodb_filter: Operator={operator}")
+            logger.debug(f"webapp.get_mongodb_filter: Value={value}")
+
+            # MongoDB Filter OR
+            if operator == 'OR':
+                logger.debug(f"webapp.get_mongodb_filter: Operator={operator}")
+                filter = {'$or': [{title: value}]}
+                mongodb_filter['$and'].append(filter)
+                logger.debug(f"webapp.get_mongodb_filter: Filter={mongodb_filter}\n")
+
+            # MongoDB Filter EQ (equals)
+            elif operator == 'EQ':
+                logger.debug(f"webapp.get_mongodb_filter: Operator={operator}")
+                filter = {title: value}
+                mongodb_filter['$and'].append(filter)
+                logger.debug(f"webapp.get_mongodb_filter: Filter={mongodb_filter}\n")
+
+        return mongodb_filter
+
+
 
