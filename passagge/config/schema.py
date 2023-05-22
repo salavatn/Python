@@ -23,7 +23,7 @@ class Product(BaseModel):
 
 class FilterCondition(BaseModel):
     title:      Optional[str] = Field(title='Product title', min_length=3, max_length=50)
-    operator:   Optional[str] = Field(title='Operator',      min_length=2, max_length=15, regex='^(OR|EQ|GT|LT|BETWEEN)$')
+    operator:   Optional[str] = Field(title='Operator',      min_length=2, max_length=15) #, regex='^(OR|EQ|GT|LT|BETWEEN)$')
     value:      Optional[str] = Field(title='Value',         min_length=3, max_length=50)
 
 class ResultLimit(BaseModel):

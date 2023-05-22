@@ -1,5 +1,6 @@
 from config.settings import logger, re, locale, Union, Dict, Any
 from config.settings import Table, box, console
+from config.settings import HTTPException, status
 
 
 
@@ -230,27 +231,42 @@ class APImongodb:
         self.collection = collection
 
 class MongodbFilters:
-    def __init__(self, query):
+    '''Creating MongoDB filter based on Query from FastAPI'''
+
+    def __init__(self, query: Dict[str, Any]):
         self.query = query
 
-    def filter_analyzer(self, key, value, operator):
+
+    def check_operator(self, key: str, value: str, operator: str) -> Dict[str, Any]:
+        '''Check operator and create MongoDB filter'''
+        log_header = 'MongodbFilters.check_operator:'
+
         value = self.check_value(value)
 
-        if operator == 'OR':    filter_element = self.operator_or(key, value)
-        if operator == 'EQ':    filter_element = self.operator_eq(key, value)
-        if operator == 'GT':    filter_element = self.operator_gt(key, value)
-        if operator == 'LT':    filter_element = self.operator_lt(key, value)
-        if operator == 'BETWEEN': filter_element = self.operator_between(key, value)
+        if   operator == 'OR':      filter_element = self.operator_or(key, value)
+        elif operator == 'EQ':      filter_element = self.operator_eq(key, value)
+        elif operator == 'GT':      filter_element = self.operator_gt(key, value)
+        elif operator == 'LT':      filter_element = self.operator_lt(key, value)
+        elif operator == 'BETWEEN': filter_element = self.operator_between(key, value)
+        else:
+            error_message = f"Operator {operator} not found. Possbile operators: OR, EQ, GT, LT, BETWEEN"
+            logger.error(f"{log_header} {error_message}")
+            raise HTTPException(status_code=404, detail=error_message)
 
-        logger.debug(f"MongodbFilters.filter_analyzer: Filter={filter_element}")
+        logger.debug(f"{log_header} Filter={filter_element}")
 
         return filter_element
 
 
-    def check_value(self, value):
+    def check_value(self, value: str) -> Union[str, int]:
+        '''Check value for multiple values'''
+        log_header = 'MongodbFilters.check_value:'
+
         if "|" in value:
             value = list(value.split('|'))
-            logger.debug(f"MongodbFilters.check_value: List Values={value}")
+        
+        logger.debug(f"{log_header} Value={value}")
+
         return value
         
     def operator_or(self, title, value_list):
@@ -302,29 +318,42 @@ class MongodbFilters:
         logger.debug(f"MongodbFilters.operator_lt: Filter Less Then={filter_element}")
         return filter_element
        
-    def operator_between(self, title, value_list):
-        count       = len(value_list)
 
+    def operator_between(self, title: str, value_list: list):
+        log_header = 'MongodbFilters.operator_between:'
+
+        count = len(value_list)
+        num_1 = value_list[0].strip()
+        num_2 = value_list[1].strip()
+
+
+        # Check for 2 values
         if count != 2:
-            logger.error(f"MongodbFilters.operator_between: Wrong count of values={count}")
-            return AttributeError
+            error_message = f"Waiting for 2 values, but received {count}"
+            logger.error(f"{log_header} {error_message}")
+            raise HTTPException(status_code=404, detail=error_message)
+
+        # Check for digits
+        if not num_1.isdigit() or not num_2.isdigit():
+            error_message = f"Waiting for 2 numbers, but received {num_1} and {num_2}"
+            logger.error(f"{log_header} {error_message}")
+            raise HTTPException(status_code=404, detail=error_message)
+
+
+        num_1 = int(num_1)
+        num_2 = int(num_2)
+
+
+        if num_1 < num_2:
+            query = {'$gte': num_1, '$lte': num_2}
+            logger.debug(f"{log_header} Range={num_1}-{num_2}")
+        else:
+            query = {'$gte': num_2, '$lte': num_1}
+            logger.debug(f"{log_header} Range={num_2}-{num_1}")
 
         conditions  = {}
-
-        number1 = int(value_list[0])
-        number2 = int(value_list[1])
-
-
-        if number1 < number2:
-            query = {'$gte': number1, '$lte': number2}
-            logger.debug(f"MongodbFilters.operator_between: Numbers={number1}-{number2}")
-        else:
-            query = {'$gte': number2, '$lte': number1}
-            logger.debug(f"MongodbFilters.operator_between: Numbers={number2}-{number1}")
-
-     
         conditions[title] = query
-        logger.debug(f"MongodbFilters.operator_between: Filter Between={conditions}")
+        logger.debug(f"{log_header} Filter Between={conditions}")
 
         return conditions
 
@@ -343,7 +372,7 @@ class MongodbFilters:
             value    = self.query['filters'][0]['value']
             operator = self.query['filters'][0]['operator']
 
-            final_filter = self.filter_analyzer(key, value, operator)
+            final_filter = self.check_operator(key, value, operator)
 
             logger.debug(f"MongodbFilters.get_filter: Final filter={final_filter}")
             return final_filter
