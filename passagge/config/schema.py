@@ -22,13 +22,10 @@ class Product(BaseModel):
     limit:      Optional[int] = Field(title='Get limit count')
 
 class FilterCondition(BaseModel):
-    title:      Optional[str] = Field(title='Product title', min_length=3, max_length=50)
-    operator:   Optional[str] = Field(title='Operator',      min_length=2, max_length=15) #, regex='^(OR|EQ|GT|LT|BETWEEN)$')
+    field:      Optional[str] = Field(title='Product title', min_length=3, max_length=50)
+    operator:   Optional[str] = Field(title='Operator',      min_length=2, max_length=15) #, regex='^(IN|EQ|GT|LT|BETWEEN)$')
     value:      Optional[str] = Field(title='Value',         min_length=3, max_length=50)
-
-class ResultLimit(BaseModel):
-    limit:      Optional[int] = Field(title='Get limit count', ge=1, le=100, default=10)
 
 class Filter(BaseModel):
     filters: Optional[List[FilterCondition]] = Field(default=None)
-    limit: Optional[int] = Field(title='Get limit count', ge=1, le=100, default=10)
+    limit: Optional[int] = Field(title='Get limit count', ge=0, le=100, default=10)

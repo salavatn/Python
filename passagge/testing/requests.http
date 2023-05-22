@@ -1,22 +1,4 @@
 
-POST http://127.0.0.1:8000/api/data HTTP/1.1
-Content-Type: application/json; charset=utf-8
-Origin: http://example.com
-
-
-
-{
-  "filters": [
-    {
-      "title": "price",
-      "operator": "LT",
-      "value": "50280"
-    }
-  ],
-  "limit": 2
-}
-
-
 ### PRICE BETWEEN 50280 AND 34600
 
 POST http://127.0.0.1:8000/api/data HTTP/1.1
@@ -26,13 +8,10 @@ Origin: http://example.com
 
 {
   "filters": [
-    {
-      "title": "price",
-      "operator": "EQ",
-      "value": "   128000  "
-    }
+    {"field": "title",  "operator": "IN",   "value": " джинсы | куртка" },
+    {"field": "price",  "operator": "BT",   "value": " 14500 | 22350"   }
   ],
-  "limit": 3
+  "limit": 2
 }
 
 
@@ -45,11 +24,34 @@ Origin: http://example.com
 
 {
   "filters": [
-    {
-      "title": "price",
-      "operator": "OR",
-      "value": " 41250 |    3900"
-    }
+    {"field": "title",  "operator": "IN",   "value": " джинЫЫсы | куЫЫртка" },
+    {"field": "color",  "operator": "IN",   "value": " красный | розовый"  },
+    {"field": "price",  "operator": "BT",   "value": " 80600 | 120500"   }
   ],
-  "limit": 3
+  "limit": 1
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
