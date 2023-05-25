@@ -1,32 +1,31 @@
-
 # Internet Market
 
 ## Project Structure
-```
+```python
 PASSAGE/
-├── config/
+├── config/                 
 │   ├── __init__.py
-│   ├── classes.py
-│   ├── logging.conf
-│   ├── settings.py
-│   ├── schema.py
-│   └── .env
+│   ├── classes.py          # Config classes
+│   ├── logging.conf        # Logging configuration
+│   ├── settings.py         # Settings
+│   ├── schema.py           # Pydantic models
+│   └── .env                # Environment variables
 │
-├── mongodb/
+├── mongodb/                
 │   ├── __init__.py
-│   ├── client.py
-│   └── connection.py
+│   ├── client.py           # MongoDB client
+│   └── connection.py       # MongoDB connection
 │
 ├── testsing/
 │   ├── __init__.py
-│   └── requests.http
+│   └── requests.http       # HTTP requests
 │
 ├── venv/
 │
 ├── __init__.py
 ├── README.md
 ├── requirements.txt
-└── webapp.py
+└── webapp.py               # FastAPI application
 ```
 
 ## Libraries and frameworks
@@ -41,7 +40,3 @@ PASSAGE/
 - [HTTPX](https://www.python-httpx.org/)
 
 ## Usage
-```bash
-$ python3 webapp.py --help
-usage: webapp.py [-h] [--title TITLE] [--sku SKU] [--color COLOR] [--brand BRAND] [--type TYPE] [--category CATEGORY] [--country COUNTRY] [--price PRICE] [--size {show,hide}] [--output {json,table}] [--limit {one,all}]
-

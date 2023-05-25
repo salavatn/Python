@@ -24,7 +24,7 @@ Origin: http://example.com
 
 {
   "filters": [
-    {"field": "title",  "operator": "IN",   "value": " джинЫЫсы | куЫЫртка" },
+    {"field": "title",  "operator": "IN",   "value": " джинсы | куртка" },
     {"field": "color",  "operator": "IN",   "value": " красный | розовый"  },
     {"field": "price",  "operator": "BT",   "value": " 80600 | 120500"   }
   ],

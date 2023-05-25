@@ -14,10 +14,6 @@ class Converting:
 
     def sensitive_off(self, keywords: str) -> re.Pattern:
         '''Converting keywords to insensitive search'''
-        # if "|" in keywords:
-        #     keywords = list(keywords.split('|')).strip()
-        #     filter = {"$or": [{"color": "Red"}, {"color": "Blue"}]}
-        #     logger.debug(f'Converter.sensitive_off: {keywords}')
         data = re.compile(keywords, re.IGNORECASE)
         logger.debug(f'Converter.sensitive_off: {data}')
 

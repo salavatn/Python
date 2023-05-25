@@ -19,7 +19,7 @@ class Product(BaseModel):
     sale:       Optional[bool] = Field(title='Product sale')
     size:       Optional[str] = Field(title='Product size')
     count:      Optional[int] = Field(title='Product count')
-    limit:      Optional[int] = Field(title='Get limit count')
+
 
 class FilterCondition(BaseModel):
     field:      Optional[str] = Field(title='Product title', min_length=3, max_length=50)
