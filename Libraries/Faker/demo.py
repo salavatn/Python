@@ -17,3 +17,6 @@ data = {
     'email': email}
 
 print(data)
+
+# Output:
+# {'firstname': 'Michael', 'lastname': 'Hernandez', 'balance': 243589, 'birth_date': '1997-01-01', 'email': '
