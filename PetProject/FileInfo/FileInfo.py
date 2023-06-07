@@ -5,21 +5,22 @@ import os
 import hashlib
 import mimetypes
 
-"""
+'''
 Description:
     This is script get file path and return File Information
     Refactored: 2023-05-08
-"""
+'''
 
 class GetInfo:
-    """
+    '''
     This class get file path and return file info
     :param filepath: str
-    """
+    '''
 
     def __init__(self, filepath: str) -> None:
         self.filepath = filepath
         self.file     = os.stat(filepath)
+
 
     def get_size(self) -> Dict[str, Union[int, float]]:
         '''Get the file size in bytes, kilobytes, megabytes and gigabytes.
@@ -67,7 +68,8 @@ class GetInfo:
         return result
     
     def get_filetype(self) -> Dict[str, str]:
-        '''Get the File/Mime Type.
+        '''
+        Get the File/Mime Type.
         :return: A string containing the file type.
         '''
         file_type = os.path.splitext(self.filepath)[1]
@@ -80,7 +82,8 @@ class GetInfo:
         return result
 
     def get_host_info(self) -> Dict[str, str]:
-        '''Get the host information.
+        '''
+        Get the host information.
         :return: A dictionary containing the host information.
         '''
         fqdn    = socket.getfqdn()
@@ -93,5 +96,6 @@ class GetInfo:
             "FQDN": fqdn,
             "IP Address": ipaddr
             }
+        
         return result
-    
+
