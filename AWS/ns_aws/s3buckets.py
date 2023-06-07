@@ -1,6 +1,6 @@
-from ns_config.settings import aws_session
+from ns_config.settings import aws_session, aws_region
 from ns_config.settings import logger
-from ns_config.libraries import List
+from ns_config.libraries import List, Union, Dict, Any
 # from botocore.exceptions import ClientError
 
 from datetime import datetime
@@ -19,59 +19,128 @@ class S3Buckets:
     def __init__(self):
         self.s3_client = aws_session.client('s3')
 
-    def list_buckets(self) -> List:
+    def list_buckets(self) -> Union[List, False]:
         '''List all buckets in S3'''
-        log_header   = 'ListBuckets:'
+        log_header  = 'ListBuckets:'
 
         # Part-1: List all buckets and get status code
-        backets_all  = self.s3_client.list_buckets()
-        status_code  = backets_all['ResponseMetadata']['HTTPStatusCode']
+        backets_all = self.s3_client.list_buckets()
+        status_code = backets_all['ResponseMetadata']['HTTPStatusCode']
 
+        # Part-2: Check-1: If status_code is not 200, return False
+        if status_code != 200:
+            logger.error(f'{log_header} status_code is {status_code};')
+            raise Exception(f'{log_header} Connection to AWS with status_code {status_code};')
 
-        # Part-2: Check status code
+        # Part-3: Parameters
+        bucket_list = []
+        count_files  = 0
+
+        # Part-4: Create list of buckets
+        for bucket in backets_all['Buckets']:
+            # Part-4.1: Number of file
+            count_files += 1
+
+            # Part-4.2: Bucket name
+            bucket_name  = bucket['Name']
+
+            content = self.content_bucket(bucket_name)
+            if content is None:
+                content = 0
+            elif content is False:
+                content = 0
+            else:
+                content = len(content)
+            
+            # print(f'{bucket_name} - {content}')
+            
+
+            # Part-4.3: Created date
+            created_date = bucket['CreationDate']
+            created_date = created_date.strftime('%Y-%m-%d %H:%M:%S')
+
+            # Part-4.4: Bucket region
+            try:
+                response      = self.s3_client.get_bucket_location(Bucket=bucket_name)
+                bucket_region = response['LocationConstraint']
+            except Exception as error:
+                msg_err = str(error)
+
+                if "(NoSuchBucket)" in msg_err:
+                    logger.error(f'{log_header} Bucket "{bucket_name}" not found or deleted;')
+                    bucket_region = '-- Not found --'
+                    continue
+                logger.error(f'{log_header} error: {error}')
+                
+
+            # Part-4.5: If bucket_region is None, set to 'us-east-1'
+            if bucket_region is None:
+                bucket_region = 'us-east-1'
+
+            # Part-4.6: Create dictionary
+            bucket_dict = {
+                'count':    str(count_files),
+                'bucket':   str(bucket_name),
+                'created':  str(created_date),
+                'location': str(bucket_region).upper(),
+                'content':  str(content)
+                }
+
+            # Part-4.7: Append dictionary to list
+            bucket_list.append(bucket_dict)
+
+        return bucket_list
+
+    def create_bucket(self, bucket_name):
+        '''Create bucket'''
+        log_header = 'Creating:'
+
+        # Part-1: Check-1: If bucket_name is None, return False
+        if bucket_name is None:
+            logger.error(f'{log_header} bucket_name is None;')
+            logger.warning(f'{log_header} Please provide bucket_name. Use -b "bucket-name" option.')
+            return False
+        
+        # Part-2: Prepare data - bucket_name and region
+        data = {
+            'Bucket': bucket_name,
+            'CreateBucketConfiguration': {
+                'LocationConstraint': aws_region
+                }
+            }
+        
+        # Part-3: Create bucket
+        try:
+            response = self.s3_client.create_bucket(**data)
+        except Exception as error:
+            msg_err = str(error)
+            # print(msg_err)
+            if '(BucketAlreadyOwnedByYou)'in msg_err:
+                logger.info(f'{log_header} Bucket "{bucket_name}" already exists;')
+                return True
+            elif '(InvalidBucketName)' in msg_err:
+                logger.error(f'{log_header} Bucket name "{bucket_name}" is not valid;')
+                logger.warning(f'{log_header} Allowed characters are a-z, ".", "-", 0-9;')
+                return False
+
+            msg = str(error.response['Error']['Message'])
+            logger.error(f'{log_header} {msg}')
+
+            return False
+        
+        status_code = response['ResponseMetadata']['HTTPStatusCode']
+
+        # Part-4: Check-2: If status_code is not 200, return False
         if status_code != 200:
             logger.error(f'{log_header} status_code is {status_code};')
             return False
-
-        # Part-3: Create list of buckets
-        buckets_list = []
-        count = 0
-        for bucket in backets_all['Buckets']:
-            count += 1
-            bucket_name = bucket['Name']
-            created = bucket['CreationDate']
-            created = created.strftime('%Y-%m-%d %H:%M:%S')
-
-            response = self.s3_client.get_bucket_location(Bucket=bucket_name)
-            # print(response)
-            bucket_location = response['LocationConstraint']
-
-            if bucket_location is None:
-                bucket_location = 'us-east-1'
-            # print(bucket_location)
-
-            bucket_dict = {
-                'count': count,
-                'bucket': bucket_name,
-                'created': created,
-                'location': bucket_location
-                }
-            # print(bucket_dict)
-            buckets_list.append(bucket_dict)
         
-
+        # Part-5: Check-3: If status_code is 200, return True
         
+        logger.info(f'{log_header} Bucket "{bucket_name}" created;')
+        return True
 
-        return buckets_list
 
-    def create_bucket(self, bucket_name, region_name):
-        response = self.s3_client.create_bucket(
-            Bucket=bucket_name,
-            CreateBucketConfiguration={
-                'LocationConstraint': region_name
-            }
-        )
-        logger.info(f'Bucket {bucket_name} created successfully.')
 
     def delete_bucket(self, bucket_name, force):
         '''Delete bucket'''
@@ -105,12 +174,24 @@ class S3Buckets:
 
 
     def content_bucket(self, bucket_name):
-        '''Check bucket'''
-        log_header = 'CheckBucket:'
+        '''Content bucket'''
+        log_header = 'ContentBucket:'
 
-        response = self.s3_client.list_objects_v2(Bucket=bucket_name)
+        try:
+            response = self.s3_client.list_objects_v2(Bucket=bucket_name)
+        except Exception as error:
+            msg_err = str(error)
+            msg = error.response['Error']['Message']
+            logger.error(f'{log_header} {msg}')
+            return False
+
+
+        if 'Contents' not in response:
+            logger.warning(f'{log_header} Bucket "{bucket_name}" is empty;')
+            return None
+        
+        
         data = response['Contents']
-
         list_files = []
 
 
