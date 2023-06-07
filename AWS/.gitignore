@@ -3,3 +3,7 @@ venv
 
 # Ignore .env
 .env
+
+# for pypi:
+dist
+setup.py
