@@ -1,0 +1,13 @@
+# AWS Library
+boto3
+
+# DotEnv Library
+python-dotenv
+
+# For Logging
+colorlog
+
+
+
+# Console Output
+rich
