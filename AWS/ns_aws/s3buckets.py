@@ -8,6 +8,8 @@ from rich import print
 from rich.tree import Tree
 import os
 
+from ns_converter.converter import convert_bytes
+
 
 
 logger = logger.getLogger('NS_AWS:S3Buckets')
@@ -16,8 +18,6 @@ logger = logger.getLogger('NS_AWS:S3Buckets')
 class S3Buckets:
     def __init__(self):
         self.s3_client = aws_session.client('s3')
-
-
 
     def list_buckets(self) -> List:
         '''List all buckets in S3'''
@@ -64,8 +64,6 @@ class S3Buckets:
 
         return buckets_list
 
-
-
     def create_bucket(self, bucket_name, region_name):
         response = self.s3_client.create_bucket(
             Bucket=bucket_name,
@@ -75,54 +73,79 @@ class S3Buckets:
         )
         logger.info(f'Bucket {bucket_name} created successfully.')
 
-
-
-
-    def delete_bucket(self, bucket_name):
+    def delete_bucket(self, bucket_name, force):
         '''Delete bucket'''
         log_header = 'Delete:'
+
+        if force:
+            try:
+                full_objects = self.s3_client.list_objects_v2(Bucket=bucket_name)['Contents']
+                list_objects = [{'Key': obj['Key']} for obj in full_objects]
+                self.s3_client.delete_objects(Bucket=bucket_name, Delete={'Objects': list_objects})
+            except Exception as error:
+                msg = error.response['Error']['Message']
+                logger.error(f'{log_header} {msg}')
+                return False
+                
         try:
             self.s3_client.delete_bucket(Bucket=bucket_name)
         except Exception as error:
-            logger.error(f'{log_header} {error}')
+            msg = error.response['Error']['Message']
+            logger.error(f'{log_header} {msg}')
+
+            err_msg = str(error)
+            if "(BucketNotEmpty)" in err_msg:
+                logger.warning(f'{log_header} Check contents of bucket. Use --content option.')
+                logger.warning(f'{log_header} If you want to delete bucket forcefully, use --force option.')
+
             return False
-    
-    def check_bucket(self, bucket_name):
+        
+        
+        logger.info(f'{log_header} Bucket {bucket_name} deleted successfully.')
+
+
+    def content_bucket(self, bucket_name):
         '''Check bucket'''
         log_header = 'CheckBucket:'
-        # try:
-        #     test = self.s3_client.head_bucket(Bucket=bucket_name)
-        #     for key, value in test.items():
-        #         print(f'{key}: {value}')
-        # except Exception as error:
-        #     logger.error(f'{log_header} {error}')
-        #     return False
-        # return True
 
-
-
-
-
-        # List all objects in the bucket
         response = self.s3_client.list_objects_v2(Bucket=bucket_name)
-        # print(f'Objects in bucket: {response}')
         data = response['Contents']
-        # print(f'Objects in bucket: {data}')
-        return data
-        # for element in response['Contents']:
-        #     print(f'Element: {element}')
+
+        list_files = []
 
 
-
-        
-
-
-        # # Print the object names
-        # if 'Contents' in response:
+        count = 0
+        for path in data:
             
-        #     for obj in response['Contents']:
-        #         print(obj['Key'])
-        # else:
-        #     print('No objects found in the bucket.')
+            # Part-1: Skip if folder is hidden (.git, .vscode, etc.)
+            if '/.' in path['Key']:
+                continue
+            
+            count += 1
+            id = str(count)
+
+            # Part-2: Get File name and Full Path
+            full_path = path['Key']
+            file_name = full_path.split('/')[-1]
+            full_path = full_path.replace(file_name, '')
+
+            # Part-3: Get File Extension
+            extension = file_name.split('.')[-1]
+            extension = extension.upper()
+
+            # Part-4: Get Date Created
+            created = path['LastModified']
+            created = created.strftime("%Y-%m-%d %H:%M:%S")
+
+            # Part-5: Get File Size
+            size = path['Size']
+            size, unit = convert_bytes(size)
+            file_size = f'{size} {unit}'
+
+            file_info = [id, full_path, file_name, extension, file_size, created]
+            # print(file_info)
+
+            list_files.append(file_info)
 
 
+        return list_files

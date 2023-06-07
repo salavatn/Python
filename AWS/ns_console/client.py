@@ -11,14 +11,7 @@ s3_buckets = S3Buckets()
 # logger = logger.getLogger(__name__)
 logger = logger.getLogger('NS_CONSOLE:Client')
 
-import math
 
-def convert_bytes(size_bytes):
-    units = ['B', 'KB', 'MB', 'GB', 'TB']
-    index = int(math.floor(math.log(size_bytes, 1024)))
-    size = round(size_bytes / (1024 ** index), 2)
-    unit = units[index]
-    return size, unit
 
 
 def s3_bucket_list() -> None:
@@ -37,11 +30,11 @@ def s3_bucket_list() -> None:
     console.print(table_buckets)
 
 
-def s3_bucket_delete(bucket_name):
+def s3_bucket_delete(bucket_name, force):
     '''IN-PROGRESS: Delete bucket'''
-    s3_buckets.delete_bucket(bucket_name)
+    s3_buckets.delete_bucket(bucket_name, force)
     # logger.info(f'Bucket {bucket_name} deleted')
-
+'''
     try:
         # Attempt to delete the bucket
         response = s3_buckets.delete_bucket(Bucket=bucket_name)
@@ -63,44 +56,13 @@ def s3_bucket_delete(bucket_name):
         else:
             print('An error occurred:', error)
 
-
+'''
 def s3_bucket_content(bucket_name):
-    data = s3_buckets.check_bucket(bucket_name)
+    data = s3_buckets.content_bucket(bucket_name)
     logger.info(f'Bucket {bucket_name} checked')
 
-    count = 0
-    for path in data:
-        
-
-        # Ignore hidden files
-        if '/.' in path['Key']:
-            continue
-        
-        count += 1
-
-
-        # Field-1,2: Path and File
-        full_path = path['Key']
-        file_name = full_path.split('/')[-1]
-        full_path = full_path.replace(file_name, '')
-
-        # Field-3: Extension
-        extension = file_name.split('.')[-1]
-        extension = extension.upper()
-
-        # Field-3: Created Date and Time
-        created = path['LastModified']
-        created = created.strftime("%Y-%m-%d %H:%M:%S")
-
-
-        # Field-4: Size
-        size = path['Size']
-        size, unit = convert_bytes(size)
-        file_size = f'{size} {unit}'
-        # logger.info(f'{full_path}, {file_name}, {created}, {size} {unit}')
-
-        row = [str(count), full_path, file_name, extension, file_size, created]
-        table_files.add_row(*row)
+    for file in data:
+        table_files.add_row(*file)
     console.print(table_files)
 
 
@@ -128,7 +90,7 @@ if s3_list:
     s3_bucket_list()
 
 if s3_delete:
-    s3_bucket_delete(s3_bucket)
+    s3_bucket_delete(s3_bucket, s3_force)
 
 if s3_content:
     s3_bucket_content(s3_bucket)
