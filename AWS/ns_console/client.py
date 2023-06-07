@@ -18,7 +18,7 @@ def s3_bucket_list() -> None:
     '''List all buckets in S3'''
 
     start_time = time.time()
-    all_buckets = s3_buckets.list_buckets_3()
+    all_buckets = s3_buckets.list_buckets()
     finish_time = time.time()
     elapsed_time = finish_time - start_time
 
@@ -28,14 +28,15 @@ def s3_bucket_list() -> None:
         print('No buckets found')
         return
 
+    count = 0
     for one_bucket in all_buckets:
-        count   = one_bucket['count']
+        count   += 1
         bucket  = one_bucket['bucket']
         created = one_bucket['created']
         region  = one_bucket['location']
         content = one_bucket['content']
         
-        row = [count, content, bucket, region, created]
+        row = [str(count), content, bucket, region, created]
         table_buckets.add_row(*row)
 
     console.print(table_buckets)

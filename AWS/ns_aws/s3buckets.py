@@ -22,176 +22,28 @@ class S3Buckets:
     def list_buckets(self) -> Union[List, False]:
         '''List all buckets in S3'''
         log_header  = 'ListBuckets:'
-
-        # Part-1: List all buckets and get status code
         backets_all = self.s3_client.list_buckets()
         status_code = backets_all['ResponseMetadata']['HTTPStatusCode']
 
-        # Part-2: Check-1: If status_code is not 200, return False
         if status_code != 200:
             logger.error(f'{log_header} status_code is {status_code};')
             raise Exception(f'{log_header} Connection to AWS with status_code {status_code};')
 
-        # Part-3: Parameters
-        bucket_list = []
-        count_files  = 0
-
-        # Part-4: Create list of buckets
-        for bucket in backets_all['Buckets']:
-            # Part-4.1: Number of file
-            count_files += 1
-
-            # Part-4.2: Bucket name
-            bucket_name  = bucket['Name']
-
-            # Part-4.2.1: Get bucket content
-            content = self.content_bucket(bucket_name)
-            if content is None:
-                content = 0
-            elif content is False:
-                content = 0
-            else:
-                content = len(content)
-            
-            # print(f'{bucket_name} - {content}')
-            
-
-            # Part-4.3: Created date
-            created_date = bucket['CreationDate']
-            created_date = created_date.strftime('%Y-%m-%d %H:%M:%S')
-
-            # Part-4.4: Bucket region
-            try:
-                response      = self.s3_client.get_bucket_location(Bucket=bucket_name)
-                bucket_region = response['LocationConstraint']
-            except Exception as error:
-                msg_err = str(error)
-
-                if "(NoSuchBucket)" in msg_err:
-                    logger.error(f'{log_header} Bucket "{bucket_name}" not found or deleted;')
-                    bucket_region = '-- Not found --'
-                    continue
-                logger.error(f'{log_header} error: {error}')
-                
-
-            # Part-4.5: If bucket_region is None, set to 'us-east-1'
-            if bucket_region is None:
-                bucket_region = 'us-east-1'
-
-            # Part-4.6: Create dictionary
-            bucket_dict = {
-                'count':    str(count_files),
-                'bucket':   str(bucket_name),
-                'created':  str(created_date),
-                'location': str(bucket_region).upper(),
-                'content':  str(content)
-                }
-
-            # Part-4.7: Append dictionary to list
-            bucket_list.append(bucket_dict)
-
-        return bucket_list
-
-    def list_buckets_2(self) -> Union[List, False]:
-        '''List all buckets in S3'''
-        log_header  = 'ListBuckets:'
-
-        backets_all = self.s3_client.list_buckets()
-        bucket_list = []
-        count_files  = 0
-        thread_list = []
-
-
-        def process_bucket(bucket):
-            count_files += 1
-            bucket_name  = bucket['Name']
-
-            content = self.content_bucket(bucket_name)
-            if content is None or content is False:
-                content = 0
-            else:
-                content = len(content)
-            
-            created_date = bucket['CreationDate']
-            created_date = created_date.strftime('%Y-%m-%d %H:%M:%S')
-
-            # Part-4.4: Bucket region
-            try:
-                response      = self.s3_client.get_bucket_location(Bucket=bucket_name)
-                bucket_region = response['LocationConstraint']
-            except Exception as error:
-                msg_err = str(error)
-                if "(NoSuchBucket)" in msg_err:
-                    logger.error(f'{log_header} Bucket "{bucket_name}" not found or deleted;')
-                    bucket_region = '-- Not found --'
-                    return
-                logger.error(f'{log_header} error: {error}')
-                
-            if bucket_region is None:
-                bucket_region = 'us-east-1'
-
-            # Part-4.6: Create dictionary
-            bucket_dict = {
-                'count':    str(count_files),
-                'bucket':   str(bucket_name),
-                'created':  str(created_date),
-                'location': str(bucket_region).upper(),
-                'content':  str(content)
-                }
-
-            # Part-4.7: Append dictionary to list
-            bucket_list.append(bucket_dict)
-
-
-        # Part-4: TEST Thread
-        for bucket in backets_all['Buckets']:
-            thread = threading.Thread(target=process_bucket, args=(bucket,))
-            thread.start()
-            thread_list.append(thread)
-
-        # Wait for all threads to complete
-        for thread in thread_list:
-            thread.join()
-
-
-        return bucket_list
-   
-    def list_buckets_3(self) -> Union[List, False]:
-        '''List all buckets in S3'''
-        log_header  = 'ListBuckets:'
-
-        # Part-1: List all buckets and get status code
-        backets_all = self.s3_client.list_buckets()
-        status_code = backets_all['ResponseMetadata']['HTTPStatusCode']
-
-        # Part-2: Check-1: If status_code is not 200, return False
-        if status_code != 200:
-            logger.error(f'{log_header} status_code is {status_code};')
-            raise Exception(f'{log_header} Connection to AWS with status_code {status_code};')
-
-        # Part-3: Parameters
         self.bucket_list = []
-        self.count  = 0
         thread_list = []
 
-
-
-        # Part-4: Create list of buckets
         for bucket in backets_all['Buckets']:
-            self.count += 1
-            thread = threading.Thread(target=self.process_bucket, args=(bucket, self.count))
+            thread = threading.Thread(target=self.process_bucket, args=(bucket,))
             thread.start()
             thread_list.append(thread)
-        
-
-        # Wait for all threads to complete
         for thread in thread_list:
             thread.join()
 
         return self.bucket_list
     
 
-    def process_bucket(self, bucket, count):
+
+    def process_bucket(self, bucket):
         log_header  = 'ProcessBucket:'        
         bucket_name = bucket['Name']
         content     = self.content_bucket(bucket_name)
@@ -204,6 +56,7 @@ class S3Buckets:
             response      = self.s3_client.get_bucket_location(Bucket=bucket_name)
             bucket_region = response['LocationConstraint']
         except Exception as error:
+
             msg_err = str(error)
 
             if "(NoSuchBucket)" in msg_err:
@@ -216,13 +69,14 @@ class S3Buckets:
             bucket_region = 'us-east-1'
 
         bucket_dict = {
-            'count':    str(count),
             'bucket':   str(bucket_name),
             'created':  str(created_date),
             'location': str(bucket_region).upper(),
             'content':  str(content)
         }
         self.bucket_list.append(bucket_dict)
+
+
 
 
 
