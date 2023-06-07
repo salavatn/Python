@@ -10,15 +10,19 @@ s3_buckets = S3Buckets()
 
 # logger = logger.getLogger(__name__)
 logger = logger.getLogger('NS_CONSOLE:Client')
-
+import time
 
 
 
 def s3_bucket_list() -> None:
     '''List all buckets in S3'''
 
-    
-    all_buckets = s3_buckets.list_buckets()
+    start_time = time.time()
+    all_buckets = s3_buckets.list_buckets_3()
+    finish_time = time.time()
+    elapsed_time = finish_time - start_time
+
+    print(f'Elapsed time: {elapsed_time}!')
 
     if len(all_buckets) == 0:
         print('No buckets found')
