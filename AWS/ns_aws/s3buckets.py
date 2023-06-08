@@ -119,10 +119,13 @@ class S3Buckets:
         '''Delete bucket'''
         log_header = 'Delete:'
 
+       
         if force:
             try:
                 full_objects = self.s3_client.list_objects_v2(Bucket=bucket_name)['Contents']
+                full_version = self.s3_client.list_object_versions(Bucket=bucket_name)['Versions'] # CHECK here aws-sam-cli-managed-default-samclisourcebucket-1agj41omw8jre
                 list_objects = [{'Key': obj['Key']} for obj in full_objects]
+                print(list_objects)
                 self.s3_client.delete_objects(Bucket=bucket_name, Delete={'Objects': list_objects})
             except Exception as error:
                 msg = error.response['Error']['Message']
@@ -157,6 +160,7 @@ class S3Buckets:
             msg = error.response['Error']['Message']
             logger.error(f'{log_header} {msg}')
             return False
+        
         
         bucket_content  = response['Contents']
         self.list_files = []
