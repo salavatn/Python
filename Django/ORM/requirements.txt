@@ -1,0 +1,8 @@
+# Load environment variables from .env
+python-dotenv
+
+# Django, CockroachDB, and Psycopg2
+django
+dj_database_url
+django_cockroachdb
+psycopg2-binary

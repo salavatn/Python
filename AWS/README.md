@@ -1,22 +1,26 @@
-# Console for AWS
+# AWS S3 Manager
+
+## Description
+> Hello, this is a simple console application for managing AWS S3 buckets.
+
+---
 
 ## How to use
- - Configure .env file
+> Firstly, you need to configure your AWS keys in the .env file.
 ```
-PYTHON_AWS_KEY=eEXAMPLEoIAN88J7LAH45X
-PYTHON_AWS_SECRET=eEXAMPLEo2D4zGlMlwNrn7vC/rmKzxXz6X0cgj/
-PYTHON_AWS_REGION=eu-central-1
+AWS_KEY=EXAMPLE_oIAN88J7LAH45X
+AWS_SECRET=EXAMPLE_o2D4zGlMlwNrn7vC/rmKzxXz6X0cgj
+AWS_REGION=eu-central-1
 ```
 
-- Install dependencies
+> Secondly, you need to install the required libraries and run the main.py file.
 ```sh
 pip install -r requirements.txt
 ```
 
-- Run main.py
-
+> Now you can use the application
 ```sh
-python -m s3.manager --help
+python -m s3 --help
 ```
 ```sh
 (venv) salavat@Linux AWS % python -m ns_console.client --help

@@ -137,8 +137,7 @@ class S3Buckets:
         # Part-4: Check-4: If status_code is 200, return True
         return True
 
-    def delete_bucket(self, bucket_name, force
-    ):
+    def delete_bucket(self, bucket_name, force=False):
         '''Delete bucket'''
         log_header = 'Delete:'
 

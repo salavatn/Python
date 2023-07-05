@@ -16,11 +16,11 @@ class S3Client:
     def __init__(self):
         self.s3_buckets = S3Buckets()
 
-    def s3_bucket_list(self) -> None:
+    def s3_bucket_list(self) -> dict:
         '''List all buckets in S3'''
 
         # Part 0: Prepare variables and constants
-        log_header   = 'S3:List:Bucket:'
+        log_header   = 'S3:List:'
         all_buckets  = self.s3_buckets.list_buckets()
         bucket_count = 0
         row          = ["*", "*", "*", "*", "*"]
@@ -28,31 +28,28 @@ class S3Client:
         # Part 1: Check if the job finished with error
         if all_buckets is False:
             logger.debug(f'{log_header} Job finished with error')
-            return
+            return False
 
         # Part 2: Check if there are no buckets        
         if len(all_buckets) == 0:
-            logger.debug(f'{log_header} No buckets found')
+            logger.debug(f'{log_header} no buckets found;')
             table_buckets.add_row(*row)
             console.print(table_buckets)
-            return
+            return True
         
         # Part 3: Print the table with all buckets
         for one_bucket in all_buckets:
             bucket_count  += 1
-            bucket_name    = one_bucket['bucket']
-            backet_created = one_bucket['created']
-            bucket_region  = one_bucket['location']
-            content_count  = one_bucket['content']
-            row_of_buckets = [
-                             str(bucket_count), 
-                             content_count, 
-                             bucket_name, 
-                             bucket_region, 
-                             backet_created ]
-            table_buckets.add_row(*row_of_buckets)
-            logger.debug(f'{log_header} Bucket {bucket_name} added to table')
+            row_bucket     = [
+                str(bucket_count),          # ID for table
+                one_bucket['content'],      # count of files
+                one_bucket['bucket'],       # bucket name
+                one_bucket['location'],     # bucket region
+                one_bucket['created'] ]     # bucket created
+            table_buckets.add_row(*row_bucket)
+            logger.debug(f'{log_header} found bucket {one_bucket["bucket"]};')
         console.print(table_buckets)
+        return True
 
     def s3_delete_bucket(self, bucket_name, force):
         '''IN-PROGRESS: Delete bucket'''
