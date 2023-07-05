@@ -1,9 +1,8 @@
-# Ignore venv
+# Environment variables
 venv
 
-# Ignore .env
+# Original .env file
 .env
 
-# for pypi:
+# Files for PYPI upload
 dist
-setup.py

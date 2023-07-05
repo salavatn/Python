@@ -1,22 +1,29 @@
 # Console for AWS
 
-## How to use
- - Configure .env file
-```
-PYTHON_AWS_KEY=eEXAMPLEoIAN88J7LAH45X
-PYTHON_AWS_SECRET=eEXAMPLEo2D4zGlMlwNrn7vC/rmKzxXz6X0cgj/
-PYTHON_AWS_REGION=eu-central-1
-```
-
-- Install dependencies
+## Install
 ```sh
-pip install -r requirements.txt
+pip install ns-lab-aws
 ```
 
-- Run main.py
-
+## Initialize
 ```sh
-python -m s3.manager --help
+python -m ns_lab_aws.init
+```
+
+Will be created "logging.conf" and ".env" with default values
+
+## Set AWS credentials
+```sh
+AWS_KEY=eEXAMPLEoIAN88J7LAH45X
+AWS_SECRET=eEXAMPLEo2D4zGlMlwNrn7vC/rmKzxXz6X0cgj/
+AWS_REGION=eu-central-1
+```
+
+## Run
+
+### Help Info
+```sh
+python -m ns_lab_aws.manager --help
 ```
 ```sh
 (venv) salavat@Linux AWS % python -m ns_console.client --help
@@ -40,10 +47,10 @@ options:
   -f FILE, --file FILE  File name
   -d DIR, --dir DIR     Directory name
 ```
-## Examples
-### List all buckets
+
+### Show all buckets
 ```sh
-python -m s3.manager  --list
+python -m ns_lab_aws.manager --list
 ```
 ```sh
 (venv) salavat@Linux AWS % python -m ns_console.client --list
@@ -62,19 +69,19 @@ python -m s3.manager  --list
   8      189   ns-lab-web                                               EU-WEST-3      2022-12-03 09:15:52 
 ```
 
-### Create bucket
+### Create new S3 Bucket
 ```sh
-python -m s3.manager --create -b 'project-8.console'
+python -m ns_lab_aws.manager --create -b 'project-8.console'
 ```
 
-### Delete bucket
+### Delete S3 Bucket
 ```sh
-python -m s3.manager --delete -b 'project-8.console'
+python -m ns_lab_aws.manager --delete -b 'project-8.console'
 ```
 
-### Show bucket content
+### Show S3 Bucket content
 ```sh
-python -m s3.manager  --content -b 'backname'  
+python -m ns_lab_aws.manager  --content -b 'backname'  
 ```
 
 ```sh

@@ -1,4 +1,15 @@
-markdown-it-py==2.2.0
-mdurl==0.1.2
-Pygments==2.15.1
-rich==13.3.5
+# markdown-it-py==2.2.0
+# mdurl==0.1.2
+# Pygments==2.15.1
+# rich==13.3.5
+
+# Pretty console
+rich
+
+# For test
+coverage
+pytest
+mock
+
+# For logging
+colorlog

@@ -1,14 +1,12 @@
-from ns_converter.converter import convert_bytes
-from ns_config.settings import aws_session, aws_region
-from ns_config.settings import logger
-from ns_config.libraries import List, Union, Dict, Any
-from ns_config.libraries import print
-from ns_config.libraries import threading, os
-
-import time
+from s3.converter.converter import convert_bytes
+from s3.config.settings import aws_session, aws_region
+from s3.config.settings import logger
+from s3.config.libraries import List, Union, Dict, Any
+from s3.config.libraries import print
+from s3.config.libraries import threading, os  
 
 
-logger = logger.getLogger('NS_AWS:S3Buckets')
+logger = logger.getLogger('AWS:S3:Buckets')
 
 
 class S3Buckets:
@@ -66,25 +64,24 @@ class S3Buckets:
         self.bucket_list.append(bucket_dict)
 
     def create_bucket(self, bucket_name):
-        '''Create bucket'''
+        '''Create a new Bucket in S3'''
 
+        # Part-0: Prepare variables and constants
         log_header = 'Creating:'
+        data       = {'Bucket': bucket_name, 'CreateBucketConfiguration': {'LocationConstraint': aws_region}}
 
         # Part-1: Check-1: If bucket_name is None, return False
         if bucket_name is None:
-            logger.error(f'{log_header} bucket_name is None;')
-            logger.warning(f'{log_header} Please provide bucket_name. Use -b "bucket-name" option.')
+            logger.error(f'{log_header} bucket name is not provided;')
+            logger.warning(f'{log_header} please use option -b/--bucket "bucket-name";')
             return False
         
-        # Part-2: Prepare data - bucket_name and region
-        data = {
-            'Bucket': bucket_name,
-            'CreateBucketConfiguration': {
-                'LocationConstraint': aws_region
-                }
-            }
-        
-        # Part-3: Create bucket
+        # Part-2: Check-2: If bucket_name is exists, return False
+        bucket_exist = self.s3_client.head_bucket(Bucket=bucket_name)
+        if bucket_exist:
+            logger.error(f'{log_header} bucket "{bucket_name}" already exists;')
+            return False
+
         try:
             response = self.s3_client.create_bucket(**data)
         except Exception as error:
@@ -111,11 +108,37 @@ class S3Buckets:
             return False
         
         # Part-5: Check-3: If status_code is 200, return True
-        
         logger.info(f'{log_header} Bucket "{bucket_name}" created;')
         return True
 
-    def delete_bucket(self, bucket_name, force):
+    # def check_bucket_exists(self, bucket_name):
+        # Part-0: Prepare variables and constants
+        log_header = 'CheckExists:'
+
+
+        # Part-2: Check-2: If bucket_name is exists, return False
+        try:
+            response = self.s3_client.head_bucket(Bucket=bucket_name)
+        except Exception as error:
+            msg = str(error.response['Error']['Message'])
+            if '(NoSuchBucket)' in msg:
+                return False
+            else:
+                logger.error(f'{log_header} {msg}')
+                return False
+
+        status_code = response['ResponseMetadata']['HTTPStatusCode']
+
+        # Part-3: Check-3: If status_code is not 200, return False
+        if status_code != 200:
+            logger.error(f'{log_header} status_code is {status_code};')
+            return False
+
+        # Part-4: Check-4: If status_code is 200, return True
+        return True
+
+    def delete_bucket(self, bucket_name, force
+    ):
         '''Delete bucket'''
         log_header = 'Delete:'
 
@@ -125,7 +148,7 @@ class S3Buckets:
                 full_objects = self.s3_client.list_objects_v2(Bucket=bucket_name)['Contents']
                 full_version = self.s3_client.list_object_versions(Bucket=bucket_name)['Versions'] # CHECK here aws-sam-cli-managed-default-samclisourcebucket-1agj41omw8jre
                 list_objects = [{'Key': obj['Key']} for obj in full_objects]
-                print(list_objects)
+
                 self.s3_client.delete_objects(Bucket=bucket_name, Delete={'Objects': list_objects})
             except Exception as error:
                 msg = error.response['Error']['Message']
@@ -143,9 +166,24 @@ class S3Buckets:
             return False
         
         return True
-        
-        
-        
+    
+
+    def delete_folder(self, bucket_name, folder_path):
+        '''Delete folder'''
+        # List all objects in the folder
+        objects = self.s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_path)['Contents']
+        keys = [{'Key': obj['Key']} for obj in objects]
+
+        # Delete the objects
+        if len(keys) > 0:
+            self.s3_client.delete_objects(Bucket=bucket_name, Delete={'Objects': keys})
+
+        # Delete the folder
+        self.s3_client.delete_object(Bucket=bucket_name, Key=folder_path)
+
+
+
+
 
     def content_bucket(self, bucket_name):
         '''Content bucket'''

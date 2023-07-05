@@ -1,33 +1,30 @@
-from ns_config.libraries import load_dotenv
-from ns_config.libraries import os
-from ns_config.libraries import boto3
-from ns_config.libraries import logging, logging_config, colorlog
-from ns_config.libraries import Console, Table, box
-from ns_config.libraries import argparse
-
-# from ns_config.libraries import Console, Table, box
-# from ns_config.libraries import pytz, datetime
-# from ns_config.libraries import Faker
+from s3.config.libraries import load_dotenv
+from s3.config.libraries import os
+from s3.config.libraries import boto3  
+from s3.config.libraries import logging, logging_config, colorlog
+from s3.config.libraries import Console, Table, box
+from s3.config.libraries import argparse 
 
 
 # Setting-1: Load environment variables
-load_env = load_dotenv(dotenv_path='ns_config/.env')
+load_env = load_dotenv(dotenv_path='.env')
 
 
 # Setting-2: Load AWS credentials and create AWS Session
-aws_access  = os.getenv('PYTHON_AWS_KEY')
-aws_secret  = os.getenv('PYTHON_AWS_SECRET')
-aws_region  = os.getenv('PYTHON_AWS_REGION')
+aws_access  = os.getenv('AWS_KEY')
+aws_secret  = os.getenv('AWS_SECRET')
+aws_region  = os.getenv('AWS_REGION')
 aws_params  = {
     'aws_access_key_id':     aws_access,
     'aws_secret_access_key': aws_secret,
     'region_name':           aws_region
 }
+
 aws_session = boto3.Session(**aws_params)
 
 
 # Setting-3: Logging
-logging_config.fileConfig('ns_config/logging.conf')
+logging_config.fileConfig('logging.conf')
 logger = logging
 
 

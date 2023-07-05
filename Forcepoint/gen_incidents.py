@@ -12,6 +12,7 @@ service = {
 service_name = list(service.keys())
 service_id = list(service.values())
 
+# PolicyEngineClient.exe -o Test -src IPAddress '10.39.66.227' -dst EmailAddress 'buchananjennifer@schwartz-freeman.net' -file C:\tmp\1.txt -i 20
 
 # Arguments:
 parser = argparse.ArgumentParser(description='\tGenerate incidents')
