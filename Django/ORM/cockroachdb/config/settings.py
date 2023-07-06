@@ -16,4 +16,7 @@ url_database   = f'postgresql://{db_user}:{db_pswd}@{db_host}:{db_port}/{db_name
 DATABASES      = {'default': dj_database_url.config(default=url_database, engine='django_cockroachdb')}
 INSTALLED_APPS = ['database', 'dj_database_url', 'django_cockroachdb']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Section 3: Initialize Django
 django_start   = django.setup()

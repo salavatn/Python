@@ -1,5 +1,6 @@
 from config.library import Model, CharField, DateField
 
+# Simple model for table
 class Contacts(Model):
     first_name  = CharField(max_length=20,  null=False)
     last_name   = CharField(max_length=20,  null=False)
