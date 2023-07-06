@@ -1,4 +1,4 @@
-from app.library import Model, CharField, DateField
+from config.library import Model, CharField, DateField
 
 class Contacts(Model):
     first_name  = CharField(max_length=20,  null=False)
