@@ -1,0 +1,19 @@
+fastapi
+
+# Load environment variables from .env file
+python-dotenv
+
+# Django
+django
+
+# Connection to CockroachDB
+dj_database_url
+django_cockroachdb
+psycopg2-binary
+
+
+# Web server
+uvicorn
+
+# Templates
+Jinja2
