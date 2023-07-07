@@ -1,0 +1,5 @@
+2023-07-07 16:38:42,326 - Demo - DEBUG - Examples: this could be your Ad;
+2023-07-07 16:38:42,326 - Demo - INFO - Examples: this could be your Ad;
+2023-07-07 16:38:42,326 - Demo - WARNING - Examples: this could be your Ad;
+2023-07-07 16:38:42,326 - Demo - ERROR - Examples: this could be your Ad;
+2023-07-07 16:38:42,326 - Demo - CRITICAL - Examples: this could be your Ad;
