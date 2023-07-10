@@ -1,0 +1,10 @@
+# Install sqlaclhemy
+sqlalchemy
+
+# Python dotenv
+python-dotenv
+
+# Install psycopg2-binary
+psycopg2-binary
+
+Faker
