@@ -6,10 +6,10 @@
 # Pretty console
 rich
 
-# For test
-coverage
-pytest
-mock
+# # For test
+# coverage
+# pytest
+# mock
 
 # For logging
 colorlog

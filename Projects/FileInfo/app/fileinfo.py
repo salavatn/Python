@@ -1,14 +1,21 @@
-from typing import List, Dict, Union, Any
-from app.config import logger
-import hashlib, mimetypes, math
-import datetime, socket, os
+from libs import Dict, Any
+from libs import logging
+from libs import os
 
-logger("fileinfo.py")
 
-class FileInfo:
+logging.config.fileConfig('logging.conf')
+logger = logging.getLogger('FileInfo')
+
+
+class FileProperties:
     def __init__(self, filepath: str) -> None:
-        exist_file = os.path.isfile(filepath)
-        if not exist_file:
+        file_exist = os.path.isfile(filepath)
+        if not file_exist:
+            error_msg = f"File not found: {filepath}"
+            logger.error(error_msg)
+            raise FileNotFoundError(error_msg)
+
+        if not file_exist:
             logger.error(f"File not found: {filepath}")
             exit(1)
         self.filepath = filepath
