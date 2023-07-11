@@ -1,0 +1,12 @@
+## Requirements for download and install
+# FastAPI framework
+fastapi
+
+# Connect to PostgreSQL
+psycopg2-binary
+
+# Connect to S3 bucket
+boto3
+
+# Load environment variables
+python-dotenv
