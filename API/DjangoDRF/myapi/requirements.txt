@@ -1,0 +1,7 @@
+# Django REST Framework
+django
+djangorestframework
+
+
+# Load .env file
+python-dotenv
