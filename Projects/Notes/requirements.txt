@@ -1,0 +1,21 @@
+# Load .env file
+python-dotenv
+
+# fastapi
+# sqlalchemy
+# uvicorn[standard]
+
+
+## Django, Postgres, CockroachDB
+django
+dj_database_url
+psycopg2-binary
+# django_cockroachdb
+
+
+
+# jinja2
+# requests
+# argparse
+# colorlog
+# pyopenssl
